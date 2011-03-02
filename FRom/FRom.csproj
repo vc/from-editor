@@ -58,9 +58,6 @@
       <HintPath>externals\Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualC" />
-    <Reference Include="SerialPorts">
-      <HintPath>externals\SerialPorts.dll</HintPath>
-    </Reference>
     <Reference Include="SourceGrid, Version=4.21.3767.34200, Culture=neutral, PublicKeyToken=df6f5e538749e85d, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>externals\SourceGrid\SourceGrid.dll</HintPath>
@@ -323,7 +320,7 @@ if $(ConfigurationName) == Release (
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_StartDate="2005/10/21" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2005/10/21" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

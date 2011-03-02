@@ -730,12 +730,12 @@ namespace FRom
 				MessageBox.Show(
 					this, 
 					"В текущей версии эта функциональность не реализована", 
-					AboutBox.AssemblyProduct + " " + AboutBox.AssemblyVersion, 
+					FormAboutBox.AssemblyProduct + " " + FormAboutBox.AssemblyVersion, 
 					MessageBoxButtons.OK, 
 					MessageBoxIcon.Information
 				);
 #endif
-				}
+                }
 			}
 			catch (Exception ex)
 			{
