@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{16CC93F2-2E3A-437F-9AA7-BC2BC128155F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FRom</RootNamespace>
+    <AssemblyName>FRom</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <StartupObject>FRom.Program</StartupObject>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ionic.Zip.Reduced">
+      <HintPath>externals\Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualC" />
+    <Reference Include="SerialPorts">
+      <HintPath>externals\SerialPorts.dll</HintPath>
+    </Reference>
+    <Reference Include="SourceGrid, Version=4.21.3767.34200, Culture=neutral, PublicKeyToken=df6f5e538749e85d, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>externals\SourceGrid\SourceGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConsultNS\Data\DataEngine.cs" />
+    <Compile Include="ConsultNS\Data\IConsultDataSource.cs" />
+    <Compile Include="FormAboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAboutBox.Designer.cs">
+      <DependentUpon>FormAboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormFeedBack.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFeedBack.Designer.cs">
+      <DependentUpon>FormFeedBack.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultNS\FormSensorsSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConsultNS\FormSensorsSelect.Designer.cs">
+      <DependentUpon>FormSensorsSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultNS\Gauges\ConsultAquaGauge.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ConsultNS\FormLiveScan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConsultNS\FormLiveScan.Designer.cs">
+      <DependentUpon>FormLiveScan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultNS\Consult.cs" />
+    <Compile Include="ConsultNS\ConsultBase.cs" />
+    <Compile Include="ConsultNS\ConsultClassState.cs" />
+    <Compile Include="ConsultNS\ConsultException.cs" />
+    <Compile Include="ConsultNS\Data\ConsultActiveTest.cs" />
+    <Compile Include="ConsultNS\Data\DataAirCon.cs" />
+    <Compile Include="ConsultNS\Data\DataAT.cs" />
+    <Compile Include="ConsultNS\Data\ConsultCommand.cs" />
+    <Compile Include="ConsultNS\Data\ConsultCommandType.cs" />
+    <Compile Include="ConsultNS\Data\ConsultData.cs" />
+    <Compile Include="ConsultNS\Data\DataHICAS.cs" />
+    <Compile Include="ConsultNS\Data\ConsultSensor.cs" />
+    <Compile Include="ConsultNS\Data\ECUConst.cs" />
+    <Compile Include="ConsultNS\Data\ECUPartNumber.cs" />
+    <Compile Include="ConsultNS\Data\IConsultData.cs" />
+    <Compile Include="ConsultNS\Data\DTCFaultCodes.cs" />
+    <Compile Include="ConsultNS\Gauges\ConsultColorBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ConsultNS\Gauges\IConsultGauge.cs" />
+    <Compile Include="ConsultNS\SensorMonitoringParams.cs" />
+    <Compile Include="ConsultNS\SerialPortIO.cs" />
+    <Compile Include="Emulator\Romulator\IRomulator.cs" />
+    <Compile Include="Emulator\IFRomulator.cs" />
+    <Compile Include="Emulator\Romulator\RomulatorBase.cs" />
+    <Compile Include="Emulator\Romulator\Romulator.cs" />
+    <Compile Include="Emulator\Romulator\RomulatorException.cs" />
+    <Compile Include="Emulator\Romulator\RomulatorVersion.cs" />
+    <Compile Include="FormOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormOptions.Designer.cs">
+      <DependentUpon>FormOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FRomPropertyGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Helper\ListIndexString.cs" />
+    <Compile Include="Helper\ResourceDisposer.cs" />
+    <Compile Include="Logger\TimeStreamWriter.cs" />
+    <Compile Include="Logic\FromExceptionErrorNumber.cs" />
+    <Compile Include="Logic\UInt32BinTypeConverter.cs" />
+    <Compile Include="Logic\UInt32HexTypeConverter.cs" />
+    <Compile Include="Logic\FromException.cs" />
+    <Compile Include="FormGraph3D.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormGraph3D.Designer.cs">
+      <DependentUpon>FormGraph3D.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Grid\FRomColumnHeader.cs" />
+    <Compile Include="Grid\Models\FRomColumnHeaderModel.cs" />
+    <Compile Include="Grid\FRomColumns.cs" />
+    <Compile Include="Grid\FRomHeader.cs" />
+    <Compile Include="Grid\FRomRowHeader.cs" />
+    <Compile Include="Grid\Models\FRomRowHeaderModel.cs" />
+    <Compile Include="Grid\FRomRows.cs" />
+    <Compile Include="Grid\Models\FRomValueModel.cs" />
+    <Compile Include="Logger\Logger.cs" />
+    <Compile Include="Logger\NewMessageEventArgs.cs" />
+    <Compile Include="Logger\UserSettings.cs" />
+    <Compile Include="Logic\AddressInstance.cs" />
+    <Compile Include="Logic\AddressInstanceBase.cs" />
+    <Compile Include="Helper\Debug.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Logic\From.Adr.cs" />
+    <Compile Include="Logic\AddressStructREList.cs" />
+    <Compile Include="Logic\From.Bin.cs" />
+    <Compile Include="Emulator\FRomulator.cs" />
+    <Compile Include="Helper\Helper.cs" />
+    <Compile Include="Helper\Test.cs" />
+    <Compile Include="Logic\From.cs" />
+    <Compile Include="Logic\From.ValueModel.cs" />
+    <Compile Include="Logic\FromEventArgs.cs" />
+    <Compile Include="Logger\Event.cs" />
+    <Compile Include="Logger\FileLogger.cs" />
+    <Compile Include="FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Grid\FRomGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Logic\Map.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Helper\Timer.cs" />
+    <EmbeddedResource Include="FormAboutBox.resx">
+      <DependentUpon>FormAboutBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFeedBack.resx">
+      <DependentUpon>FormFeedBack.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConsultNS\FormLiveScan.resx">
+      <DependentUpon>FormLiveScan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConsultNS\FormSensorsSelect.resx">
+      <DependentUpon>FormSensorsSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConsultNS\Gauges\ConsultColorBar.resx">
+      <DependentUpon>ConsultColorBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormGraph3D.resx">
+      <DependentUpon>FormGraph3D.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMain.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormOptions.resx">
+      <DependentUpon>FormOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Settings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Properties\DataSources\icons\imgConnected_16x16.png" />
+    <None Include="Properties\DataSources\icons\imgConnecting_16x16.png" />
+    <None Include="Properties\DataSources\icons\imgDisconnected_16x16.png" />
+    <None Include="Properties\DataSources\icons\imgSettings_16x16.png" />
+    <None Include="Properties\DataSources\icons\scraps\Button Blank Green-01.ico" />
+    <None Include="Properties\DataSources\icons\scraps\Button Blank Red-01.ico" />
+    <None Include="Properties\DataSources\icons\scraps\Button Blank Green-01.png" />
+    <None Include="Properties\DataSources\icons\scraps\Button Blank Red-01.png" />
+    <None Include="Properties\DataSources\icons\scraps\Button Add-01.png" />
+    <None Include="Properties\DataSources\icons\scraps\Button Delete-01.png" />
+    <None Include="Properties\DataSources\icons\scraps\File New-01.png" />
+    <None Include="Properties\DataSources\icons\scraps\File New-01_24.png" />
+    <Content Include="ReleaseNotes.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AquaGauge\AquaGauge.csproj">
+      <Project>{0E5542E0-FC5D-4F67-950D-9F28C5D1225A}</Project>
+      <Name>AquaGauge</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ColorBar\ColorBar.csproj">
+      <Project>{C3E9C71D-47C7-469E-81EE-A9D39025EB71}</Project>
+      <Name>ColorBar</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenGLControl\OpenGLControl.csproj">
+      <Project>{3A7BCDA8-1A82-45B9-90B5-98A837BC551F}</Project>
+      <Name>OpenGLControl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>set DEPLOY_PATH=$(ProjectDir)Deploy\
+set BIN_PATH=$(ProjectDir)$(OutDir)
+if $(ConfigurationName) == Release (
+	%25DEPLOY_PATH%25\CreateInstall.cmd
+	cd %25DEPLOY_PATH%25
+	ftp.exe -s:ftp.txt
+)
+</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>if $(ConfigurationName) == Release (
+	erase /f /s /q $(ProjectDir)$(OutDir)*.*
+)</PreBuildEvent>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_StartDate="2005/10/21" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

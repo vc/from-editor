@@ -1,0 +1,71 @@
+#
+#
+# NISSAN S13/RS13 CA18DET MAP ADDRESS (E)
+#
+# Variable,Start-Address,X,Y,Map size,value,Map-name
+
+#UNIT NAME
+TYPE_UNIT,S13/RS13(CA18DET),X,Y,Map size,value,Map-name
+
+#HIGH/LOW octane Fuel map.
+HIGH_FUEL,&H3D00,16,16,256,1,High octane Fuel map
+REG_FUEL,&H3700,16,16,256,1,Low octane Fuel map
+
+#HIGH/LOW octane Ignition time map.
+HIGH_FIRE,&H3C00,16,16,256,1,High octane Ignition time
+REG_FIRE,&H3A00,16,16,256,1,Low octane Ignition time
+
+#K required number
+K_DATA,&H3F80,2,1,2,1,K required number
+
+#Void blast-off time
+IGN_TIME,&H3F8F,1,1,1,1,Void blast-off time
+
+#VQ map
+VQ_MAP,&H3E18,52,1,104,1,VQ map
+
+#Fuel/Ignition time TP scale
+TP_SCALE_FUEL,&H3BC0,16,1,16,1,TP scale (Fuel)
+TP_SCALE_FIRE,&H3BE0,16,1,16,1,TP scale (Ignition time)
+
+#Fuel/Ignition time RPM scale
+RPM_SCALE_FUEL,&H3BD0,16,1,16,50,RPM scale (Fuel)
+RPM_SCALE_FIRE,&H3BF0,16,1,16,50,RPM scale (Ignition time)
+
+#TTP MAX/MIN
+#TTP MIN is not like TTP MAX, there's some mysterious formula ...
+TTP_MIN,&H3F48,8,1,8,1,TTP MIN
+TTP_MAX,&H3F40,8,1,8,1,TTP MAX
+
+#TP Limit
+AF_LIMIT,&H3690,16,1,16,1,TP Limit
+
+#Acceleration increase volume
+ADD_FUEL,&H3970,8,1,8,1,Acceleration increase volume
+
+#Rev.Limit
+REV1_LIMIT,&H3980,1,1,1,50,Rev. Limit 1
+REV2_LIMIT,&H3981,1,1,1,50,Rev. Limit 2
+REV3_LIMIT,&H3982,1,1,1,50,Rev. Limit 3
+REV4_LIMIT,&H3983,1,1,1,50,Rev. Limit 4
+
+#Speed Limit
+SPEED1_LIMIT,&H392C,1,1,1,2,Speed Limit 1
+
+#Add.map 1
+ADD_MAP1,&H3990,16,1,16,1,Variable air close
+
+#Add.map 2
+ADD_MAP2,&H39A0,16,1,16,1,Variable air open
+
+#Add.map 3
+ADD_MAP3,&H3890,32,1,16,1,Dwell Duty
+
+#Add.map 4
+ADD_MAP4,&H39E0,32,1,32,1,voltage (0.16v step) vs water temp (value - 50º)
+
+#Add.map 5
+ADD_MAP5,&H3EB0,16,1,16,1,AFR enrich vs Water Temp
+
+
+

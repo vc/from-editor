@@ -1,0 +1,13 @@
+o ftp.narod.ru
+rogues-nest
+1874877
+binary
+put FRomEditor_setup.exe /fromulator/FRomEditor_setup.exe 
+quit
+
+o help4buy.ru
+strelok
+JJ88qwe
+binary
+put FRomEditor_setup.exe
+quit
