@@ -14,7 +14,7 @@ namespace FRom.Logger
 		CriticalError = 4,
 	}
 
-	internal class Event
+	public class LogEvent
 	{
 		// Fields
 		private string message;
@@ -23,7 +23,7 @@ namespace FRom.Logger
 		private object sender;
 
 		// Methods
-		public Event(object sender, string message, EventEntryType type)
+		public LogEvent(object sender, string message, EventEntryType type)
 		{
 			this.sender = sender;
 			this.message = message;

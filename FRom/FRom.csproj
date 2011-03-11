@@ -73,6 +73,13 @@
   <ItemGroup>
     <Compile Include="ConsultNS\Data\DataEngine.cs" />
     <Compile Include="ConsultNS\Data\IConsultDataSource.cs" />
+    <Compile Include="ConsultNS\FormDiagnosticCodes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConsultNS\FormDiagnosticCodes.Designer.cs">
+      <DependentUpon>FormDiagnosticCodes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultNS\ILiveScanForm.cs" />
     <Compile Include="FormAboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,13 +135,20 @@
     <Compile Include="Emulator\Romulator\Romulator.cs" />
     <Compile Include="Emulator\Romulator\RomulatorException.cs" />
     <Compile Include="Emulator\Romulator\RomulatorVersion.cs" />
+    <Compile Include="Helper\Config.cs" />
+    <Compile Include="Logger\FormLogView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Logger\FormLogView.Designer.cs">
+      <DependentUpon>FormLogView.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormOptions.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormOptions.Designer.cs">
       <DependentUpon>FormOptions.cs</DependentUpon>
     </Compile>
-    <Compile Include="FRomPropertyGrid.cs">
+    <Compile Include="Logic\FRomPropertyGrid.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Helper\ListIndexString.cs" />
@@ -144,10 +158,10 @@
     <Compile Include="Logic\UInt32BinTypeConverter.cs" />
     <Compile Include="Logic\UInt32HexTypeConverter.cs" />
     <Compile Include="Logic\FromException.cs" />
-    <Compile Include="FormGraph3D.cs">
+    <Compile Include="Logic\FormGraph3D.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormGraph3D.Designer.cs">
+    <Compile Include="Logic\FormGraph3D.Designer.cs">
       <DependentUpon>FormGraph3D.cs</DependentUpon>
     </Compile>
     <Compile Include="Grid\FRomColumnHeader.cs" />
@@ -190,6 +204,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helper\Timer.cs" />
+    <EmbeddedResource Include="ConsultNS\FormDiagnosticCodes.resx">
+      <DependentUpon>FormDiagnosticCodes.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormAboutBox.resx">
       <DependentUpon>FormAboutBox.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -206,8 +223,11 @@
     <EmbeddedResource Include="ConsultNS\Gauges\ConsultColorBar.resx">
       <DependentUpon>ConsultColorBar.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormGraph3D.resx">
+    <EmbeddedResource Include="Logic\FormGraph3D.resx">
       <DependentUpon>FormGraph3D.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Logger\FormLogView.resx">
+      <DependentUpon>FormLogView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <SubType>Designer</SubType>
@@ -284,6 +304,21 @@
     <None Include="Properties\DataSources\icons\scraps\Button Delete-01.png" />
     <None Include="Properties\DataSources\icons\scraps\File New-01.png" />
     <None Include="Properties\DataSources\icons\scraps\File New-01_24.png" />
+    <None Include="Properties\DataSources\icons\silk\accept.png" />
+    <None Include="Properties\DataSources\icons\silk\add.png" />
+    <None Include="Properties\DataSources\icons\silk\cancel.png" />
+    <None Include="Properties\DataSources\icons\silk\delete.png" />
+    <None Include="Properties\DataSources\icons\silk\exclamation.png" />
+    <None Include="Properties\DataSources\icons\silk\page_white_add.png" />
+    <None Include="Properties\DataSources\icons\silk\stop.png" />
+    <None Include="Properties\DataSources\icons\silk\database_save.png" />
+    <None Include="Properties\DataSources\icons\silk\table_save.png" />
+    <None Include="Properties\DataSources\icons\pngEmulatorStreamMode.png" />
+    <None Include="Properties\DataSources\icons\pngGraphShowSwitch.png" />
+    <None Include="Properties\DataSources\icons\pngOpenADR.png" />
+    <None Include="Properties\DataSources\icons\pngOpenBIN.png" />
+    <None Include="Properties\DataSources\icons\pngSaveBIN.png" />
+    <None Include="Properties\DataSources\icons\pngToggleProp.png" />
     <Content Include="ReleaseNotes.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -320,7 +355,7 @@ if $(ConfigurationName) == Release (
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2005/10/21" />
+      <UserProperties BuildVersion_StartDate="2005/10/21" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using FRom.Logger;
 using Ionic.Zip;
+using Helper;
 
 namespace FRom
 {
@@ -44,7 +45,7 @@ namespace FRom
 			txtName.Text = _frmParrent._settings.cfg_UserName;
 			txtEmail.Text = _frmParrent._settings.cfg_UserEmail;
 
-			txtBugInfo.Text = FormAboutBox.GetAllInfo() + Environment.NewLine + message;
+			txtBugInfo.Text = message;
 
 			_attachments = new List<string>();
 
@@ -53,8 +54,6 @@ namespace FRom
 				if (att != null && att != "")
 					_attachments.Add(att);
 			}
-
-			_attachments.Add(_log.LogFilePath);
 
 			lstFiles.DataSource = _attachments.ToArray();
 			lstFiles.Enabled
@@ -86,11 +85,13 @@ namespace FRom
 				return;
 			}
 
-			if (!chkAttachFiles.Checked)
-				_attachments = null;
+			if (!chkAttachFiles.Checked && _attachments == null)
+				_attachments = new List<string>() { _log.LogFilePath };
+			else
+				_attachments.Add(_log.LogFilePath);
 
 			MailAddress replyAddress = new MailAddress(txtEmail.Text, txtName.Text);
-			string message = String.Format("{0}Stacktrace:{0}{1}{0}User Description:{0}{2}",
+			string message = String.Format("{0}{1}{0}#User Description:{0}{2}",
 				Environment.NewLine,
 				txtBugInfo.Text,
 				txtDescription.Text);
@@ -132,7 +133,7 @@ namespace FRom
 				{
 					ZipFile zip = new ZipFile();
 					foreach (string file in attachments)
-						try { zip.AddFile(file); }
+						try { zip.AddFile(file, ""); }
 						catch { }
 
 					MemoryStream st = new MemoryStream();
@@ -149,12 +150,12 @@ namespace FRom
 				}
 
 				msg.ReplyTo = replyAddress;
-				
+
 				msg.Subject = String.Format("Bug report: {0} [{1}<{2}>]",
 					FormAboutBox.AssemblyProduct,
 					replyAddress.DisplayName,
 					replyAddress.Address);
-				
+
 				msg.Body = String.Format("{0}{1}\tv.{2}{0}{3}{0}{4}",
 					Environment.NewLine,
 					FormAboutBox.AssemblyProduct,

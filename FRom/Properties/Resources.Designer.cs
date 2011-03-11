@@ -60,120 +60,155 @@ namespace FRom.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap pngAccept {
+            get {
+                object obj = ResourceManager.GetObject("pngAccept", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap pngAdd {
+            get {
+                object obj = ResourceManager.GetObject("pngAdd", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap pngDatabase_save {
+            get {
+                object obj = ResourceManager.GetObject("pngDatabase_save", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap pngDelete {
+            get {
+                object obj = ResourceManager.GetObject("pngDelete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap pngEmulatorStreamMode {
+            get {
+                object obj = ResourceManager.GetObject("pngEmulatorStreamMode", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap pngExclamation {
+            get {
+                object obj = ResourceManager.GetObject("pngExclamation", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap pngGraphShowSwitch {
+            get {
+                object obj = ResourceManager.GetObject("pngGraphShowSwitch", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap pngOpenADR {
+            get {
+                object obj = ResourceManager.GetObject("pngOpenADR", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap pngOpenBIN {
+            get {
+                object obj = ResourceManager.GetObject("pngOpenBIN", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap pngPage_white_add {
+            get {
+                object obj = ResourceManager.GetObject("pngPage_white_add", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap pngSaveBIN {
+            get {
+                object obj = ResourceManager.GetObject("pngSaveBIN", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap pngStop {
+            get {
+                object obj = ResourceManager.GetObject("pngStop", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap pngTable_save {
+            get {
+                object obj = ResourceManager.GetObject("pngTable_save", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap pngToggleProp {
+            get {
+                object obj = ResourceManager.GetObject("pngToggleProp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Все известные форматы (*.adr;*.from;*.xml)|*.adr;*.from;*.xml|Файл адресации данных FRom(*.from)|*.from|Файл адресации данных XML(*.xml)|*.xml|Файл RomEdit или Nistune(*.adr)|*.adr.
         /// </summary>
-        internal static string adrFilesToShowOpen {
+        internal static string strAdrFilesToShowOpen {
             get {
-                return ResourceManager.GetString("adrFilesToShowOpen", resourceCulture);
+                return ResourceManager.GetString("strAdrFilesToShowOpen", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Файл адресации данных XML(*.xml)|*.xml|Файл адресации данных FRom(*.from)|*.from.
         /// </summary>
-        internal static string adrFilesToShowSave {
+        internal static string strAdrFilesToShowSave {
             get {
-                return ResourceManager.GetString("adrFilesToShowSave", resourceCulture);
+                return ResourceManager.GetString("strAdrFilesToShowSave", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Все известные файлы (*.adr;*.bin;*.from;*.xml)|*.adr;*.bin;*.from;*.xml|Файл адресации данных XML(*.xml)|*.xml|Файл адресации данных FRom(*.from)|*.from|Файл RomEdit или Nistune(*.adr)|*.adr.
         /// </summary>
-        internal static string AllKnownFiles {
+        internal static string strAllKnownFiles {
             get {
-                return ResourceManager.GetString("AllKnownFiles", resourceCulture);
+                return ResourceManager.GetString("strAllKnownFiles", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Файл прошивки (*.bin)|*.bin|Все файлы (*.*)|*.*.
         /// </summary>
-        internal static string binFilesToShowOpen {
+        internal static string strBinFilesToShowOpen {
             get {
-                return ResourceManager.GetString("binFilesToShowOpen", resourceCulture);
+                return ResourceManager.GetString("strBinFilesToShowOpen", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Файл прошивки (*.bin)|*.bin|Все файлы (*.*)|*.*.
         /// </summary>
-        internal static string binFilesToShowSave {
+        internal static string strBinFilesToShowSave {
             get {
-                return ResourceManager.GetString("binFilesToShowSave", resourceCulture);
-            }
-        }
-        
-        internal static System.Drawing.Bitmap Button_Add_01 {
-            get {
-                object obj = ResourceManager.GetObject("Button_Add_01", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap Button_Blank_Green_01 {
-            get {
-                object obj = ResourceManager.GetObject("Button_Blank_Green_01", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap Button_Blank_Red_01 {
-            get {
-                object obj = ResourceManager.GetObject("Button_Blank_Red_01", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap Button_Delete_01 {
-            get {
-                object obj = ResourceManager.GetObject("Button_Delete_01", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ResourceManager.GetString("strBinFilesToShowSave", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Данный тип файлов не поддерживается! Выбран файл: &apos;{0}&apos;.
         /// </summary>
-        internal static string exMsgNotSupportedFileFormat {
+        internal static string strExMsgNotSupportedFileFormat {
             get {
-                return ResourceManager.GetString("exMsgNotSupportedFileFormat", resourceCulture);
-            }
-        }
-        
-        internal static System.Drawing.Bitmap File_New_01 {
-            get {
-                object obj = ResourceManager.GetObject("File_New_01", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap imgConnected_16x16 {
-            get {
-                object obj = ResourceManager.GetObject("imgConnected_16x16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap imgConnecting_16x16 {
-            get {
-                object obj = ResourceManager.GetObject("imgConnecting_16x16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap imgDisconnected_16x16 {
-            get {
-                object obj = ResourceManager.GetObject("imgDisconnected_16x16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap imgSettings_16x16 {
-            get {
-                object obj = ResourceManager.GetObject("imgSettings_16x16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ResourceManager.GetString("strExMsgNotSupportedFileFormat", resourceCulture);
             }
         }
     }

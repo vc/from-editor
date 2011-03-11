@@ -5,11 +5,11 @@ using System.ComponentModel;
 
 namespace FRom.Helper
 {
-	public class ResourceDisposer : IContainer
+	public class ResourceDisposerComponent : IContainer
 	{
 		private List<IComponent> _components;
 
-		public ResourceDisposer()
+		public ResourceDisposerComponent()
 		{
 			_components = new List<IComponent>();
 		}

@@ -130,6 +130,11 @@ namespace FRom.ConsultNS
 			this.ValueToDigital = false;
 		}
 
+		public ConsultSensor Sensor
+		{
+			get { return _sens; }
+		}
+
 		void NewDataUpdate(float data)
 		{
 			_queue.Enqueue(data);
@@ -182,48 +187,53 @@ namespace FRom.ConsultNS
 			}
 		}
 
+		/// <summary>
+		/// Высота и ширина датчиков
+		/// </summary>
+		internal static int _heightWidth = 200;
+
 		public static void PlaceGauges(object sender, List<ConsultAquaGauge> gauges)
 		{
-			FormLiveScan f = sender as FormLiveScan;
+			ILiveScanForm f = sender as ILiveScanForm;
 			if (f == null)
 				return;
-			//ToolStripPanel panel = toolStripContainer1.BottomToolStripPanel;
 
 			//Минимальные размеры формы
 			int count = gauges.Count;
+			// Необходимое количество слотов по осям для размещения датчиков в текущих размерах
+			int countNeedX = f.PanelSize.Width / _heightWidth;
+			if (countNeedX == 0) countNeedX = 1;
+			int countNeedY = (count % countNeedX) > 0
+				? count / countNeedX + 1
+				: count / countNeedX;
+			//Минимальные размеры панели
+			f.PanelMinimumSize = new System.Drawing.Size(
+				_heightWidth,
+				countNeedY * _heightWidth);
 
-			int countNeedX = f.panel.Width / f._agHeightWidth;
-			int countNeedY = (count % countNeedX) > 0 ? count / countNeedX + 1 : count / countNeedX;
-
-			int countAvailableX = f.panel.Width / f._agHeightWidth;
-			int countAvailableY = f.panel.Height / f._agHeightWidth;
-
-			int newMinWidth = f._agHeightWidth * 3 + 10;
-			int newMinHeight = countNeedY * f._agHeightWidth + (f.Height - f.toolStripContainer1.Height) * 2;
-
-			f.MinimumSize = new System.Drawing.Size(
-				newMinWidth,
-				newMinHeight);
+			f.PanelSize = new System.Drawing.Size(
+				f.PanelSize.Width,
+				f.PanelMinimumSize.Height);
 
 			//расстановка датчиков по форме
 			for (int i = 0, x = 0, y = 0; i < gauges.Count; i++)
 			{
-				//Если за правыми границами, то строка вниз и возврат к левому краю.
-				if (x + f._agHeightWidth > f.panel.Width)
+				//Если выходим за правые границамы, то строка шириной с датчик вниз.
+				if (x + _heightWidth > f.PanelSize.Width)
 				{
-					y += f._agHeightWidth;
+					y += _heightWidth;
 					x = 0;
 				}
 
 				//Выставляем размеры датчиков
-				gauges[i].Height = gauges[i].Width = f._agHeightWidth;
+				gauges[i].Height = gauges[i].Width = _heightWidth;
 
 				//Выставляем позицию датчиков				
 				gauges[i].Left = x;
 				gauges[i].Top = y;
 
 				//приращаю по иксу
-				x += f._agHeightWidth;
+				x += _heightWidth;
 			}
 		}
 	}

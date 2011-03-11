@@ -131,7 +131,7 @@ namespace FRom.ConsultNS.Data
 
 		#region IConsultDataSource Members
 
-		public string Tostring()
+		public string ToString()
 		{
 			return _name;
 		}

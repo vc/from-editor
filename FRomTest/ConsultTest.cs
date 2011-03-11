@@ -201,10 +201,10 @@ namespace FRomTest
 					_target.Initialise(_port);
 					ConsultSensor sens = new ConsultData(new DataEngine()).GetSensor("Injection Time (LH)");
 					sens.NewDataByte += new ConsultSensor.SensorNewDataByteEvent(PrintByte);
-					_target.SensorAdd(sens);
-					_target.SensorStartLive();
+					_target.MonitoringSensors.SensorAdd(sens);
+					_target.MonitoringSensors.SensorStartLive();
 					Thread.Sleep(10000);
-					_target.SensorStopLive();
+					_target.MonitoringSensors.SensorStopLive();
 				}
 				catch (Exception ex)
 				{

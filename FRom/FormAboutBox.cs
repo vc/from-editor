@@ -107,8 +107,10 @@ namespace FRom
 
 		internal static string GetAllInfo()
 		{
-			return "Version: " + AssemblyVersion + Environment.NewLine
-				+ "Product: " + AssemblyProduct + Environment.NewLine;
+			return String.Format("{0}\t{1}",
+				AssemblyProduct,
+				AssemblyVersion
+				);
 		}
 	}
 }

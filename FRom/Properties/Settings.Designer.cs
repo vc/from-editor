@@ -227,5 +227,29 @@ namespace FRom.Properties {
                 this["cfg_ConsultKeepALive"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool cfg_FormLogTopMost {
+            get {
+                return ((bool)(this["cfg_FormLogTopMost"]));
+            }
+            set {
+                this["cfg_FormLogTopMost"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool cfg_FormLogAttachToMain {
+            get {
+                return ((bool)(this["cfg_FormLogAttachToMain"]));
+            }
+            set {
+                this["cfg_FormLogAttachToMain"] = value;
+            }
+        }
     }
 }

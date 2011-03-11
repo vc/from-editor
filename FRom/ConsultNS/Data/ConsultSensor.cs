@@ -373,10 +373,10 @@ namespace FRom.ConsultNS.Data
 		public event SensorNewDataFloatEven NewDataFloat;
 
 		/// <summary>
-		/// Функция вызова события NewData
+		/// Отправить новые данные пописанным получателям
 		/// </summary>
-		/// <param name="data"></param>
-		public void EnvokeNewDataEvent(byte[] data)
+		/// <param name="data">Данные</param>
+		public void RaiseNewDataEvent(byte[] data)
 		{
 			if (NewDataByte != null)
 				NewDataByte(data);

@@ -5,6 +5,7 @@ using System.Net.Mail;
 using System.Diagnostics;
 using System.Threading;
 using System.Net;
+using Helper;
 
 namespace FRom.Logger
 {
@@ -19,7 +20,7 @@ namespace FRom.Logger
 
 		private Thread workThread;
 		private AutoResetEvent flag;
-		private Queue<Event> eventQueue;
+		private Queue<LogEvent> eventQueue;
 		private EventEntryType _logLevel;
 
 		// Events
@@ -39,7 +40,7 @@ namespace FRom.Logger
 			workThread.Start();
 
 			flag = new AutoResetEvent(false);
-			eventQueue = new Queue<Event>();
+			eventQueue = new Queue<LogEvent>();
 
 
 		}
@@ -59,21 +60,24 @@ namespace FRom.Logger
 		{
 			if (disposing)
 			{
-				if (this.workThread != null)
+				lock (eventQueue)
 				{
-					this.workThread.Abort();
-					this.workThread.Join();
-					this.workThread = null;
-				}
-				if (this.flag != null)
-				{
-					this.flag.Close();
-					this.flag = null;
-				}
-				if (_fileLogger != null)
-				{
-					_fileLogger.Dispose(true);
-					_fileLogger = null;
+					if (this.workThread != null)
+					{
+						this.workThread.Abort();
+						this.workThread.Join();
+						this.workThread = null;
+					}
+					if (this.flag != null)
+					{
+						this.flag.Close();
+						this.flag = null;
+					}
+					if (_fileLogger != null)
+					{
+						_fileLogger.Dispose(true);
+						_fileLogger = null;
+					}
 				}
 			}
 		}
@@ -91,10 +95,11 @@ namespace FRom.Logger
 
 		public void WriteEntry(object sender, string message, EventEntryType type = EventEntryType.Event)
 		{
+
 			if (type < _logLevel)
 				return;
 
-			Event item = new Event(sender, message, type);
+			LogEvent item = new LogEvent(sender, message, type);
 
 			lock (this.eventQueue)
 			{
@@ -156,7 +161,7 @@ namespace FRom.Logger
 			while (true)
 			{
 				this.flag.WaitOne();
-				Event message = null;
+				LogEvent message = null;
 				while ((message = this.Dequeue()) != null)
 				{
 					if (this.enableLogFile)
@@ -168,7 +173,7 @@ namespace FRom.Logger
 			}
 		}
 
-		private Event Dequeue()
+		private LogEvent Dequeue()
 		{
 			lock (this.eventQueue)
 			{
@@ -188,22 +193,23 @@ namespace FRom.Logger
 			{
 				_logLevel = value;
 				if (_logLevel == EventEntryType.Debug)
-					_fileLogger._dateTimeFormat = "yyyy.MM.dd HH:mm:ss.fff";
+					_fileLogger.LogDateTimeRecordFormat = "yyyy.MM.dd HH:mm:ss.fff";
 				else
-					_fileLogger._dateTimeFormat = "yyyy.MM.dd HH:mm:ss";
+					_fileLogger.LogDateTimeRecordFormat = "yyyy.MM.dd HH:mm:ss";
 			}
 		}
 
 		public bool CatchExceptions
 		{
 			get
-			{
-				return catchEx;
-			}
+			{ return catchEx; }
 			set
-			{
-				catchEx = value;
-			}
+			{ catchEx = value; }
+		}
+
+		public string LogNote(LogEvent evnt)
+		{
+			return _fileLogger.LogNote(evnt);
 		}
 
 		public static Log Instance
@@ -227,45 +233,34 @@ namespace FRom.Logger
 		public string LogDirectory
 		{
 			get
-			{
-				return _fileLogger.LogDirectory;
-			}
+			{ return _fileLogger.LogDirectory; }
 			set
-			{
-				_fileLogger.LogDirectory = value;
-			}
+			{ _fileLogger.LogDirectory = value; }
 		}
 
+		/// <summary>
+		/// Полный путь к лог файлу
+		/// </summary>
 		public string LogFilePath
 		{
 			get
-			{
-				return _fileLogger.LogFilePath;
-			}
+			{ return _fileLogger.LogFileNamePath; }
 		}
 
 		public bool LogFileEnabled
 		{
 			get
-			{
-				return enableLogFile;
-			}
+			{ return enableLogFile; }
 			set
-			{
-				enableLogFile = value;
-			}
+			{ enableLogFile = value; }
 		}
 
 		public string Postfix
 		{
 			get
-			{
-				return _fileLogger.Postfix;
-			}
+			{ return _fileLogger.Postfix; }
 			set
-			{
-				_fileLogger.Postfix = value;
-			}
+			{ _fileLogger.Postfix = value; }
 		}
 	}
 }

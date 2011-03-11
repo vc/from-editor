@@ -49,7 +49,7 @@
 			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.btnCancel.Location = new System.Drawing.Point(12, 411);
 			this.btnCancel.Name = "btnCancel";
-			this.btnCancel.Size = new System.Drawing.Size(75, 23);
+			this.btnCancel.Size = new System.Drawing.Size(94, 23);
 			this.btnCancel.TabIndex = 6;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
@@ -57,9 +57,9 @@
 			// 
 			// btnOK
 			// 
-			this.btnOK.Location = new System.Drawing.Point(12, 385);
+			this.btnOK.Location = new System.Drawing.Point(12, 382);
 			this.btnOK.Name = "btnOK";
-			this.btnOK.Size = new System.Drawing.Size(75, 23);
+			this.btnOK.Size = new System.Drawing.Size(94, 23);
 			this.btnOK.TabIndex = 5;
 			this.btnOK.Text = "Send";
 			this.btnOK.UseVisualStyleBackColor = true;
@@ -184,10 +184,12 @@
 			this.lblBugInfo.TabIndex = 7;
 			this.lblBugInfo.Text = "Error Info";
 			// 
-			// BugReport
+			// FormFeedBack
 			// 
+			this.AcceptButton = this.btnOK;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.CancelButton = this.btnCancel;
 			this.ClientSize = new System.Drawing.Size(638, 449);
 			this.Controls.Add(this.txtBugInfo);
 			this.Controls.Add(this.btnAddAttach);
@@ -206,7 +208,7 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.Name = "BugReport";
+			this.Name = "FormFeedBack";
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

@@ -47,18 +47,19 @@ namespace FRom.ConsultNS
 		/// <summary>
 		/// Проверка состояния ECU
 		/// </summary>
-		/// <param name="consultClassState">Состояние ECU, которое надо выставить если ECU_IDLE.
+		/// <param name="newState">Состояние ECU, которое надо выставить если ECU_IDLE.
 		/// Если ECU_IDLE - освободить</param>
-		private void SetClassState(ConsultClassState consultClassState)
+		internal void SetClassState(ConsultClassState newState)
 		{
 			lock (_lockCheckClassState)
 			{
-				switch (consultClassState)
+				ConsultClassState oldState = _classState;
+				switch (newState)
 				{
 					//Если ECU_IDLE то выставляем - свободен и выходим
 					case ConsultClassState.ECU_IDLE:
 						_classState = ConsultClassState.ECU_IDLE;
-						return;
+						break;
 
 					case ConsultClassState.ECU_CONNECTING:
 						if (_classState != ConsultClassState.ECU_OFFLINE)
@@ -66,20 +67,26 @@ namespace FRom.ConsultNS
 						break;
 
 					case ConsultClassState.ECU_OFFLINE:
-						_classState = consultClassState;
+						_classState = newState;
 						break;
-
+					case ConsultClassState.ECU_STREAMING_MONITORS:
 					default:
 						if (_classState != ConsultClassState.ECU_IDLE)
-							throw new ConsultException("ECU Занят...");
+						{
+							string errMess = String.Format("Невозможно выставить новое состояние [{0}] при текущем [{2}]. Возможно только если [{1}]",
+								newState.ToString(),
+								ConsultClassState.ECU_IDLE,
+								State);
+							throw new ConsultException(errMess);
+						}
 
-						_classState = consultClassState;
+						_classState = newState;
 						break;
 				}
 
 				//raise event if not null
-				if (consultClassState != _classState && ClassStateChanged != null)
-					ClassStateChanged(_classState);
+				if (newState != oldState && ClassStateChanged != null)
+					ClassStateChanged.DynamicInvoke(_classState);
 			}
 		}
 
@@ -125,7 +132,22 @@ namespace FRom.ConsultNS
 		public ConsultECUPartNumber GetECUInfo()
 		{
 			ConsultCommand cmd = _consultData.GetCommand(ConsultTypeOfCommand.ECU_INFO);
-			return new ConsultECUPartNumber(base.RequestECUData(cmd));
+
+			for (int i = 0; i < _cCountRetry; i++)
+			{
+				try
+				{
+					ConsultECUPartNumber ecuInfo = new ConsultECUPartNumber(base.RequestECUData(cmd));
+					return ecuInfo;
+				}
+				catch (ConsultException ex)
+				{
+					_log.WriteEntry(this, ex);
+					continue;
+				}
+			}
+
+			throw new ConsultException("Количество попыток запросов к устройству истекло");
 		}
 
 		/// <summary>
@@ -135,7 +157,21 @@ namespace FRom.ConsultNS
 		public ConsultDTCFaultCodes DTCFaultCodesRead()
 		{
 			ConsultCommand cmd = _consultData.GetCommand(ConsultTypeOfCommand.ECU_SELF_DIAGNOSTIC);
-			return new ConsultDTCFaultCodes(base.RequestECUData(cmd));
+			for (int i = 0; i < _cCountRetry; i++)
+			{
+				try
+				{
+					ConsultDTCFaultCodes codes = new ConsultDTCFaultCodes(base.RequestECUData(cmd));
+					return codes;
+				}
+				catch (ConsultException ex)
+				{
+					_log.WriteEntry(this, ex);
+					continue;
+				}
+			}
+
+			throw new ConsultException("Количество попыток запросов к устройству истекло");
 		}
 
 		/// <summary>
@@ -144,7 +180,21 @@ namespace FRom.ConsultNS
 		public ConsultDTCFaultCodes DTCFaultCodesClear()
 		{
 			ConsultCommand cmd = _consultData.GetCommand(ConsultTypeOfCommand.ECU_ERASE_ERROR_CODES);
-			return new ConsultDTCFaultCodes(base.RequestECUData(cmd));
+			for (int i = 0; i < _cCountRetry; i++)
+			{
+				try
+				{
+					ConsultDTCFaultCodes codes = new ConsultDTCFaultCodes(base.RequestECUData(cmd));
+					return codes;
+				}
+				catch (ConsultException ex)
+				{
+					_log.WriteEntry(this, ex);
+					continue;
+				}
+			}
+
+			throw new ConsultException("Количество попыток запросов к устройству истекло");
 		}
 
 		/// <summary>
@@ -198,9 +248,32 @@ namespace FRom.ConsultNS
 			return resp;
 		}
 
+		/// <summary>
+		/// Прочитать фрейм из потока
+		/// </summary>
+		/// <returns>Фрейм</returns>
+		internal byte[] GetFrame()
+		{
+			byte recv;
+
+			//Ждем появления стартового байта
+			do
+			{
+				recv = base.Receive(1)[0];
+			} while (recv != (byte)ConsultECUConst.ECU_FRAME_START_BYTE);
+
+			//Длина фрейма
+			int lenFrame = base.Receive(1)[0];
+
+			byte[] frame = Receive(lenFrame);
+
+			return frame;
+		}
+
 		public override void Disconnect()
 		{
-			//TODO: Послать команду ECU о прекращении передачи всех пакетов.
+			if (State != ConsultClassState.ECU_OFFLINE)
+				ECUFrameStop();
 			base.Disconnect();
 			SetClassState(ConsultClassState.ECU_OFFLINE);
 		}
@@ -210,7 +283,7 @@ namespace FRom.ConsultNS
 			Dispose(true);
 		}
 
-		private void Dispose(bool disposing)
+		private new void Dispose(bool disposing)
 		{
 			Disconnect();
 			base.Dispose(true);
@@ -227,102 +300,26 @@ namespace FRom.ConsultNS
 		/// <summary>
 		/// коллекция сенсоров, которые читаются в режиме StreamingSensors
 		/// </summary>
-		SensorMonitoringParams _sensors =
-			new SensorMonitoringParams((int)ConsultECUConst.ECU_REG_MAX_READS);
+		SensorMonitoringParams _sensors;
 
 		/// <summary>
-		/// Read any Register Parameter (Live sensor data stream)
+		/// Сенсоры для мониторинга
 		/// </summary>
-		public void SensorAdd(ConsultSensor sens)
+		public SensorMonitoringParams MonitoringSensors
 		{
-			if (_sensors.Length + sens._registers.Length > (int)ConsultECUConst.ECU_REG_MAX_READS)
-				throw new ConsultException("Максимальное количество сенсоров - " + (int)ConsultECUConst.ECU_REG_MAX_READS);
-			_sensors.Add(sens);
-		}
-
-		public void SensorRemove(ConsultSensor sens)
-		{
-			_sensors.Remove(sens);
-		}
-
-		public void SensorAddRange(List<ConsultSensor> sens)
-		{
-			foreach (ConsultSensor i in sens)
-				this.SensorAdd(i);
-		}
-
-		/// <summary>
-		/// Старт захвата параметров
-		/// </summary>
-		public void SensorStartLive()
-		{
-			if (_sensors.Length == 0)
-				throw new ConsultException("Нет доступных сенсоров, Сначала добавьте сенсор");
-
-			byte[] cmd = _sensors.GetCommandToECU().ToArray();
-
-			//Отправляю команду
-			SendCommand(cmd, ConsultECUConst.ECU_REG_READ_CMD);
-
-			//старт приема данных
-			ECUFrameStart();
-
-			_flagSensorsDataReceive = true;
-
-			//Запускаем процедуру приема данных
-
-			// чтобы из рабочего потока можно было "присоединиться" к текущему потоку.
-			AsyncOperation ao = AsyncOperationManager.CreateOperation(null);
-			// запустить рабочий поток
-			new AsyncOperationInvoker(SensorLiveScanProcedure).BeginInvoke(ao, null, null);
-		}
-
-		public delegate void AsyncOperationInvoker(AsyncOperation operation);
-
-		/// <summary>
-		/// флаг работы live приема данных от ECU по сенсорам.
-		/// </summary>
-		private bool _flagSensorsDataReceive = false;
-
-		/// <summary>
-		/// остановить прием данных по сенсорам
-		/// </summary>
-		public void SensorStopLive()
-		{
-			_flagSensorsDataReceive = false;
-		}
-
-		/// <summary>
-		/// Потоковая функция приема данных сенсоров
-		/// </summary>
-		/// <param name="operation"></param>
-		protected void SensorLiveScanProcedure(AsyncOperation operation)
-		{
-			byte recv;
-			while (_flagSensorsDataReceive)
+			get
 			{
-				//Ждем появления стартового байта
-				do
-				{
-					recv = base.Receive(1)[0];
-				} while (recv != (byte)ConsultECUConst.ECU_FRAME_START_BYTE);
-
-				//Длина фрейма
-				int lenFrame = base.Receive(1)[0];
-
-				List<byte> frame = new List<byte>(Receive(lenFrame));
-
-				// в теле этого метода можно обращаться к любому контролу в UI.
-				SendOrPostCallback callback = delegate(object newFrame)
-				{
-					//отправляем фрейм получателям
-					_sensors.DataUpdate(newFrame as List<byte>);
-				};
-				// передать данные
-				operation.Post(callback, frame);
+				if (_sensors == null)
+					_sensors = new SensorMonitoringParams(this);
+				return _sensors;
 			}
-			ECUFrameStop();
+			set
+			{
+				_sensors = value;
+			}
 		}
+
+
 
 		internal void SelfTest(IConsultData data)
 		{
@@ -331,7 +328,7 @@ namespace FRom.ConsultNS
 			SensorMonitoringParams sensMon;
 			foreach (ConsultSensor i in data.AllSensors)
 			{
-				sensMon = new SensorMonitoringParams(1);
+				sensMon = new SensorMonitoringParams(this);
 				sensMon.Add(i);
 				byte[] cmd = sensMon.GetCommandToECU().ToArray();
 				try
@@ -356,7 +353,6 @@ namespace FRom.ConsultNS
 				}
 			}
 			ECUFrameStop();
-
 		}
 
 		#region IComponent Members

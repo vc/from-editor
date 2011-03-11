@@ -83,7 +83,7 @@ new ConsultActiveTest("COMPLEX PATTERNS", 0x44, ),
 
 		#region IConsultDataSource Members
 
-		public string Tostring()
+		public string ToString()
 		{
 			return _name;
 		}

@@ -4,28 +4,32 @@ using System.Windows.Forms;
 using FRom.ConsultNS.Data;
 using System.ComponentModel;
 using FRom.Helper;
+using Helper;
 
 namespace FRom.ConsultNS
 {
-	public partial class FormLiveScan : Form
+	public partial class FormLiveScan : Form, ILiveScanForm
 	{
 		internal FormMain _frmParrent;
 		internal List<ConsultAquaGauge> _gauges;
-		/// <summary>
-		/// Высота и ширина датчиков (д.б. квадрат)
-		/// </summary>
-		internal int _agHeightWidth = 200;
 
 		List<ConsultSensor> _lstSensors;
 
 		public FormLiveScan(FormMain parrent)
 		{
+			InitializeComponent();
+
 			_frmParrent = parrent;
 
-			InitializeComponent();
+			Tag = Text;
+
 			if (_lstSensors == null)
 				_lstSensors = FormSensors.GetListSensors(this);
+
 			InitializeGauges();
+			_consult.ClassStateChanged +=
+				new Consult.HandleConsultClassStateChange(_consult_ClassStateChanged);
+
 			mnuStartStop_CheckedChanged(btnStartStop, new EventArgs());
 
 			SetStyle(ControlStyles.ResizeRedraw, true);
@@ -33,22 +37,55 @@ namespace FRom.ConsultNS
 			SetStyle(ControlStyles.AllPaintingInWmPaint, true);
 		}
 
+		delegate void TextUpdate(string t);
+		void _consult_ClassStateChanged(ConsultClassState state)
+		{
+			string text = String.Format("{0} [{1}]",
+				this.Tag,
+				state.ToString()
+				);
+
+			HelperClass.BeginInvoke(this, delegate { Text = text; });
+			//if (InvokeRequired == false)
+			//{
+			//    this.Text = text;
+			//    this.Refresh();
+			//}
+			//else
+			//{
+			//    TextUpdate dlg = delegate(string t)
+			//    {
+			//        this.Text = t;
+			//        this.Refresh();
+			//    };
+			//    Invoke(dlg, new object[] { text });
+
+			//}
+		}
+
 		void InitializeGauges()
 		{
-			//Если идет сканирование - сотанавливаем.
-			if (_consult.State == ConsultClassState.ECU_STREAMING_MONITORS)
-				mnuStartStop_Click(btnStartStop, null);
+			if (_lstSensors == null)
+				throw new ApplicationException("Нет доступных сенсоров для сканирования");
 
+			//Если идет сканирование - останавливаем.
+			if (_consult.MonitoringSensors.IsScanning)
+				StartLiveScanSwitch(false);
+
+			//Первая инициализация
 			if (_gauges == null)
 				_gauges = new List<ConsultAquaGauge>();
+			//повторная инициализация
 			else
 			{
 				foreach (ConsultAquaGauge i in _gauges)
 				{
 					Components.Remove(i);
+					_consult.MonitoringSensors.SensorRemove(i.Sensor);
 					panel.Controls.Remove(i);
 					i.Close();
 				}
+				_gauges.Clear();
 			}
 
 			// заполнение списка
@@ -59,7 +96,7 @@ namespace FRom.ConsultNS
 				Components.Add(tmp);
 			}
 
-			_consult.SensorAddRange(_lstSensors);
+			_consult.MonitoringSensors.SensorAdd(_lstSensors);
 
 			panel.Controls.AddRange(_gauges.ToArray());
 			ConsultForm_SizeChanged(this, new EventArgs());
@@ -70,7 +107,7 @@ namespace FRom.ConsultNS
 			get
 			{
 				if (components == null)
-					components = new ResourceDisposer();
+					components = new ResourceDisposerComponent();
 				return components;
 			}
 		}
@@ -88,37 +125,56 @@ namespace FRom.ConsultNS
 		/// </summary>
 		private void mnuStartStop_Click(object sender, EventArgs e)
 		{
-			ToolStripButton btn = sender as ToolStripButton;
-			if (btn == null)
-				return;
+			StartLiveScanSwitch();
+		}
 
-			// Начало приема данных в реальном времени
-			if (btn.Checked)
+		/// <summary>
+		/// Старт или стоп сканирования
+		/// </summary>
+		/// <param name="stop">true=START, flase=START. По умолчанию - переключить</param>
+		private void StartLiveScanSwitch(bool? start = null)
+		{
+			lock (_consult)
 			{
 				try
 				{
-					_consult.SensorStartLive();
-					btn.Checked = true;
+					switch (start)
+					{
+						// Начало приема данных в реальном времени
+						case true:
+							if (!_consult.MonitoringSensors.IsScanning)
+							{
+								_consult.MonitoringSensors.SensorStartLive();
+								btnStartStop.Checked = true;
+							}
+							break;
+
+						// Конец приема данных вреальном времени
+						case false:
+							if (_consult.MonitoringSensors.IsScanning)
+							{
+								_consult.MonitoringSensors.SensorStopLive();
+								btnStartStop.Checked = false;
+							}
+							break;
+						case null:
+							if (_consult.MonitoringSensors.IsScanning)
+							{
+								_consult.MonitoringSensors.SensorStopLive();
+								btnStartStop.Checked = false;
+							}
+							else
+							{
+								_consult.MonitoringSensors.SensorStartLive();
+								btnStartStop.Checked = true;
+							}
+							break;
+					}
 				}
 				catch (Exception ex)
 				{
 					_frmParrent.Error(ex,
-						"Ошибка при попытке запуска SensorStartLive",
-						"Sensor Live Capture ERROR");
-				}
-			}
-			// Конец приема данных вреальном времени
-			else
-			{
-				try
-				{
-					_consult.SensorStopLive();
-					btn.Checked = false;
-				}
-				catch (Exception ex)
-				{
-					_frmParrent.Error(ex,
-						"Ошибка при попытке остановки SensorStartLive",
+						"Ошибка при попытке запуска/останова SensorStartLive",
 						"Sensor Live Capture ERROR");
 				}
 			}
@@ -140,7 +196,8 @@ namespace FRom.ConsultNS
 		protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
 		{
 			if (btnStartStop.Checked == true)
-				mnuStartStop_CheckedChanged(btnStartStop, new EventArgs());
+				StartLiveScanSwitch(false);
+
 			base.OnClosing(e);
 		}
 
@@ -152,6 +209,9 @@ namespace FRom.ConsultNS
 			ConsultAquaGauge.PlaceGauges(this, _gauges);
 		}
 
+		/// <summary>
+		/// Функция обновления интерфейса кнопки Старт/Стоп
+		/// </summary>
 		private void mnuStartStop_CheckedChanged(object sender, EventArgs e)
 		{
 			ToolStripButton btn = sender as ToolStripButton;
@@ -160,14 +220,14 @@ namespace FRom.ConsultNS
 
 			if (btn.Checked)
 			{
-				btn.Image = Properties.Resources.Button_Blank_Green_01;
+				btn.Image = Properties.Resources.pngAccept;
 				btn.CheckState = CheckState.Checked;
 				string sw = btn.Tag as string;
 				btn.Text = sw.Substring(sw.IndexOf('|') + 1);
 			}
 			else
 			{
-				btn.Image = Properties.Resources.Button_Blank_Red_01;
+				btn.Image = Properties.Resources.pngStop;
 				btn.CheckState = CheckState.Unchecked;
 				string sw = btn.Tag as string;
 				btn.Text = sw.Substring(0, sw.IndexOf('|'));
@@ -176,11 +236,19 @@ namespace FRom.ConsultNS
 
 		private void btnSensors_Click(object sender, EventArgs e)
 		{
+			bool flag = _consult.MonitoringSensors.IsScanning;
+
+			//Если запущено сканирование - остановим
+			if (flag)
+				StartLiveScanSwitch(false);
+
 			List<ConsultSensor> lst = FormSensors.GetListSensors(this);
 			if (lst != null)
 			{
 				_lstSensors = lst;
 				InitializeGauges();
+				if (flag)
+					StartLiveScanSwitch(true);
 			}
 		}
 
@@ -195,5 +263,58 @@ namespace FRom.ConsultNS
 			}
 		}
 
+		#region ILiveScanForm Members
+
+		/// <summary>
+		/// Установка размера формы по размеру панели
+		/// </summary>
+		public System.Drawing.Size PanelSize
+		{
+			get
+			{
+				//Разница размеров формы и клиентской области
+				System.Drawing.Size diffFormClient = this.Size - this.ClientSize;
+				//Разница размеров клиентской области и панели
+				System.Drawing.Size diffClientPanel = this.ClientSize - panel.Size;
+
+				return Size - diffClientPanel - diffFormClient;
+			}
+			set
+			{
+				//Разница размеров формы и клиентской области
+				System.Drawing.Size diffFormClient = this.Size - this.ClientSize;
+				//Разница размеров клиентской области и панели
+				System.Drawing.Size diffClientPanel = this.ClientSize - panel.Size;
+
+				this.Size = value + diffClientPanel + diffFormClient;
+			}
+		}
+
+		/// <summary>
+		/// Минимальный размер панели
+		/// </summary>
+		public System.Drawing.Size PanelMinimumSize
+		{
+			get
+			{
+				//Разница размеров формы и клиентской области
+				System.Drawing.Size diffFormClient = this.Size - this.ClientSize;
+				//Разница размеров клиентской области и панели
+				System.Drawing.Size diffClientPanel = this.ClientSize - panel.Size;
+
+				return MinimumSize - diffClientPanel - diffFormClient;
+			}
+			set
+			{
+				//Разница размеров формы и клиентской области
+				System.Drawing.Size diffFormClient = this.Size - this.ClientSize;
+				//Разница размеров клиентской области и панели
+				System.Drawing.Size diffClientPanel = this.ClientSize - panel.Size;
+
+				MinimumSize = value + diffClientPanel + diffFormClient;
+			}
+		}
+
+		#endregion
 	}
 }

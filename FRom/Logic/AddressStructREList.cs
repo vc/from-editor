@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using FRom.Logic;
+using Helper;
 
 namespace FRom
 {
@@ -54,15 +55,34 @@ namespace FRom
 						//Заглушка для карты TYPE_UNIT
 						else if (line.Substring(0, 10).Contains("TYPE_UNIT,"))
 						{
-							string newLine = "TYPE_UNIT=" + line.Substring(11);
+							string newLine = "TYPE_UNIT=" + line.Substring("TYPE_UNIT,".Length);
 							AddParam(newLine);
 						}
 						//Инклуд файла
 						else if (line.Substring(0, 8).Contains("INCLUDE,"))
 						{
-							string incFile = line.Substring(8);
+							string incFileName = line.Substring("INCLUDE,".Length);
 							string incPath = Directory.GetParent(fileName).ToString();
-							Init(Path.Combine(incPath, incFile));
+							string incFile = Path.Combine(incPath, incFileName);
+
+							try
+							{
+								//Если рядом с текущим файлом инклуда нет, то поищем выше
+								if (!File.Exists(incFile))
+									incFile = HelperClass.FindFileInParrents(incFileName, incPath);
+								//Ищем в дочерних на один уровень вглубь
+								if (incFile == null)
+									incFile = HelperClass.FindFileInChilds(incFileName, incPath, 1);
+								//Если и тут нет, то выбрасываем ошибку
+								if (incFile == null)
+									throw new FileNotFoundException("INCLUDE File not found", incFileName);
+
+								Init(incFile);
+							}
+							catch (FileNotFoundException ex)
+							{
+								_log.WriteEntry(this, ex);
+							}
 						}
 						//Карта
 						else

@@ -1,11 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Text;
 
-namespace FRom
+namespace Helper
 {
 	public class HelperClass
 	{
@@ -22,21 +19,67 @@ namespace FRom
 		}
 
 		/// <summary>
-		/// Ищет файл начиная с текущей папки и до корневой, выходя каждый раз на уровень выше
+		/// Ищет папку начиная с текущей и до корневой, выходя каждый раз на уровень выше
 		/// </summary>
-		/// <param name="name">Имя файла для поиска</param>
-		/// <returns>Полный путь к файлу</returns>
-		public static string FindFolder(string name)
+		/// <param name="searchDir">Имя папки для поиска</param>
+		/// <returns>Полный путь к папке со слешем в конце</returns>
+		public static string FindFolder(string searchDir)
 		{
-			string dir = Environment.CurrentDirectory,
-					disk = Path.GetPathRoot(dir);
-
-			for (char slash = '\\'; dir != null; dir = Path.GetDirectoryName(dir))
+			for (string currDir = Environment.CurrentDirectory/*char slash = '\\'*/; currDir != null; currDir = Path.GetDirectoryName(currDir))
 			{
-				string res = dir.TrimEnd(slash) + slash + name;
+				string res = Path.Combine(currDir, searchDir);
+
 				if (Directory.Exists(res))
-					return res + slash;
+					return Path.GetFullPath(res) + "\\";
 			}
+			return null;
+		}
+
+		/// <summary>
+		/// Ищет файл начиная с текущей папки до корня
+		/// </summary>
+		/// <param name="fileName">Имя файла для поиска</param>
+		/// <param name="path">Начальный путь для поиска</param>
+		/// <returns>Полный путь к файлу</returns>		
+		public static string FindFileInParrents(string fileName, string path = null)
+		{
+			if (String.IsNullOrEmpty(path))
+				path = Environment.CurrentDirectory;
+
+			for (; path != null; path = Path.GetDirectoryName(path))
+			{
+				string res = Path.Combine(path, fileName);
+				if (File.Exists(res))
+					return res;
+			}
+			return null;
+		}
+
+		/// <summary>
+		/// Ищет файл начиная с текущей папки во всех дочерних
+		/// </summary>
+		/// <param name="fileName">Имя файла для поиска</param>
+		/// <param name="path">Начальный путь для поиска</param>
+		/// <param name="level">Уровень поиска в дочерних папках 1=один уровень вверх(использовать с осторожностью!)</param>
+		/// <returns>Полный путь к файлу</returns>		
+		public static string FindFileInChilds(string fileName, string path = null, int level = 1)
+		{
+			//Если путь не определен, используем текущий из окружения
+			if (String.IsNullOrEmpty(path))
+				path = Environment.CurrentDirectory;
+
+			//Проверяем наличие файла в текущей папке
+			string fullFileName = Path.Combine(path, fileName);
+			if (File.Exists(fullFileName))
+				return fullFileName;
+			//глубина поиска исчерпана
+			else if (level == -1)
+				return null;
+
+			//Рекурсивно вызываем себя для поиска в дочерних файлов
+			foreach (string dir in Directory.GetDirectories(path))
+				FindFileInChilds(fileName, dir, level - 1);
+
 			return null;
 		}
 
@@ -47,36 +90,26 @@ namespace FRom
 		/// <returns>Строка с подрбной информацией</returns>
 		public static string GetExceptionInfo(Exception ex)
 		{
-			string message = String.Format("{1}:{2}{0}{3}{0}",
+			string message = String.Format("{4}Exception: {1} ({2}){0}{3}{0}",
 				Environment.NewLine,
+				ex.GetType().ToString(),
 				ex.Message,
-				ex.ToString(),
-				ex.StackTrace
+				ex.StackTrace,
+				ex.InnerException == null ? "" : GetExceptionInfo(ex.InnerException) + "\t--\nInner"
 				);
 
-			return message.ToString();
+			return message;
 		}
 
 		public static string GetExceptionMessages(Exception ex)
 		{
-			string msg = "";
-			const string separator = "  ";
-			int n = 0;
-			while (ex != null)
-			{
-				for (int i = 0; i < n; i++)
-					msg += separator;
+			string message = String.Format("{2}Exception: {1}{0}",
+				Environment.NewLine,
+				ex.Message,
+				ex.InnerException == null ? "" : GetExceptionMessages(ex.InnerException)
+				);
 
-				msg += String.Format("{1}{0}",
-					Environment.NewLine,
-					ex.Message
-					);
-
-				ex = ex.InnerException;
-				n++;
-			}
-
-			return msg;
+			return message;
 		}
 
 		//http://rsdn.ru/forum/dotnet/2285015.aspx
@@ -93,18 +126,40 @@ namespace FRom
 		/// </summary>
 		/// <param name="ctrl"></param>
 		/// <param name="methodToInvoke"> delegate { ProgressBar.Value = value; } </param>
-		public static void Invoke(Control ctrl, MethodInvoker methodToInvoke)
+		public static void BeginInvoke(Control ctrl, MethodInvoker methodToInvoke)
 		{
-			if (ctrl == null || ctrl.IsDisposed)
-				return;
-			if (ctrl.InvokeRequired)
+			try
 			{
-				ctrl.Invoke(methodToInvoke);
+				if (ctrl == null || ctrl.IsDisposed)
+					return;
+				if (ctrl.InvokeRequired)
+				{
+					ctrl.BeginInvoke(methodToInvoke);
+				}
+				else
+				{
+					methodToInvoke();
+				}
 			}
-			else
+			catch (ObjectDisposedException) { }
+		}
+
+		internal static void Invoke(Control ctrl, MethodInvoker methodToInvoke)
+		{
+			try
 			{
-				methodToInvoke();
+				if (ctrl == null || ctrl.IsDisposed)
+					return;
+				if (ctrl.InvokeRequired)
+				{
+					ctrl.Invoke(methodToInvoke);
+				}
+				else
+				{
+					methodToInvoke();
+				}
 			}
+			catch (ObjectDisposedException) { }
 		}
 	}
 

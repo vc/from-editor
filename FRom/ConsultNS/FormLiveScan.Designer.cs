@@ -31,7 +31,6 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLiveScan));
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
-			this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer2 = new System.Windows.Forms.ToolStripContainer();
 			this.panel = new System.Windows.Forms.Panel();
@@ -40,8 +39,7 @@
 			this.btnClose = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.btnSensors = new System.Windows.Forms.ToolStripButton();
-			this.cmbSensors = new System.Windows.Forms.ToolStripComboBox();
-			this.btnAddRemove = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripContainer1.SuspendLayout();
 			this.toolStripContainer2.ContentPanel.SuspendLayout();
 			this.toolStripContainer2.TopToolStripPanel.SuspendLayout();
@@ -54,20 +52,13 @@
 			// 
 			// toolStripContainer1.ContentPanel
 			// 
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(725, 653);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(600, 200);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(725, 678);
+			this.toolStripContainer1.Size = new System.Drawing.Size(600, 225);
 			this.toolStripContainer1.TabIndex = 0;
 			this.toolStripContainer1.Text = "toolStripContainer1";
-			// 
-			// startToolStripMenuItem
-			// 
-			this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-			this.startToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
-			this.startToolStripMenuItem.Text = "&Start";
-			this.startToolStripMenuItem.Click += new System.EventHandler(this.mnuStartStop_Click);
 			// 
 			// exitToolStripMenuItem
 			// 
@@ -82,11 +73,11 @@
 			// toolStripContainer2.ContentPanel
 			// 
 			this.toolStripContainer2.ContentPanel.Controls.Add(this.panel);
-			this.toolStripContainer2.ContentPanel.Size = new System.Drawing.Size(725, 653);
+			this.toolStripContainer2.ContentPanel.Size = new System.Drawing.Size(600, 200);
 			this.toolStripContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer2.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer2.Name = "toolStripContainer2";
-			this.toolStripContainer2.Size = new System.Drawing.Size(725, 678);
+			this.toolStripContainer2.Size = new System.Drawing.Size(600, 225);
 			this.toolStripContainer2.TabIndex = 1;
 			this.toolStripContainer2.Text = "toolStripContainer2";
 			// 
@@ -99,7 +90,7 @@
 			this.panel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel.Location = new System.Drawing.Point(0, 0);
 			this.panel.Name = "panel";
-			this.panel.Size = new System.Drawing.Size(725, 653);
+			this.panel.Size = new System.Drawing.Size(600, 200);
 			this.panel.TabIndex = 1;
 			// 
 			// toolStripButtonsMain
@@ -111,12 +102,11 @@
             this.btnClose,
             this.toolStripSeparator1,
             this.btnSensors,
-            this.cmbSensors,
-            this.btnAddRemove});
+            this.toolStripSeparator2});
 			this.toolStripButtonsMain.Location = new System.Drawing.Point(0, 0);
 			this.toolStripButtonsMain.Name = "toolStripButtonsMain";
 			this.toolStripButtonsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-			this.toolStripButtonsMain.Size = new System.Drawing.Size(725, 25);
+			this.toolStripButtonsMain.Size = new System.Drawing.Size(600, 25);
 			this.toolStripButtonsMain.Stretch = true;
 			this.toolStripButtonsMain.TabIndex = 1;
 			// 
@@ -150,32 +140,24 @@
 			// btnSensors
 			// 
 			this.btnSensors.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btnSensors.Image = global::FRom.Properties.Resources.File_New_01;
+			this.btnSensors.Image = global::FRom.Properties.Resources.pngPage_white_add;
 			this.btnSensors.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnSensors.Name = "btnSensors";
 			this.btnSensors.Size = new System.Drawing.Size(23, 22);
 			this.btnSensors.Text = "Sensors select";
+			this.btnSensors.ToolTipText = "Select sensors to monitoring";
 			this.btnSensors.Click += new System.EventHandler(this.btnSensors_Click);
 			// 
-			// cmbSensors
+			// toolStripSeparator2
 			// 
-			this.cmbSensors.Name = "cmbSensors";
-			this.cmbSensors.Size = new System.Drawing.Size(200, 25);
-			// 
-			// btnAddRemove
-			// 
-			this.btnAddRemove.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btnAddRemove.Image = global::FRom.Properties.Resources.Button_Add_01;
-			this.btnAddRemove.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.btnAddRemove.Name = "btnAddRemove";
-			this.btnAddRemove.Size = new System.Drawing.Size(23, 22);
-			this.btnAddRemove.Text = "Add";
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
 			// 
 			// FormLiveScan
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(725, 678);
+			this.ClientSize = new System.Drawing.Size(600, 225);
 			this.Controls.Add(this.toolStripContainer2);
 			this.Controls.Add(this.toolStripContainer1);
 			this.DoubleBuffered = true;
@@ -203,7 +185,6 @@
 
 		#endregion
 
-		private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
 		private System.Windows.Forms.ToolStripContainer toolStripContainer2;
 		private System.Windows.Forms.ToolStrip toolStripButtonsMain;
@@ -212,8 +193,7 @@
 		internal System.Windows.Forms.Panel panel;
 		internal System.Windows.Forms.ToolStripContainer toolStripContainer1;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripComboBox cmbSensors;
-		private System.Windows.Forms.ToolStripButton btnAddRemove;
 		private System.Windows.Forms.ToolStripButton btnSensors;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 	}
 }

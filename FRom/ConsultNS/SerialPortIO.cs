@@ -1,8 +1,7 @@
-﻿using System;
-using System.IO.Ports;
-using System.Text;
+﻿using System.IO.Ports;
 using System.Threading;
 using FRom.Logger;
+using System;
 
 namespace FRom.ConsultNS
 {
@@ -12,7 +11,6 @@ namespace FRom.ConsultNS
 	public class SerialPortIO
 	{
 		public SerialPortIO() { }
-
 
 		private object _lockPort = new object();
 		protected Log _log = Log.Instance;
@@ -42,17 +40,7 @@ namespace FRom.ConsultNS
 		/// Запрос в порт
 		/// </summary>
 		/// <param name="send">Массив запроса</param>
-		/// <returns>Массив ответа</returns>
-		protected byte[] Request(byte[] send)
-		{
-			return Request(send, null);
-		}
-
-		/// <summary>
-		/// Запрос в порт
-		/// </summary>
-		/// <param name="send">Массив запроса</param>
-		/// <param name="len">Длина ожидаемого ответа</param>
+		/// <param name="len">Длина ожидаемого ответа. null - читать все</param>
 		/// <returns>Массив ответа</returns>
 		protected byte[] Request(byte[] send, int? len)
 		{
@@ -82,10 +70,15 @@ namespace FRom.ConsultNS
 		protected byte[] Receive(int n)
 		{
 			byte[] arr = new byte[n];
+			try
+			{
+				for (int i = 0; i < n; i++)
+					arr[i] = (byte)_port.ReadByte();
+			}
+			catch (TimeoutException)
+			{
 
-			for (int i = 0; i < n; i++)
-				arr[i] = (byte)_port.ReadByte();
-
+			}
 			_log.WriteEntry(this, arr, false);
 
 			return arr;

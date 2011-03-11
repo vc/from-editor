@@ -7,7 +7,7 @@ namespace FRom.ConsultNS.Data
 	public interface IConsultDataSource
 	{
 		
-		string Tostring();
+		string ToString();
 
 		byte[] InitBytes { get; }
 

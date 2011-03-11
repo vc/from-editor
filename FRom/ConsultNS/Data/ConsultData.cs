@@ -31,6 +31,10 @@ namespace FRom.ConsultNS.Data
 		}
 
 		#region IConsultData Members
+		public override string ToString()
+		{
+			return _datasource.ToString();
+		}
 
 		public byte[] InitBytes
 		{

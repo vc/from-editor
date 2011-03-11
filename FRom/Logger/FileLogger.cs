@@ -9,6 +9,7 @@ namespace FRom.Logger
 	{
 		// Fields
 		private string _currentFileName;
+		private string _logFileNameFormat;
 		private Encoding _encoding;
 		private string _logDirectory;
 		private string _postfix;
@@ -16,14 +17,16 @@ namespace FRom.Logger
 		private DateTime _lastClearTime;
 		private Dictionary<string, TimeStreamWriter> _openFiles;
 #if DEBUG
-		internal string _dateTimeFormat = "yyyy.MM.dd HH:mm:ss.fff";
+		internal string _dateTimeFormatLogRecord = "yyyy.MM.dd HH:mm:ss.fff";
 #else
-		internal string _dateTimeFormat = "yyyy.MM.dd HH:mm:ss";
+		internal string _dateTimeFormatLogRecord = "yyyy.MM.dd HH:mm:ss";
 #endif
 
 		// Methods
 		public FileLogger()
 		{
+			_currentFileName = string.Empty;
+			_logFileNameFormat = "FromEditor.log";
 			_encoding = Encoding.UTF8;
 			_logDirectory = string.Empty;
 			_postfix = string.Empty;
@@ -33,19 +36,14 @@ namespace FRom.Logger
 			Init();
 		}
 
-		public FileLogger(Encoding enc)
+		private void Init()
 		{
-			_encoding = Encoding.UTF8;
-			_logDirectory = string.Empty;
-			_postfix = string.Empty;
-			_currentFileName = string.Empty;
-			_openFiles = new Dictionary<string, TimeStreamWriter>(1);
-			_lastClearTime = DateTime.Now;
-			_encoding = enc;
-			Init();
+			//string str = Path.Combine(Path.GetDirectoryName(base.GetType().Assembly.Location), "logs");
+			//LogDirectory = str;
+			LogDirectory = Path.GetDirectoryName(base.GetType().Assembly.Location);
 		}
 
-		public void Append(Event message)
+		public void Append(LogEvent message)
 		{
 			DateTime now = DateTime.Now;
 			TimeSpan span = (TimeSpan)(now - _lastClearTime);
@@ -54,7 +52,7 @@ namespace FRom.Logger
 				this._lastClearTime = now;
 				this.CloseUnusedFiles(this._lastClearTime);
 			}
-			string key = this.FileName();
+			string key = this.LogFileNamePath;
 			try
 			{
 				if (!this._openFiles.ContainsKey(key))
@@ -63,13 +61,8 @@ namespace FRom.Logger
 				}
 				this._openFiles[key].StreamWriter.WriteLine(this.LogNote(message));
 			}
-			catch (NotImplementedException)
-			{
-				throw;
-			}
-			catch
-			{
-			}
+			catch (NotImplementedException) { throw; }
+			catch { }
 
 		}
 
@@ -95,7 +88,6 @@ namespace FRom.Logger
 			}
 		}
 
-
 		~FileLogger()
 		{
 			Dispose(false);
@@ -118,13 +110,6 @@ namespace FRom.Logger
 			}
 		}
 
-		private string FileName()
-		{
-			return Path.Combine(LogDirectory, "FromEditor.log");
-			//return Path.Combine(LogDirectory, string.Format("{0}.log", time.ToString(DateTimeFormat)));
-
-		}
-
 		public void Flush()
 		{
 			try
@@ -134,35 +119,25 @@ namespace FRom.Logger
 					pair.Value.Flush();
 				}
 			}
-			catch
-			{
-			}
+			catch { }
 		}
 
-		private void Init()
-		{
-			//string str = Path.Combine(Path.GetDirectoryName(base.GetType().Assembly.Location), "logs");
-			//LogDirectory = str;
-			LogDirectory = Path.GetDirectoryName(base.GetType().Assembly.Location);
-
-		}
-
-		private string LogNote(Event message)
+		internal string LogNote(LogEvent message)
 		{
 			Object o = message.Sender;
 			return string.Format("[{0} : {1} : {2}] {3}",
-				message.Time.ToString(_dateTimeFormat),
+				message.Time.ToString(_dateTimeFormatLogRecord),
 				message.Type.ToString(),
 				o.GetType().ToString(),
 				message.Message);
 		}
 
+		/// <summary>
+		/// Текущая папка логов
+		/// </summary>
 		public string LogDirectory
 		{
-			get
-			{
-				return _logDirectory;
-			}
+			get { return _logDirectory; }
 			set
 			{
 				if (!Directory.Exists(value))
@@ -173,24 +148,58 @@ namespace FRom.Logger
 			}
 		}
 
-		public string LogFilePath
+		/// <summary>
+		/// Полный путь к текущему лог файлу 
+		/// </summary>
+		public string LogFileNamePath
 		{
-			get
+			get { return Path.Combine(LogDirectory, LogFileName); }
+		}
+
+		/// <summary>
+		/// Имя текущего лог файла
+		/// </summary>
+		public string LogFileName
+		{
+			get { return string.Format(LogFileNameFormat, DateTime.Now); }
+		}
+
+		/// <summary>
+		/// Формат имени лог файла. Параметры: {0} - дата
+		/// </summary>
+		public string LogFileNameFormat
+		{
+			get { return _logFileNameFormat; }
+			set
 			{
-				return _currentFileName;
+				try
+				{
+					string.Format(value, DateTime.Now);
+					_logFileNameFormat = value;
+				}
+				catch { }
+			}
+		}
+
+		public string LogDateTimeRecordFormat
+		{
+			get { return _dateTimeFormatLogRecord; }
+			set
+			{
+				try
+				{
+					string.Format(value, DateTime.Now);
+					_dateTimeFormatLogRecord = value;
+				}
+				catch { }
 			}
 		}
 
 		public string Postfix
 		{
-			get
-			{
-				return _postfix;
-			}
+			get { return _postfix; }
 			set
-			{
-				_postfix = (value == null) ? string.Empty : value;
-			}
+			{ _postfix = (value == null) ? string.Empty : value; }
 		}
 	}
 }

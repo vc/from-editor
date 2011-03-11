@@ -6,17 +6,32 @@ namespace FRom.Logger
 {
 	public class NewMessageEventArgs : EventArgs
 	{
-		// Fields
-		public readonly string Message;
-		public readonly EventEntryType MessageType;
-		public readonly DateTime Time;
+		LogEvent _evnt;
 
 		// Methods
-		internal NewMessageEventArgs(Event ev)
+		internal NewMessageEventArgs(LogEvent ev)
 		{
-			this.Message = ev.Message;
-			this.MessageType = ev.Type;
-			this.Time = ev.Time;
+			_evnt = ev;
+		}
+
+		public LogEvent EventInstance
+		{
+			get { return _evnt; }
+		}
+
+		public string Message
+		{
+			get { return _evnt.Message; }
+		}
+
+		public EventEntryType MessageType
+		{
+			get { return _evnt.Type; }
+		}
+
+		public DateTime Time
+		{
+			get { return _evnt.Time; }
 		}
 	}
 }

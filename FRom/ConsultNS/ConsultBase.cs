@@ -15,7 +15,7 @@ namespace FRom.ConsultNS
 		/// <summary>
 		/// Количество попыток подключения к ECU
 		/// </summary>
-		protected int _cTimeRetryInitCount = 5;
+		protected int _cCountRetryInitECU = 5;
 
 		/// <summary>
 		/// Задержка между попытками инициализации ECU
@@ -26,6 +26,16 @@ namespace FRom.ConsultNS
 		/// Задержка в милисекундах, в промежутке между инициализацией порта и первым чтением/записью в него
 		/// </summary>
 		protected int _cTimeReadPortInit = 800;
+
+		/// <summary>
+		/// Количество повторов запросов к ECU, если получили TimeoutException на чтение ответа
+		/// </summary>
+		protected int _cCountRetryReadByte = 5;
+
+		/// <summary>
+		/// Количество повторов запросов ECU, в случае ошибки "неожиданнйы ответ от устройства"
+		/// </summary>
+		protected int _cCountRetry = 5;
 		#endregion
 
 		/// <summary>
@@ -65,7 +75,7 @@ namespace FRom.ConsultNS
 				_port.ReadBufferSize = 0x4000;
 				_port.WriteBufferSize = 0x4000;
 
-				_port.ReadTimeout = 3000;		//Таймаут чтения данных из порта
+				_port.ReadTimeout = 1000;		//Таймаут чтения данных из порта
 				_port.WriteTimeout = 5000;
 
 				//_port.Encoding = Encoding.ASCII;
@@ -99,11 +109,11 @@ namespace FRom.ConsultNS
 		/// </summary>
 		internal void ConsultInit()
 		{
-			for (int i = 0; i < _cTimeRetryInitCount; i++)
+			for (int i = 0; i < _cCountRetryInitECU; i++)
 			{
 				try
 				{
-					SendCommand(_consultData.InitBytes);
+					SendCommand(_consultData.InitBytes, null);
 					return;
 				}
 				catch (TimeoutException)
@@ -124,26 +134,10 @@ namespace FRom.ConsultNS
 		/// Отправить массив в порт и проверить ответ на инверсность входным данным
 		/// </summary>
 		/// <param name="send">Массив для отсылки</param>
-		internal void SendCommand(byte[] send)
-		{
-			byte[] receive = base.Request(send);
-
-			if (send.Length != receive.Length || CheckInverseBytes(receive, send))
-				throw new ConsultException("Неожиданый ответ от устройства");
-		}
-		internal void SendCommand(byte send)
-		{
-			SendCommand(new byte[] { send });
-		}
-
-		/// <summary>
-		/// Отправить массив в порт и проверить ответ на инверсность входным данным
-		/// </summary>
-		/// <param name="send">Массив для отсылки</param>
 		/// <param name="cmd">Тип комманды для выборочной проверки инверсии</param>
-		internal void SendCommand(byte[] send, ConsultECUConst cmd)
+		internal void SendCommand(byte[] send, ConsultECUConst? cmd)
 		{
-			byte[] receive = base.Request(send);
+			byte[] receive = base.Request(send, null);
 			const string errMsg = "Неожиданный ответ от устройства";
 			//Проверка ответа различная, в зависимости от типа переданной команды.
 			switch (cmd)
@@ -182,15 +176,12 @@ namespace FRom.ConsultNS
 							throw new NotSupportedException();
 					}
 					break;
+				case null:
 				default:
 					if (send.Length != receive.Length || CheckInverseBytes(receive, send))
 						throw new ConsultException(errMsg);
 					break;
 			}
-		}
-		internal void SendCommand(byte cmd, ConsultECUConst command)
-		{
-			SendCommand(new byte[] { cmd }, command);
 		}
 
 		/// <summary>
@@ -229,11 +220,22 @@ namespace FRom.ConsultNS
 		/// </summary>
 		internal void ECUFrameStop()
 		{
-			//Transmit((byte)ECUConst.ECU_END_RX);
-			byte[] send = new byte[] { (byte)ConsultECUConst.ECU_FRAME_END_CMD };
-			//TODO: Зациклить получение байта и его проверку на инверсность стоповому. ввести счетчик
-			byte[] recv = Request(send, 1);
-			CheckInverseBytes(send, recv);
+			for (int i = 0; i < _cCountRetryReadByte; i++)
+			{
+				try
+				{
+					//Transmit((byte)ECUConst.ECU_END_RX);			
+					Transmit((byte)ConsultECUConst.ECU_FRAME_END_CMD);
+					//TODO: Зациклить получение байта и его проверку на инверсность стоповому. ввести счетчик
+					byte recv = Receive(1)[0];
+					CheckInverseBytes((byte)ConsultECUConst.ECU_FRAME_END_CMD, recv);
+					return;
+				}
+				catch (TimeoutException)
+				{
+					continue;
+				}
+			}
 		}
 
 		/// <summary>
@@ -244,14 +246,9 @@ namespace FRom.ConsultNS
 			//Сигнал о начале передачи данных от ECU
 			base.Transmit((byte)ConsultECUConst.ECU_FRAME_BEGIN_CMD);
 
-			byte[] receive;
-
 			//Ждем появления стартового байта
 			//TODO: добавить счетчик принятых байт до появления ожидаемого
-			do
-			{
-				receive = Receive(1);
-			} while (receive[0] != (byte)ConsultECUConst.ECU_FRAME_START_BYTE);
+			while (Receive(1)[0] != (byte)ConsultECUConst.ECU_FRAME_START_BYTE) ;
 		}
 
 		/// <summary>

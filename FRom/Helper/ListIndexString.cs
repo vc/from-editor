@@ -20,13 +20,24 @@ namespace FRom
 				e.MoveNext();
 				while (e.Current != null)
 				{
-					if (index == e.Current.ToString())
+					if (index.Equals(e.Current.ToString()))
 						return e.Current;
 					e.MoveNext();
 				}
 
 				throw new KeyNotFoundException();
 			}
+		}
+
+		/// <summary>
+		/// Возвращает ToString всех объектов в списке
+		/// </summary>
+		public override string ToString()
+		{
+			string str = "";
+			foreach (T i in this)
+				str += i.ToString() + Environment.NewLine;
+			return str;
 		}
 
 		public ListIndexString(int capacity)

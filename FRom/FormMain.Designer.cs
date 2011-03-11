@@ -32,7 +32,7 @@ namespace FRom
 			System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 			System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 			System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
+			System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
 			this.contMain = new System.Windows.Forms.ToolStripContainer();
 			this.ssAddress = new System.Windows.Forms.StatusStrip();
 			this.lblAddressFile = new System.Windows.Forms.ToolStripStatusLabel();
@@ -73,16 +73,17 @@ namespace FRom
 			this.mnuConsult = new System.Windows.Forms.ToolStripMenuItem();
 			this.txtConsultECUInfo = new System.Windows.Forms.ToolStripTextBox();
 			this.mnuConsultECUInfoSeparator = new System.Windows.Forms.ToolStripSeparator();
-			this.mnuConsultSelfDiagnosticTool = new System.Windows.Forms.ToolStripMenuItem();
+			this.mnuConsultSelfDiagnostic = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuConsultActiveTests = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuConsultSensorsLive = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
 			this.mnuConsultMode = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuConsultConnect = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuHelp = new System.Windows.Forms.ToolStripMenuItem();
-			this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
-			this.mnuSendFeedBack = new System.Windows.Forms.ToolStripMenuItem();
-			this.mnuHotKeys = new System.Windows.Forms.ToolStripMenuItem();
+			this.mnuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
+			this.mnuHelpSendFeedBack = new System.Windows.Forms.ToolStripMenuItem();
+			this.mnuHelpHotKeys = new System.Windows.Forms.ToolStripMenuItem();
+			this.mnuHelpViewLog = new System.Windows.Forms.ToolStripMenuItem();
 			this.cbMaps = new System.Windows.Forms.ToolStripComboBox();
 			this.tstrpMain = new System.Windows.Forms.ToolStrip();
 			this.btnOpenADR = new System.Windows.Forms.ToolStripButton();
@@ -97,6 +98,7 @@ namespace FRom
 			toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+			toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
 			this.contMain.BottomToolStripPanel.SuspendLayout();
 			this.contMain.ContentPanel.SuspendLayout();
 			this.contMain.TopToolStripPanel.SuspendLayout();
@@ -476,7 +478,7 @@ namespace FRom
 			// mnuEmulatorStreamMode
 			// 
 			this.mnuEmulatorStreamMode.CheckOnClick = true;
-			this.mnuEmulatorStreamMode.Image = ((System.Drawing.Image)(resources.GetObject("mnuEmulatorStreamMode.Image")));
+			this.mnuEmulatorStreamMode.Image = global::FRom.Properties.Resources.pngEmulatorStreamMode;
 			this.mnuEmulatorStreamMode.Name = "mnuEmulatorStreamMode";
 			this.mnuEmulatorStreamMode.Size = new System.Drawing.Size(137, 22);
 			this.mnuEmulatorStreamMode.Text = "Stream Mode";
@@ -498,19 +500,20 @@ namespace FRom
 			this.mnuConsult.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.txtConsultECUInfo,
             this.mnuConsultECUInfoSeparator,
-            this.mnuConsultSelfDiagnosticTool,
+            this.mnuConsultSelfDiagnostic,
             this.mnuConsultActiveTests,
             this.mnuConsultSensorsLive,
             this.toolStripSeparator9,
             this.mnuConsultMode,
             this.mnuConsultConnect});
-			this.mnuConsult.Image = global::FRom.Properties.Resources.imgDisconnected_16x16;
+			this.mnuConsult.Image = global::FRom.Properties.Resources.pngStop;
 			this.mnuConsult.Name = "mnuConsult";
 			this.mnuConsult.Size = new System.Drawing.Size(71, 21);
 			this.mnuConsult.Text = "&Consult";
 			// 
 			// txtConsultECUInfo
 			// 
+			this.txtConsultECUInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.txtConsultECUInfo.HideSelection = false;
 			this.txtConsultECUInfo.Name = "txtConsultECUInfo";
 			this.txtConsultECUInfo.ReadOnly = true;
@@ -521,11 +524,11 @@ namespace FRom
 			this.mnuConsultECUInfoSeparator.Name = "mnuConsultECUInfoSeparator";
 			this.mnuConsultECUInfoSeparator.Size = new System.Drawing.Size(184, 6);
 			// 
-			// mnuConsultSelfDiagnosticTool
+			// mnuConsultSelfDiagnostic
 			// 
-			this.mnuConsultSelfDiagnosticTool.Name = "mnuConsultSelfDiagnosticTool";
-			this.mnuConsultSelfDiagnosticTool.Size = new System.Drawing.Size(187, 22);
-			this.mnuConsultSelfDiagnosticTool.Text = "Self &diagnostic and Info";
+			this.mnuConsultSelfDiagnostic.Name = "mnuConsultSelfDiagnostic";
+			this.mnuConsultSelfDiagnostic.Size = new System.Drawing.Size(187, 22);
+			this.mnuConsultSelfDiagnostic.Text = "Self &diagnostic and Info";
 			// 
 			// mnuConsultActiveTests
 			// 
@@ -536,8 +539,10 @@ namespace FRom
 			// mnuConsultSensorsLive
 			// 
 			this.mnuConsultSensorsLive.Name = "mnuConsultSensorsLive";
+			this.mnuConsultSensorsLive.ShortcutKeyDisplayString = "";
+			this.mnuConsultSensorsLive.ShortcutKeys = System.Windows.Forms.Keys.F5;
 			this.mnuConsultSensorsLive.Size = new System.Drawing.Size(187, 22);
-			this.mnuConsultSensorsLive.Text = "Sensors Live...";
+			this.mnuConsultSensorsLive.Text = "&Sensors Live...";
 			// 
 			// toolStripSeparator9
 			// 
@@ -554,38 +559,48 @@ namespace FRom
 			// mnuConsultConnect
 			// 
 			this.mnuConsultConnect.Name = "mnuConsultConnect";
+			this.mnuConsultConnect.ShortcutKeyDisplayString = "";
+			this.mnuConsultConnect.ShortcutKeys = System.Windows.Forms.Keys.F4;
 			this.mnuConsultConnect.Size = new System.Drawing.Size(187, 22);
 			this.mnuConsultConnect.Text = "&Connect";
 			// 
 			// mnuHelp
 			// 
 			this.mnuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuAbout,
+            this.mnuHelpAbout,
             toolStripSeparator3,
-            this.mnuSendFeedBack,
-            this.mnuHotKeys});
+            this.mnuHelpSendFeedBack,
+            this.mnuHelpHotKeys,
+            toolStripSeparator10,
+            this.mnuHelpViewLog});
 			this.mnuHelp.Name = "mnuHelp";
 			this.mnuHelp.Size = new System.Drawing.Size(40, 21);
 			this.mnuHelp.Text = "&Help";
 			// 
-			// mnuAbout
+			// mnuHelpAbout
 			// 
-			this.mnuAbout.Name = "mnuAbout";
-			this.mnuAbout.Size = new System.Drawing.Size(159, 22);
-			this.mnuAbout.Text = "About &?";
+			this.mnuHelpAbout.Name = "mnuHelpAbout";
+			this.mnuHelpAbout.Size = new System.Drawing.Size(159, 22);
+			this.mnuHelpAbout.Text = "&About";
 			// 
-			// mnuSendFeedBack
+			// mnuHelpSendFeedBack
 			// 
-			this.mnuSendFeedBack.Name = "mnuSendFeedBack";
-			this.mnuSendFeedBack.Size = new System.Drawing.Size(159, 22);
-			this.mnuSendFeedBack.Text = "Send FeedBack...";
+			this.mnuHelpSendFeedBack.Name = "mnuHelpSendFeedBack";
+			this.mnuHelpSendFeedBack.Size = new System.Drawing.Size(159, 22);
+			this.mnuHelpSendFeedBack.Text = "&Send FeedBack...";
 			// 
-			// mnuHotKeys
+			// mnuHelpHotKeys
 			// 
-			this.mnuHotKeys.Name = "mnuHotKeys";
-			this.mnuHotKeys.ShortcutKeys = System.Windows.Forms.Keys.F1;
-			this.mnuHotKeys.Size = new System.Drawing.Size(159, 22);
-			this.mnuHotKeys.Text = "&Hot Keys";
+			this.mnuHelpHotKeys.Name = "mnuHelpHotKeys";
+			this.mnuHelpHotKeys.ShortcutKeys = System.Windows.Forms.Keys.F1;
+			this.mnuHelpHotKeys.Size = new System.Drawing.Size(159, 22);
+			this.mnuHelpHotKeys.Text = "Hot &Keys";
+			// 
+			// mnuHelpViewLog
+			// 
+			this.mnuHelpViewLog.Name = "mnuHelpViewLog";
+			this.mnuHelpViewLog.Size = new System.Drawing.Size(159, 22);
+			this.mnuHelpViewLog.Text = "&View log";
 			// 
 			// cbMaps
 			// 
@@ -623,13 +638,13 @@ namespace FRom
 			this.tstrpMain.Size = new System.Drawing.Size(692, 25);
 			this.tstrpMain.Stretch = true;
 			this.tstrpMain.TabIndex = 6;
-			this.tstrpMain.Text = "tstrpMain";
+			this.tstrpMain.Text = "tstrpAdrBin";
 			this.tstrpMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menu_Click);
 			// 
 			// btnOpenADR
 			// 
 			this.btnOpenADR.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btnOpenADR.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenADR.Image")));
+			this.btnOpenADR.Image = global::FRom.Properties.Resources.pngOpenADR;
 			this.btnOpenADR.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnOpenADR.Name = "btnOpenADR";
 			this.btnOpenADR.Size = new System.Drawing.Size(23, 22);
@@ -639,7 +654,7 @@ namespace FRom
 			// btnOpenBIN
 			// 
 			this.btnOpenBIN.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btnOpenBIN.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenBIN.Image")));
+			this.btnOpenBIN.Image = global::FRom.Properties.Resources.pngOpenBIN;
 			this.btnOpenBIN.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnOpenBIN.Name = "btnOpenBIN";
 			this.btnOpenBIN.Size = new System.Drawing.Size(23, 22);
@@ -650,7 +665,7 @@ namespace FRom
 			// 
 			this.btnSaveBIN.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.btnSaveBIN.Enabled = false;
-			this.btnSaveBIN.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveBIN.Image")));
+			this.btnSaveBIN.Image = global::FRom.Properties.Resources.pngSaveBIN;
 			this.btnSaveBIN.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnSaveBIN.Name = "btnSaveBIN";
 			this.btnSaveBIN.Size = new System.Drawing.Size(23, 22);
@@ -662,7 +677,7 @@ namespace FRom
 			this.btnToggleProp.Checked = true;
 			this.btnToggleProp.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.btnToggleProp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btnToggleProp.Image = ((System.Drawing.Image)(resources.GetObject("btnToggleProp.Image")));
+			this.btnToggleProp.Image = global::FRom.Properties.Resources.pngToggleProp;
 			this.btnToggleProp.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnToggleProp.Name = "btnToggleProp";
 			this.btnToggleProp.Size = new System.Drawing.Size(23, 22);
@@ -676,7 +691,7 @@ namespace FRom
 			// btnEmulatorStreamMode
 			// 
 			this.btnEmulatorStreamMode.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btnEmulatorStreamMode.Image = ((System.Drawing.Image)(resources.GetObject("btnEmulatorStreamMode.Image")));
+			this.btnEmulatorStreamMode.Image = global::FRom.Properties.Resources.pngEmulatorStreamMode;
 			this.btnEmulatorStreamMode.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnEmulatorStreamMode.Name = "btnEmulatorStreamMode";
 			this.btnEmulatorStreamMode.Size = new System.Drawing.Size(23, 22);
@@ -691,11 +706,16 @@ namespace FRom
 			// btnGraphShowSwitch
 			// 
 			this.btnGraphShowSwitch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btnGraphShowSwitch.Image = ((System.Drawing.Image)(resources.GetObject("btnGraphShowSwitch.Image")));
+			this.btnGraphShowSwitch.Image = global::FRom.Properties.Resources.pngGraphShowSwitch;
 			this.btnGraphShowSwitch.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnGraphShowSwitch.Name = "btnGraphShowSwitch";
 			this.btnGraphShowSwitch.Size = new System.Drawing.Size(23, 22);
 			this.btnGraphShowSwitch.Text = "Graph Show Switch";
+			// 
+			// toolStripSeparator10
+			// 
+			toolStripSeparator10.Name = "toolStripSeparator10";
+			toolStripSeparator10.Size = new System.Drawing.Size(156, 6);
 			// 
 			// FormMain
 			// 
@@ -751,12 +771,12 @@ namespace FRom
 		private System.Windows.Forms.ToolStripMenuItem mnuSaveBINAs;
         private System.Windows.Forms.ToolStripMenuItem mnuExit;
         private System.Windows.Forms.ToolStripMenuItem mnuHelp;
-		private System.Windows.Forms.ToolStripMenuItem mnuAbout;
+		private System.Windows.Forms.ToolStripMenuItem mnuHelpAbout;
 		private System.Windows.Forms.ToolStripMenuItem mapToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mnuMapReload;
 		private System.Windows.Forms.ToolStripMenuItem mnuSaveADRAs;
 		private System.Windows.Forms.SplitContainer splitContMain;
-		private System.Windows.Forms.ToolStripMenuItem mnuSendFeedBack;
+		private System.Windows.Forms.ToolStripMenuItem mnuHelpSendFeedBack;
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.PropertyGrid propertyGrid;
 		private System.Windows.Forms.Panel panelTab;
@@ -775,7 +795,7 @@ namespace FRom
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
 		private System.Windows.Forms.ToolStripMenuItem mnuMapAdd;
 		private System.Windows.Forms.ToolStripMenuItem mnuMapRemove;
-		private System.Windows.Forms.ToolStripMenuItem mnuHotKeys;
+		private System.Windows.Forms.ToolStripMenuItem mnuHelpHotKeys;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
 		private System.Windows.Forms.ToolStripStatusLabel lblAddressFile;
 		private System.Windows.Forms.ToolStripStatusLabel lblBinFile;
@@ -783,7 +803,7 @@ namespace FRom
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
 		private System.Windows.Forms.ToolStripMenuItem mnu3DMapViewToggle;
 		private System.Windows.Forms.ToolStripMenuItem mnuConsult;
-		private System.Windows.Forms.ToolStripMenuItem mnuConsultSelfDiagnosticTool;
+		private System.Windows.Forms.ToolStripMenuItem mnuConsultSelfDiagnostic;
 		private System.Windows.Forms.ToolStripMenuItem mnuConsultActiveTests;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
 		private System.Windows.Forms.ToolStripMenuItem mnuConsultMode;
@@ -797,6 +817,7 @@ namespace FRom
 		private System.Windows.Forms.ToolStripMenuItem mnuRecentFilesADR;
 		private System.Windows.Forms.ToolStripTextBox txtConsultECUInfo;
 		private System.Windows.Forms.ToolStripSeparator mnuConsultECUInfoSeparator;
+		private System.Windows.Forms.ToolStripMenuItem mnuHelpViewLog;
 
 
 

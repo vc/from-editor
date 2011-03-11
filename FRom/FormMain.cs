@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Windows.Forms;
 using FRom.ConsultNS;
@@ -9,11 +10,18 @@ using FRom.Grid;
 using FRom.Logger;
 using FRom.Logic;
 using FRom.Properties;
+using Helper;
 
 namespace FRom
 {
 	public partial class FormMain : Form, IDisposable
 	{
+#if DEBUG
+		internal static bool debugFlag = true;
+#else
+		internal static bool debugFlag = false;
+#endif
+
 		internal From _bin;
 
 		internal Romulator _emulator;
@@ -68,8 +76,10 @@ namespace FRom
 		{
 			if (disposing)
 			{
-				if (_log != null)
-					_log.Close();
+				if (frmLog != null)
+					frmLog.Close();
+				if (_frmConsult != null)
+					_frmConsult.Close();
 				if (_consult != null)
 					_consult.Disconnect();
 				if (_emulator != null)
@@ -78,6 +88,8 @@ namespace FRom
 					_bin.Clear();
 				if (_settings != null)
 					_settings.Save();
+				if (_log != null)
+					_log.Close();
 			}
 		}
 
@@ -101,7 +113,7 @@ namespace FRom
 			mnuConsultConnect.Checked =
 
 			mnuConsultActiveTests.Enabled =
-			mnuConsultSelfDiagnosticTool.Enabled =
+			mnuConsultSelfDiagnostic.Enabled =
 			mnuConsultSensorsLive.Enabled =
 			mnuConsultMode.Enabled =
 				//ECU Info area
@@ -113,11 +125,11 @@ namespace FRom
 			if (flag)
 			{
 				txtConsultECUInfo.Text = _consult.GetECUInfo().ToString();
-				mnuConsult.Image = Properties.Resources.imgConnected_16x16;
+				mnuConsult.Image = Properties.Resources.pngAccept;
 			}
 			else
 			{
-				mnuConsult.Image = Properties.Resources.imgDisconnected_16x16;
+				mnuConsult.Image = Properties.Resources.pngStop;
 			}
 		}
 
@@ -245,12 +257,19 @@ namespace FRom
 		{
 
 #if DEBUG
-			string romFileName = HelperClass.FindFolder("data") + "R32_rb26det.bin";
-			_bin.OpenROMFile(romFileName);
-			string addressFileName = HelperClass.FindFolder("data") + "HCR32_RB26_256_E_Z32_444cc.adr";
-			_bin.OpenAddressFile(addressFileName);
-			_log.LogLevel = EventEntryType.Debug;
-			_Debug();
+			try
+			{
+				string romFileName = HelperClass.FindFolder("data") + "R32_rb26det.bin";
+				_bin.OpenROMFile(romFileName);
+				string addressFileName = HelperClass.FindFolder("data") + "HCR32_RB26_256_E_Z32_444cc.adr";
+				_bin.OpenAddressFile(addressFileName);
+				_log.LogLevel = EventEntryType.Debug;
+				_Debug();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(HelperClass.GetExceptionInfo(ex));
+			}
 #else
 			_log.LogLevel = EventEntryType.Event;
 #endif
@@ -372,10 +391,14 @@ namespace FRom
 		{
 			message += HelperClass.GetExceptionInfo(ex);
 
+			//Если отладка, то покажем лог
+			if (debugFlag)
+				UIViewLog();
+
 			_log.WriteEntry(this, message, EventEntryType.Error);
 
-			if (message != "" &&
-				MessageBox.Show(message + "\n\nОтправить отчет об ошибке?", caption, MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
+			if (!debugFlag
+				&& MessageBox.Show(message + "\n\nОтправить отчет об ошибке?", caption, MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
 			{
 				List<string> att = new List<string>();
 				bool enableAttach = false;
@@ -461,7 +484,7 @@ namespace FRom
 			if (menu == null)
 				return;
 
-			System.Collections.Specialized.StringCollection files =
+			StringCollection files =
 				(menu == mnuRecentFilesROM)
 				? (_settings.cfg_RecentBinFiles)
 				: (_settings.cfg_RecentAdrFiles);
@@ -470,7 +493,7 @@ namespace FRom
 			if (files.Count == 0)
 			{
 				menu.DropDownItems.Clear();
-				menu.DropDownItems.Add(mnuRecentFilesEmpty);
+				menu.Enabled = false; //DropDownItems.Add(mnuRecentFilesEmpty);
 			}
 			else
 			{
@@ -493,6 +516,124 @@ namespace FRom
 			if (_settings.cfg_RecentBinFiles.Contains(fileName))
 				_settings.cfg_RecentBinFiles.Remove(fileName);
 			_settings.cfg_RecentBinFiles.Insert(0, fileName);
+		}
+
+		/// <summary>
+		/// Обработчик событий 'Click' на меню
+		/// </summary>
+		void menu_Click(object sender, EventArgs e)
+		{
+			ToolStripMenuItem menu = sender as ToolStripMenuItem;
+			if (menu != null && menu.DropDownItems.Count > 0)
+				return;
+
+			ToolStripButton btn = sender as ToolStripButton;
+			ToolStripLabel status = sender as ToolStripLabel;
+
+			if (menu == null && btn == null && status == null)
+				_log.WriteEntry(this, "Sender is NULL!\n" + Environment.StackTrace, EventEntryType.Warning);
+
+			string selectedItem = menu == null
+				? (btn == null)
+					? (status == null)
+						? ""
+						: (status.Name)
+					: (btn.Name)
+				: (menu.Name);
+
+			if (debugFlag)
+				_log.WriteEntry(this,
+					String.Format("Item clicked: {0} (Type:{1})",
+					selectedItem,
+					sender.GetType().ToString()),
+					EventEntryType.Debug);
+
+			try
+			{
+				//=================== FILE & STATUS STRIP =====================//
+				if (menu == mnuSaveBIN || btn == btnSaveBIN)
+					UISaveBin();
+				else if (menu == mnuSaveBINAs)
+					UISaveBinAs();
+				else if (menu == mnuOpenADR || status == lblAddressFile || btn == btnOpenADR)
+					UIOpenAddressFile();
+				else if (menu == mnuOpenBIN || status == lblBinFile || btn == btnOpenBIN)
+					UIOpenROMFile();
+				else if (menu == mnuSettings)
+					UISettings();
+				else if (menu == mnuExit)
+					UIExit();
+
+
+				//=================== MAP =====================//
+				else if (menu == mnuMapReload)
+					_bin.Reload();
+				else if (sender as ToolStripButton == btnToggleProp)
+					UIMapToggleProperties();
+				else if (menu == mnu3DMapViewToggle || btn == btnGraphShowSwitch)
+					UIMapGraphSwitch();
+
+				//=================== EMULATOR =====================//
+				else if (menu == mnuEmulatorUpload)
+					UIEmulatorUpload();
+				else if (menu == mnuEmulatorDownload)
+					UIEmulatorDownload();
+
+				//=================== CONSULT =====================//
+				else if (menu == mnuConsultSelfDiagnostic)
+					UIConsultSelfDiagnostic();
+				else if (menu == mnuConsultSensorsLive)
+					UIConsultSensorsLive();
+				else if (menu == mnuConsultConnect)
+					UIConsultConnect(menu);
+				//mnuConsultMode item clicked
+				else if (mnuConsultMode.DropDownItems.Contains(menu))
+					mnuConsultMode_Click(sender, e);
+
+				//=================== HELP =====================//
+				else if (menu == mnuHelpAbout)
+					new FormAboutBox().Show();
+				else if (menu == mnuHelpSendFeedBack)
+					UISendFeedBack();
+				else if (menu == mnuHelpViewLog)
+					UIViewLog();
+				else
+				{
+#if DEBUG
+					MessageBox.Show(@"Handle Event:  '" + selectedItem + "'  Not Found!");
+#else
+					MessageBox.Show(
+						this, 
+						"В текущей версии эта функциональность не реализована", 
+						FormAboutBox.AssemblyProduct + " " + FormAboutBox.AssemblyVersion, 
+						MessageBoxButtons.OK, 
+						MessageBoxIcon.Information
+					);
+#endif
+				}
+			}
+			catch (Exception ex)
+			{
+				Error(ex, "Error operation '" + selectedItem + "'\n", "Error !");
+			}
+		}
+
+
+
+		#region UserInterface functions
+		private void UIConsultSelfDiagnostic()
+		{
+			FormDiagnosticCodes frm = new FormDiagnosticCodes(_consult);
+			frm.ShowDialog(this);
+		}
+
+		FormLogView frmLog;
+		private void UIViewLog()
+		{
+			if (frmLog == null || frmLog.IsDisposed)
+				frmLog = new FormLogView(this);
+			frmLog.Show();
+
 		}
 
 		private void UISaveBin()
@@ -560,7 +701,7 @@ namespace FRom
 
 		private void UIOpenROMFile()
 		{
-			string fileName = HelperClass.ShowFileDialog(Resources.binFilesToShowOpen, false, _settings.cfg_dlgROMPath, this);
+			string fileName = HelperClass.ShowFileDialog(Resources.strBinFilesToShowOpen, false, _settings.cfg_dlgROMPath, this);
 			_settings.cfg_dlgROMPath = fileName;
 			if (fileName != "")
 			{
@@ -573,7 +714,7 @@ namespace FRom
 
 		private void UIOpenAddressFile()
 		{
-			string fileName = HelperClass.ShowFileDialog(Resources.adrFilesToShowOpen, false, _settings.cfg_dlgADRPath, this);
+			string fileName = HelperClass.ShowFileDialog(Resources.strAdrFilesToShowOpen, false, _settings.cfg_dlgADRPath, this);
 			_settings.cfg_dlgADRPath = fileName;
 			if (fileName != "")
 			{
@@ -588,7 +729,7 @@ namespace FRom
 		{
 			if (_bin.Initialized)
 			{
-				string fileName = HelperClass.ShowFileDialog(Resources.binFilesToShowSave, true, _settings.cfg_dlgROMPath, this);
+				string fileName = HelperClass.ShowFileDialog(Resources.strBinFilesToShowSave, true, _settings.cfg_dlgROMPath, this);
 				_settings.cfg_dlgROMPath = fileName;
 				if (fileName != "")
 				{
@@ -655,105 +796,6 @@ namespace FRom
 			base.Close();
 		}
 
-		/// <summary>
-		/// Обработчик событий 'Click' на меню
-		/// </summary>
-		void menu_Click(object sender, EventArgs e)
-		{
-			ToolStripMenuItem menu = sender as ToolStripMenuItem;
-			if (menu != null && menu.DropDownItems.Count > 0)
-				return;
-
-			ToolStripButton btn = sender as ToolStripButton;
-			//StatusStrip status = sender as StatusStrip;
-			ToolStripLabel status = sender as ToolStripLabel;
-
-			string selectedItem = menu == null
-				? (btn == null)
-					? (status == null)
-						? ""
-						: (status.Name)
-					: (btn.Name)
-				: (menu.Name);
-			//ToolStripItemClickedEventArgs args = e as ToolStripItemClickedEventArgs;
-
-			try
-			{
-				//=================== FILE & STATUS STRIP =====================//
-				if (menu == mnuSaveBIN || btn == btnSaveBIN)
-					UISaveBin();
-				else if (menu == mnuSaveBINAs)
-					UISaveBinAs();
-				else if (menu == mnuOpenADR || status == lblAddressFile || btn == btnOpenADR)
-					UIOpenAddressFile();
-				else if (menu == mnuOpenBIN || status == lblBinFile || btn == btnOpenBIN)
-					UIOpenROMFile();
-				else if (menu == mnuSettings)
-					UISettings();
-				else if (menu == mnuExit)
-					UIExit();
-
-
-				//=================== MAP =====================//
-				else if (menu == mnuMapReload)
-					_bin.Reload();
-				else if (sender as ToolStripButton == btnToggleProp)
-					UIMapToggleProperties();
-				else if (menu == mnu3DMapViewToggle || btn == btnGraphShowSwitch)
-					UIMapGraphSwitch();
-
-				//=================== EMULATOR =====================//
-				else if (menu == mnuEmulatorUpload)
-					UIEmulatorUpload();
-				else if (menu == mnuEmulatorDownload)
-					UIEmulatorDownload();
-
-				//=================== CONSULT =====================//
-				else if (menu == mnuConsultSensorsLive)
-					UIConsultSensorsLive();
-				else if (menu == mnuConsultConnect)
-					UIConsultConnect(menu);
-				//mnuConsultMode item clicked
-				else if (mnuConsultMode.DropDownItems.Contains(menu))
-					mnuConsultMode_Click(sender, e);
-
-				//=================== HELP =====================//
-				else if (menu == mnuAbout)
-					new FormAboutBox().Show();
-				else if (menu == mnuSendFeedBack)
-					UISendFeedBack();
-				else
-				{
-#if DEBUG
-					MessageBox.Show(@"Handle Event:  '" + selectedItem + "'  Not Found!");
-#else
-				MessageBox.Show(
-					this, 
-					"В текущей версии эта функциональность не реализована", 
-					FormAboutBox.AssemblyProduct + " " + FormAboutBox.AssemblyVersion, 
-					MessageBoxButtons.OK, 
-					MessageBoxIcon.Information
-				);
-#endif
-                }
-			}
-			catch (Exception ex)
-			{
-				string message = "Error operation '" + selectedItem + "'\n";
-				Error(ex, message, "Error !");
-			}
-		}
-
-		private void menu_Click(object sender, ToolStripItemClickedEventArgs e)
-		{
-			menu_Click(e.ClickedItem, e == null ? null : (EventArgs)e);
-		}
-		private void menu_Click(object sender)
-		{
-			menu_Click(sender, new EventArgs());
-		}
-
-
 		private void UIConsultConnect(ToolStripMenuItem menu)
 		{
 			if (menu.Checked)
@@ -770,6 +812,16 @@ namespace FRom
 					Message(ex, "Connect to ECU failed!", MessageBoxIcon.Error);
 				}
 			InitializeConsultMenu();
+		}
+		#endregion
+
+		private void menu_Click(object sender, ToolStripItemClickedEventArgs e)
+		{
+			menu_Click(e.ClickedItem, e == null ? null : (EventArgs)e);
+		}
+		private void menu_Click(object sender)
+		{
+			menu_Click(sender, new EventArgs());
 		}
 
 		#endregion

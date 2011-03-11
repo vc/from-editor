@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using FRom.ConsultNS.Data;
 using System;
 using System.Threading;
+using System.ComponentModel;
 
 namespace FRom.ConsultNS
 {
-	public class SensorMonitoringParams : IEnumerable
+	public class SensorMonitoringParams : IEnumerable, IComponent
 	{
 		static Logger.Log _log = Logger.Log.Instance;
 
@@ -15,23 +16,25 @@ namespace FRom.ConsultNS
 		/// </summary>
 		ListIndexString<ConsultSensor> _sensors;
 
-		int _lenSensBytes = 0;
+		Consult _consult;
 
-		public SensorMonitoringParams(int capacity)
+		/// <summary>
+		/// флаг работы live приема данных от ECU по сенсорам.
+		/// </summary>
+		private bool _flagIsScanning = false;
+
+		public SensorMonitoringParams(Consult consult)
 		{
-			_sensors = new ListIndexString<ConsultSensor>(capacity);
-		}
-		public SensorMonitoringParams()
-		{
-			_sensors = new ListIndexString<ConsultSensor>();
+			_consult = consult;
+			_sensors = new ListIndexString<ConsultSensor>((int)ConsultECUConst.ECU_REG_MAX_READS);
 		}
 
 		/// <summary>
 		/// Количство байт в запросе/ответе к ECU
 		/// </summary>
-		public int Length
+		public int CountOfSensors
 		{
-			get { return _lenSensBytes; }
+			get { return _sensors.Count; }
 		}
 
 		/// <summary>
@@ -49,9 +52,6 @@ namespace FRom.ConsultNS
 				return;
 
 			_sensors.Add(sens);
-
-			//Инкримент количества запрошенных регистров
-			_lenSensBytes += sens._registers.Length;
 		}
 
 		public void Remove(ConsultSensor sens)
@@ -59,7 +59,6 @@ namespace FRom.ConsultNS
 			if (_sensors.Contains(sens))
 			{
 				_sensors.Remove(sens);
-				_lenSensBytes -= sens._registers.Length;
 			}
 		}
 
@@ -91,29 +90,214 @@ namespace FRom.ConsultNS
 		/// Отправка сообщений функциям по callback при появлении новых данных
 		/// </summary>
 		/// <param name="frame">фрейм данных по сенорам</param>
-		public void DataUpdate(List<byte> frame)
+		public void DataUpdate(object o)
 		{
+			byte[] frame = (byte[])o;
 			//По сенсорам
 			for (int s = 0, f = 0; s < _sensors.Count; s++)
 			{
 				byte[] dataToCallback = new byte[_sensors[s]._registers.Length];
 
 				//По байтам в сенсоре - заполняем массив для отправки.				
-				for (int i = 0; i < dataToCallback.Length; i++)
-					dataToCallback[i] = frame[f++];
-//at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
-//at System.ThrowHelper.ThrowArgumentOutOfRangeException()
-//at System.Collections.Generic.List`1.get_Item(Int32 index)
-//at FRom.ConsultNS.SensorMonitoringParams.DataUpdate(List`1 frame) in d:\MyDocs\_Source\_FRom\from.svn\FRom\ConsultNS\SensorMonitoringParams.cs:line 103
-//at FRom.ConsultNS.Consult.<SensorLiveScanProcedure>b__0(Object newFrame) in d:\MyDocs\_Source\_FRom\from.svn\FRom\ConsultNS\Consult.cs:line 319
-				_log.WriteEntry(this, dataToCallback, _sensors[s]._name);
+				try
+				{
+					for (int i = 0; i < dataToCallback.Length; i++)
+						dataToCallback[i] = frame[f++];
 
-				//отправляем данные получателю
-				_sensors[s].EnvokeNewDataEvent(dataToCallback);
+					_log.WriteEntry(this, dataToCallback, _sensors[s]._name);
+
+					//отправляем данные подписанным получателям
+					_sensors[s].RaiseNewDataEvent(dataToCallback);
+				}
+				catch (Exception ex)
+				{
+					_log.WriteEntry(this, ex);
+					throw ex;
+				}
 			}
 		}
 
-		public ConsultSensor this[string sensorName]
+		/// <summary>
+		/// Добавить сенсор для сканирования
+		/// </summary>
+		public void SensorAdd(ConsultSensor sens)
+		{
+			_log.WriteEntry(this,
+				String.Format("Adding live sensor: [{0}]", sens.ToString()),
+				Logger.EventEntryType.Debug);
+
+			if (CountOfSensors + 1 > (int)ConsultECUConst.ECU_REG_MAX_READS)
+				throw new ConsultException("Достигнуто максимальное количество сенсоров - " + (int)ConsultECUConst.ECU_REG_MAX_READS);
+			if (_flagIsScanning)
+			{
+				SensorStopLive();
+				lock (this)
+				{
+					_sensors.Add(sens);
+				}
+				this.SensorStartLive();
+			}
+			else
+			{
+				_sensors.Add(sens);
+			}
+		}
+		public void SensorAdd(List<ConsultSensor> sens)
+		{
+			if (_flagIsScanning)
+			{
+				SensorStopLive();
+				lock (this)
+				{
+					foreach (ConsultSensor i in sens)
+						this.SensorAdd(i);
+				}
+				this.SensorStartLive();
+			}
+			else
+			{
+				foreach (ConsultSensor i in sens)
+					this.SensorAdd(i);
+			}
+		}
+
+		public void SensorRemove(ConsultSensor sens)
+		{
+			_log.WriteEntry(this,
+				String.Format("Removing live sensor: [{0}]", sens.ToString()),
+				Logger.EventEntryType.Debug);
+
+			//Если сейчас идет прием данных
+			if (_flagIsScanning)
+			{
+				this.SensorStopLive();
+
+				//Дождемся завершения приема данных
+				lock (this)
+				{
+					//удалим информацию о сенсоре
+					_sensors.Remove(sens);
+				}
+
+				//стартанем скан сенсоров заново
+				this.SensorStartLive();
+			}
+			else
+			{
+				_sensors.Remove(sens);
+			}
+		}
+
+		/// <summary>
+		/// Идет ли сканирование в текущий момент
+		/// </summary>
+		internal bool IsScanning
+		{
+			get { return _flagIsScanning; }
+		}
+
+		/// <summary>
+		/// остановить прием данных по сенсорам
+		/// </summary>
+		public void SensorStopLive()
+		{
+			_flagIsScanning = false;
+			//ждем завершения сканирования
+			//while (_consult.State != ConsultClassState.ECU_IDLE)
+			lock (this) { }
+		}
+
+		/// <summary>
+		/// Старт захвата параметров
+		/// </summary>
+		public void SensorStartLive()
+		{
+			//Если сейчас уже скан идет - остановим
+			if (_flagIsScanning)
+				_flagIsScanning = false;
+
+			lock (this)
+			{
+				if (CountOfSensors == 0)
+					throw new ConsultException("Нет доступных сенсоров, Сначала добавьте сенсор");
+
+				byte[] cmd = GetCommandToECU().ToArray();
+
+				try
+				{
+					_consult.SetClassState(ConsultClassState.ECU_STREAMING_MONITORS);
+
+					//Отправляю команду
+					_consult.SendCommand(cmd, ConsultECUConst.ECU_REG_READ_CMD);
+
+					//старт приема данных
+					_consult.ECUFrameStart();
+
+					//Выставляем флаг начала сканирования
+					_flagIsScanning = true;
+
+					// Запускаем процедуру приема данных
+					// чтобы из рабочего потока можно было "присоединиться" к текущему потоку.
+					AsyncOperation ao = AsyncOperationManager.CreateOperation(null);
+					// запустить рабочий поток
+					new AsyncOperationInvoker(SensorLiveScanProcedure).BeginInvoke(ao, null, null);
+				}
+				catch (Exception ex)
+				{
+					_consult.ECUFrameStop();
+					_consult.SetClassState(ConsultClassState.ECU_IDLE);
+					throw ex;
+				}
+			}
+		}
+
+		private delegate void AsyncOperationInvoker(AsyncOperation operation);
+
+		/// <summary>
+		/// Потоковая функция приема данных сенсоров
+		/// </summary>
+		/// <param name="operation"></param>
+		private void SensorLiveScanProcedure(AsyncOperation operation)
+		{
+			lock (this)
+			{
+				try
+				{
+					SendOrPostCallback callback = DataUpdate;
+					while (_flagIsScanning)
+					{
+						byte[] frame = _consult.GetFrame();
+
+						// в теле этого метода можно обращаться к любому контролу в UI.
+						//SendOrPostCallback callback = delegate(object newFrame)
+						//{
+						//    //отправляем фрейм получателям
+						//    MonitoringSensors.DataUpdate((byte[])newFrame);
+						//};
+						// передать данные
+						operation.Post(callback, frame);
+					}
+				}
+				catch (Exception ex)
+				{
+					throw ex;
+				}
+				finally
+				{
+					try
+					{
+						_consult.ECUFrameStop();
+						_consult.SetClassState(ConsultClassState.ECU_IDLE);
+					}
+					catch (Exception ex)
+					{
+					}
+				}
+			}
+		}
+
+
+		private ConsultSensor this[string sensorName]
 		{
 			get
 			{
@@ -129,6 +313,32 @@ namespace FRom.ConsultNS
 		}
 		#endregion
 
+		#region IComponent Members
 
+		public event EventHandler Disposed;
+
+		public ISite Site
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+			set
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		#endregion
+
+		#region IDisposable Members
+
+		public void Dispose()
+		{
+			//Остановим сканирование
+			SensorStopLive();
+		}
+
+		#endregion
 	}
 }

@@ -69,24 +69,24 @@ namespace FRom.ConsultNS.Data
 		/// первое значение - code number. 
 		/// второе - number of ECU (engine starts) since the code last ocured
 		/// </summary>
-		Dictionary<byte, byte> _codes;
+		List<KeyValuePair<byte, byte>> _codes;
 
 		/// <summary>
 		/// Строка формаирования описания ошибки
 		/// {0} - code, {1} - repeat, {2} - description, {3} - new line
 		/// </summary>
-		string _formatString = "Code:{0:x} Repeat {1} times since last ocured.  Description:\"{2}\"{3}";
+		string _formatString = "Code:[0x{0:x}] Repeat {1} times since last ocured.  Description:\"{2}\"{3}";
 
 		public ConsultDTCFaultCodes(byte[] arr)
 		{
 			if (arr.Length % 2 != 0 && arr.Length >= 2)
 				throw new ConsultException("Длина массива должна быть не нулевой и кратной двум !");
 
-			_codes = new Dictionary<byte, byte>(arr.Length / 2);
+			_codes = new List<KeyValuePair<byte, byte>>(arr.Length / 2);
 
 			for (int i = 0; i < arr.Length; i = i + 2)
 			{
-				_codes.Add(arr[i], arr[i + 1]);
+				_codes.Add(new KeyValuePair<byte, byte>( arr[i], arr[i + 1]));
 			}
 		}
 

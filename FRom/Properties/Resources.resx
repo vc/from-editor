@@ -117,57 +117,72 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="binFilesToShowSave" xml:space="preserve">
+  <data name="strBinFilesToShowSave" xml:space="preserve">
     <value>Файл прошивки (*.bin)|*.bin|Все файлы (*.*)|*.*</value>
     <comment>Для диалога сохранения BIN файлов</comment>
   </data>
-  <data name="adrFilesToShowOpen" xml:space="preserve">
+  <data name="strAdrFilesToShowOpen" xml:space="preserve">
     <value>Все известные форматы (*.adr;*.from;*.xml)|*.adr;*.from;*.xml|Файл адресации данных FRom(*.from)|*.from|Файл адресации данных XML(*.xml)|*.xml|Файл RomEdit или Nistune(*.adr)|*.adr</value>
     <comment>Для диалога открытия ADR файлов</comment>
   </data>
-  <data name="exMsgNotSupportedFileFormat" xml:space="preserve">
+  <data name="strExMsgNotSupportedFileFormat" xml:space="preserve">
     <value>Данный тип файлов не поддерживается! Выбран файл: '{0}'</value>
     <comment>Сообщение при попытке сохранения в файл с неподдерживаемым расширением.</comment>
   </data>
-  <data name="AllKnownFiles" xml:space="preserve">
+  <data name="strAllKnownFiles" xml:space="preserve">
     <value>Все известные файлы (*.adr;*.bin;*.from;*.xml)|*.adr;*.bin;*.from;*.xml|Файл адресации данных XML(*.xml)|*.xml|Файл адресации данных FRom(*.from)|*.from|Файл RomEdit или Nistune(*.adr)|*.adr</value>
     <comment>Все известные файлы</comment>
   </data>
-  <data name="adrFilesToShowSave" xml:space="preserve">
+  <data name="strAdrFilesToShowSave" xml:space="preserve">
     <value>Файл адресации данных XML(*.xml)|*.xml|Файл адресации данных FRom(*.from)|*.from</value>
     <comment>Для диалога сохранения ADR файлов</comment>
   </data>
-  <data name="binFilesToShowOpen" xml:space="preserve">
+  <data name="strBinFilesToShowOpen" xml:space="preserve">
     <value>Файл прошивки (*.bin)|*.bin|Все файлы (*.*)|*.*</value>
     <comment>Для диалога открытия BIN файлов</comment>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="imgConnected_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>DataSources\icons\imgConnected_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="pngAccept" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>DataSources\icons\silk\accept.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="imgConnecting_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>DataSources\icons\imgConnecting_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="pngAdd" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>DataSources\icons\silk\add.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="imgDisconnected_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>DataSources\icons\imgDisconnected_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="pngDelete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>DataSources\icons\silk\delete.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="imgSettings_16x16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>DataSources\icons\imgSettings_16x16.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="pngExclamation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>DataSources\icons\silk\exclamation.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Button_Blank_Green_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>DataSources\icons\scraps\Button Blank Green-01.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="pngPage_white_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>DataSources\icons\silk\page_white_add.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Button_Blank_Red_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>DataSources\icons\scraps\Button Blank Red-01.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Button_Add_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>DataSources\icons\scraps\Button Add-01.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Button_Delete_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>DataSources\icons\scraps\Button Delete-01.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="pngStop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>DataSources\icons\silk\stop.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="File_New_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>DataSources\icons\scraps\File New-01.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="pngDatabase_save" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>DataSources\icons\silk\database_save.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pngEmulatorStreamMode" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>DataSources\icons\pngEmulatorStreamMode.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pngGraphShowSwitch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>DataSources\icons\pngGraphShowSwitch.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pngOpenADR" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>DataSources\icons\pngOpenADR.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pngOpenBIN" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>DataSources\icons\pngOpenBIN.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pngSaveBIN" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>DataSources\icons\pngSaveBIN.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pngTable_save" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>DataSources\icons\silk\table_save.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pngToggleProp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>DataSources\icons\pngToggleProp.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
