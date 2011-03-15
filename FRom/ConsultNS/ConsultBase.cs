@@ -50,57 +50,56 @@ namespace FRom.ConsultNS
 		}
 		public ConsultBase(string port, IConsultData data)
 		{
-			_consultData = data;
-			Initialise(port);
+			DataSource = data;
+			COMPort = port;
+			Initialise();
 		}
 
 		/// <summary>
 		/// Общая инициализация класса
 		/// </summary>
-		public virtual void Initialise(string port)
+		public virtual void Initialise()
 		{
-			if (_port == null)
+			if (Port.IsOpen)
+				Port.Close();
+
+			//Port = new SerialPort();
+
+			Port.BaudRate = 9600;
+			Port.Parity = Parity.None;
+			Port.DataBits = 8;
+			Port.StopBits = StopBits.Two;
+
+			Port.Handshake = Handshake.None;
+
+			Port.DtrEnable = true;
+			Port.RtsEnable = true;
+			Port.ReadBufferSize = 0x4000;
+			Port.WriteBufferSize = 0x4000;
+
+			Port.ReadTimeout = 1000;		//Таймаут чтения данных из порта
+			Port.WriteTimeout = 5000;
+
+			//_port.Encoding = Encoding.ASCII;
+			//количество принятых байт, для срабатывания события DataReceived
+			//_port.ReceivedBytesThreshold = 1;
+			//_port.ParityReplace = 0xfe;
+
+			try
 			{
-				_port = new SerialPort();
-
-				_port.BaudRate = 9600;
-				_port.Parity = Parity.None;
-				_port.DataBits = 8;
-				_port.StopBits = StopBits.Two;
-
-				_port.Handshake = Handshake.None;
-
-				_port.DtrEnable = true;
-				_port.RtsEnable = true;
-				_port.ReadBufferSize = 0x4000;
-				_port.WriteBufferSize = 0x4000;
-
-				_port.ReadTimeout = 1000;		//Таймаут чтения данных из порта
-				_port.WriteTimeout = 5000;
-
-				//_port.Encoding = Encoding.ASCII;
-				//количество принятых байт, для срабатывания события DataReceived
-				//_port.ReceivedBytesThreshold = 1;
-				//_port.ParityReplace = 0xfe;
+				//Open&Close port. Except eny errors with not properly closed port.
+				Port.Open(); Thread.Sleep(100); Port.Close();
+				//wait any time
+				Thread.Sleep(50);
+				Port.Open();
+				Port.BreakState = false;
+				Thread.Sleep(_cTimeReadPortInit);
 			}
-			if (!_port.IsOpen)
+			catch (UnauthorizedAccessException ex)
 			{
-				try
-				{
-					_port.PortName = port;
-					//Open&Close port. Except eny errors with not properly closed port.
-					_port.Open(); _port.Close();
-					//wait any time
-					Thread.Sleep(50);
-					_port.Open();
-					_port.BreakState = false;
-					Thread.Sleep(_cTimeReadPortInit);
-				}
-				catch (UnauthorizedAccessException ex)
-				{
-					throw new ConsultException("Ошибка при открытии порта. Ex:" + ex.Message, ex);
-				}
+				throw new ConsultException("Ошибка при открытии порта. Ex:" + ex.Message, ex);
 			}
+
 			ConsultInit();
 		}
 
@@ -128,6 +127,47 @@ namespace FRom.ConsultNS
 			}
 
 			throw new ConsultException("Количество попыток подключения истекло");
+		}
+
+		public override string COMPort
+		{
+			get { return base.COMPort; }
+			set
+			{
+				if (Port.IsOpen)
+				{
+					Port.Close();
+					base.COMPort = value;
+					Initialise();
+				}
+				else
+					Port.PortName = value;
+			}
+		}
+
+		/// <summary>
+		/// Источник комманд consult
+		/// </summary>
+		public virtual IConsultData DataSource
+		{
+			get { return _consultData; }
+			set
+			{
+				if (value == _consultData || value == null)
+					return;
+				if (_consultData == null)
+					_consultData = value;
+				else if (Port.IsOpen)
+				{
+					Disconnect();
+					_consultData = value;
+					Initialise();
+				}
+				else
+				{
+					_consultData = value;
+				}
+			}
 		}
 
 		/// <summary>

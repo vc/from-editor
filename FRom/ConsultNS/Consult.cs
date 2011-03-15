@@ -16,12 +16,15 @@ namespace FRom.ConsultNS
 		public Consult(IConsultData data)
 			: base(data) { }
 
-		public override void Initialise(string port)
+		public override void Initialise()
 		{
+			if (DataSource == null || COMPort == "")
+				throw new ConsultException("Перед инициализацией необходимо задачть порт и источник данных");
+
 			SetClassState(ConsultClassState.ECU_CONNECTING);
 			try
 			{
-				base.Initialise(port);
+				base.Initialise();
 				SetClassState(ConsultClassState.ECU_IDLE);
 
 				//Диагностика ECU
@@ -37,7 +40,7 @@ namespace FRom.ConsultNS
 		/// <summary>
 		/// Объект для блокировки одновременного использования процедуры CheckState
 		/// </summary>
-		object _lockCheckClassState = new object();
+		object _lockChangeClassState = new object();
 
 		/// <summary>
 		/// Class state
@@ -51,7 +54,7 @@ namespace FRom.ConsultNS
 		/// Если ECU_IDLE - освободить</param>
 		internal void SetClassState(ConsultClassState newState)
 		{
-			lock (_lockCheckClassState)
+			lock (_lockChangeClassState)
 			{
 				ConsultClassState oldState = _classState;
 				switch (newState)
@@ -93,16 +96,24 @@ namespace FRom.ConsultNS
 		/// <summary>
 		/// Источник комманд consult
 		/// </summary>
-		public IConsultData DataSource
+		public override IConsultData DataSource
 		{
 			get { return base._consultData; }
 			set
 			{
 				if (value == _consultData)
 					return;
-				if (_classState != ConsultClassState.ECU_OFFLINE)
-					Disconnect();
-				base._consultData = value;
+				switch (_classState)
+				{
+					case ConsultClassState.ECU_OFFLINE:
+						base._consultData = value;
+						break;					
+					default:
+						Disconnect();
+						base._consultData = value;
+						Initialise();
+						break;
+				}				
 			}
 		}
 

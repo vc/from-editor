@@ -53,7 +53,8 @@ namespace FRomTest
 		{
 			lock (_target)
 			{
-				_target.Initialise(_port);
+				_target.COMPort = _port;
+				_target.Initialise();
 				Assert.IsTrue(_target.State == ConsultClassState.ECU_IDLE);
 			}
 		}
@@ -68,7 +69,8 @@ namespace FRomTest
 			{
 				try
 				{
-					_target.Initialise(_port);
+					_target.COMPort = _port;
+					_target.Initialise();
 				}
 				catch (Exception ex)
 				{
@@ -85,7 +87,8 @@ namespace FRomTest
 		{
 			lock (_target)
 			{
-				_target.Initialise(_port);
+				_target.COMPort = _port;
+				_target.Initialise();
 				ConsultECUPartNumber actual;
 				try
 				{
@@ -115,7 +118,8 @@ namespace FRomTest
 		{
 			lock (_target)
 			{
-				_target.Initialise(_port);
+				_target.COMPort = _port;
+				_target.Initialise();
 				string expected = new ConsultDTCFaultCodes(new byte[] { 0x41, 0x04, 0x14, 0x00, 0x15, 0x0a }).ToString();
 				string actual;
 
@@ -137,7 +141,8 @@ namespace FRomTest
 		{
 			lock (_target)
 			{
-				_target.Initialise(_port);
+				_target.COMPort = _port;
+				_target.Initialise();
 				string expected = new ConsultDTCFaultCodes(new byte[] { 0x55, 0x00 }).ToString();
 				string actual;
 				actual = _target.DTCFaultCodesClear().ToString();
@@ -158,7 +163,8 @@ namespace FRomTest
 		{
 			lock (_target)
 			{
-				_target.Initialise(_port);
+				_target.COMPort = _port;
+				_target.Initialise();
 				const ushort addr_base = 0x8000;
 
 				int len = 80;
@@ -198,7 +204,8 @@ namespace FRomTest
 			{
 				try
 				{
-					_target.Initialise(_port);
+					_target.COMPort = _port;
+					_target.Initialise();
 					ConsultSensor sens = new ConsultData(new DataEngine()).GetSensor("Injection Time (LH)");
 					sens.NewDataByte += new ConsultSensor.SensorNewDataByteEvent(PrintByte);
 					_target.MonitoringSensors.SensorAdd(sens);

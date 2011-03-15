@@ -11,6 +11,8 @@ using FRom.Logger;
 using FRom.Logic;
 using FRom.Properties;
 using Helper;
+using System.ComponentModel;
+using FRom.Helper;
 
 namespace FRom
 {
@@ -50,6 +52,8 @@ namespace FRom
 		/// </summary>
 		internal Settings _settings;
 
+		FormSpeedTrial _frmSpeedTrial;
+
 		/// <summary>
 		/// Перехватчик событий главного меню.
 		/// </summary>
@@ -69,7 +73,24 @@ namespace FRom
 			InitializeEmulatorMenu();
 			InitializeConsultMenu();
 			InitializeMenu(mstrpMain);			//Инициализация обработчиков основного меню
-			InitializeTabControl();				//Инициализация вкладок с картами			
+			InitializeTabControl();				//Инициализация вкладок с картами
+
+			Components.Add(this, 1000);
+			Components.Add(_frmSpeedTrial);
+		}
+
+		ResourceDisposer Components
+		{
+			get
+			{
+				if (components == null)
+					components = new Helper.ResourceDisposer();
+				return (ResourceDisposer)components;
+			}
+			set
+			{
+				components = value;
+			}
 		}
 
 		private void Dispose_Resources(bool disposing)
@@ -101,8 +122,8 @@ namespace FRom
 
 		void IDisposable.Dispose()
 		{
+			//Dispose(true);
 			Dispose_Resources(true);
-			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
@@ -138,7 +159,7 @@ namespace FRom
 			//Логи
 			_log = Log.Instance;
 			_log.CatchExceptions = true;
-			_log.LogLevel = EventEntryType.Debug;
+			_log.LogLevel = debugFlag ? EventEntryType.Debug : EventEntryType.Event;
 			_log.LogFileEnabled = true;
 
 			//делегат перехвата событий Click на ToolStripMenuItems
@@ -584,6 +605,8 @@ namespace FRom
 					UIConsultSelfDiagnostic();
 				else if (menu == mnuConsultSensorsLive)
 					UIConsultSensorsLive();
+				else if (menu == mnuConsultSpeedTrial)
+					UIConsultSpeedTrial();
 				else if (menu == mnuConsultConnect)
 					UIConsultConnect(menu);
 				//mnuConsultMode item clicked
@@ -618,9 +641,15 @@ namespace FRom
 			}
 		}
 
-
-
 		#region UserInterface functions
+		private void UIConsultSpeedTrial()
+		{
+			if (_frmSpeedTrial == null || _frmSpeedTrial.IsDisposed)
+				_frmSpeedTrial = new FormSpeedTrial(this);
+			_frmSpeedTrial.StartPosition = FormStartPosition.CenterParent;
+			_frmSpeedTrial.Show(this);
+		}
+
 		private void UIConsultSelfDiagnostic()
 		{
 			FormDiagnosticCodes frm = new FormDiagnosticCodes(_consult);
@@ -805,7 +834,8 @@ namespace FRom
 			else
 				try
 				{
-					_consult.Initialise(_settings.cfg_ConsultPort);
+					_consult.COMPort = _settings.cfg_ConsultPort;
+					_consult.Initialise();
 				}
 				catch (ConsultException ex)
 				{
@@ -902,13 +932,6 @@ namespace FRom
 			if (mnuCurrent == null)
 				return;
 			mnuCurrent.Checked = false;
-		}
-
-
-
-		private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
-		{
-			Dispose_Resources(true);
 		}
 	}
 }

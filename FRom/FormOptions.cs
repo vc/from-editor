@@ -144,7 +144,8 @@ namespace FRom
 					//Если подключены - отключаемся
 					if (_consult.State != ConsultClassState.ECU_OFFLINE)
 						_consult.Disconnect();
-					_consult.Initialise(port);
+					_consult.COMPort = port;
+					_consult.Initialise();
 					_consultECUInfo = _consult.GetECUInfo();
 					StatusLabel(StatusCommunications.Found, lblStatusConsult, _consultECUInfo.ToString());
 					StatusLabel(StatusCommunications.Found, cbConsultPort, _consultECUInfo.ToString());

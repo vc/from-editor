@@ -107,7 +107,7 @@ namespace FRom.ConsultNS
 			get
 			{
 				if (components == null)
-					components = new ResourceDisposerComponent();
+					components = new ResourceDisposer();
 				return components;
 			}
 		}

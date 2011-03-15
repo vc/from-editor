@@ -5,13 +5,14 @@ using System.ComponentModel;
 
 namespace FRom.Helper
 {
-	public class ResourceDisposerComponent : IContainer
+	public class ResourceDisposer : IContainer
 	{
-		private List<IComponent> _components;
+		private int _currentPrio = 500;
+		private SortedList<int, IComponent> _components;
 
-		public ResourceDisposerComponent()
+		public ResourceDisposer()
 		{
-			_components = new List<IComponent>();
+			_components = new SortedList<int, IComponent>();
 		}
 
 		#region IContainer Members
@@ -21,23 +22,38 @@ namespace FRom.Helper
 			Add(component);
 		}
 
+		/// <summary>
+		/// Add component with default priority (500)
+		/// </summary>
+		/// <param name="component">IComponent</param>
 		public void Add(IComponent component)
 		{
 			if (component != null)
-				_components.Add(component);
+				_components.Add(_currentPrio, component);
 		}
+		/// <summary>
+		/// Add component with priority
+		/// </summary>
+		/// <param name="component">IComponent</param>
+		/// <param name="priority">Priority (1-first, 500-default 1000-lastest)</param>
+		public void Add(IComponent component, int priority)
+		{
+			if (component != null)
+				_components.Add(priority, component);
+		}
+
 
 		public ComponentCollection Components
 		{
 			get
 			{
-				return new ComponentCollection(_components.ToArray());
+				return new ComponentCollection(new List<IComponent>(_components.Values).ToArray());
 			}
 		}
 
 		public void Remove(IComponent component)
 		{
-			_components.Remove(component);
+			_components.Values.Remove(component);
 		}
 
 		#endregion
@@ -46,8 +62,8 @@ namespace FRom.Helper
 
 		public void Dispose()
 		{
-			foreach (IComponent i in _components)
-				i.Dispose();
+			foreach (KeyValuePair<int, IComponent> i in _components)
+				i.Value.Dispose();
 		}
 
 		#endregion

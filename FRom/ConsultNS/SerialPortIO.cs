@@ -12,29 +12,42 @@ namespace FRom.ConsultNS
 	{
 		public SerialPortIO() { }
 
+		public SerialPortIO(string port)
+		{
+			Port.PortName = port;
+		}
+
 		private object _lockPort = new object();
 		protected Log _log = Log.Instance;
 
-		protected SerialPort _port;
+		private SerialPort _port;
 
 		protected SerialPort Port
 		{
-			get { return _port; }
+			get
+			{
+				if (_port == null)
+					_port = new SerialPort();
+
+				return _port;
+			}
 			set { _port = value; }
 		}
 
 		/// <summary>
 		/// Имя порта
 		/// </summary>
-		public string COMPort
+		public virtual string COMPort
 		{
-			get { return _port == null ? "" : _port.PortName; }
+			get { return Port.PortName; }
+			set { Port.PortName = value; }
 		}
 
 		/// <summary>
 		/// Количество милисекунд, в промежутке между записью и чтением из порта
 		/// </summary>
 		protected int _cTimeWaitBeforeRead = 60;
+		private string port;
 
 		/// <summary>
 		/// Запрос в порт

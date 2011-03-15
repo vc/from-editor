@@ -94,6 +94,8 @@ namespace FRom
 			this.btnEmulatorStreamMode = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.btnGraphShowSwitch = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
+			this.mnuConsultSpeedTrial = new System.Windows.Forms.ToolStripMenuItem();
 			toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -134,6 +136,11 @@ namespace FRom
 			// 
 			toolStripSeparator5.Name = "toolStripSeparator5";
 			toolStripSeparator5.Size = new System.Drawing.Size(165, 6);
+			// 
+			// toolStripSeparator10
+			// 
+			toolStripSeparator10.Name = "toolStripSeparator10";
+			toolStripSeparator10.Size = new System.Drawing.Size(156, 6);
 			// 
 			// contMain
 			// 
@@ -503,6 +510,8 @@ namespace FRom
             this.mnuConsultSelfDiagnostic,
             this.mnuConsultActiveTests,
             this.mnuConsultSensorsLive,
+            this.toolStripSeparator12,
+            this.mnuConsultSpeedTrial,
             this.toolStripSeparator9,
             this.mnuConsultMode,
             this.mnuConsultConnect});
@@ -712,10 +721,16 @@ namespace FRom
 			this.btnGraphShowSwitch.Size = new System.Drawing.Size(23, 22);
 			this.btnGraphShowSwitch.Text = "Graph Show Switch";
 			// 
-			// toolStripSeparator10
+			// toolStripSeparator12
 			// 
-			toolStripSeparator10.Name = "toolStripSeparator10";
-			toolStripSeparator10.Size = new System.Drawing.Size(156, 6);
+			this.toolStripSeparator12.Name = "toolStripSeparator12";
+			this.toolStripSeparator12.Size = new System.Drawing.Size(184, 6);
+			// 
+			// mnuConsultSpeedTrial
+			// 
+			this.mnuConsultSpeedTrial.Name = "mnuConsultSpeedTrial";
+			this.mnuConsultSpeedTrial.Size = new System.Drawing.Size(187, 22);
+			this.mnuConsultSpeedTrial.Text = "Speed &Trial";
 			// 
 			// FormMain
 			// 
@@ -725,7 +740,6 @@ namespace FRom
 			this.MinimumSize = new System.Drawing.Size(500, 530);
 			this.Name = "FormMain";
 			this.Text = "Интефейс пользователя";
-			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.Move += new System.EventHandler(this.MainForm_Move);
 			this.contMain.BottomToolStripPanel.ResumeLayout(false);
@@ -818,6 +832,8 @@ namespace FRom
 		private System.Windows.Forms.ToolStripTextBox txtConsultECUInfo;
 		private System.Windows.Forms.ToolStripSeparator mnuConsultECUInfoSeparator;
 		private System.Windows.Forms.ToolStripMenuItem mnuHelpViewLog;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
+		private System.Windows.Forms.ToolStripMenuItem mnuConsultSpeedTrial;
 
 
 

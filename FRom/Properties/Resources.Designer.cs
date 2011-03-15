@@ -211,5 +211,12 @@ namespace FRom.Properties {
                 return ResourceManager.GetString("strExMsgNotSupportedFileFormat", resourceCulture);
             }
         }
+        
+        internal static System.Drawing.Bitmap tyre_params {
+            get {
+                object obj = ResourceManager.GetObject("tyre_params", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

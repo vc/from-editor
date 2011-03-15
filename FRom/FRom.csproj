@@ -79,7 +79,20 @@
     <Compile Include="ConsultNS\FormDiagnosticCodes.Designer.cs">
       <DependentUpon>FormDiagnosticCodes.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConsultNS\FormTyreCalc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConsultNS\FormTyreCalc.Designer.cs">
+      <DependentUpon>FormTyreCalc.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConsultNS\ILiveScanForm.cs" />
+    <Compile Include="ConsultNS\SpeedTrial.cs" />
+    <Compile Include="ConsultNS\UserControlTyreParams.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ConsultNS\UserControlTyreParams.Designer.cs">
+      <DependentUpon>UserControlTyreParams.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormAboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,7 +148,14 @@
     <Compile Include="Emulator\Romulator\Romulator.cs" />
     <Compile Include="Emulator\Romulator\RomulatorException.cs" />
     <Compile Include="Emulator\Romulator\RomulatorVersion.cs" />
+    <Compile Include="ConsultNS\FormSpeedTrial.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConsultNS\FormSpeedTrial.Designer.cs">
+      <DependentUpon>FormSpeedTrial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helper\Config.cs" />
+    <Compile Include="ConsultNS\TyreCalc.cs" />
     <Compile Include="Logger\FormLogView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -207,6 +227,12 @@
     <EmbeddedResource Include="ConsultNS\FormDiagnosticCodes.resx">
       <DependentUpon>FormDiagnosticCodes.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ConsultNS\FormTyreCalc.resx">
+      <DependentUpon>FormTyreCalc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConsultNS\UserControlTyreParams.resx">
+      <DependentUpon>UserControlTyreParams.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormAboutBox.resx">
       <DependentUpon>FormAboutBox.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -222,6 +248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConsultNS\Gauges\ConsultColorBar.resx">
       <DependentUpon>ConsultColorBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConsultNS\FormSpeedTrial.resx">
+      <DependentUpon>FormSpeedTrial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Logic\FormGraph3D.resx">
       <DependentUpon>FormGraph3D.cs</DependentUpon>
@@ -292,21 +321,8 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="Properties\DataSources\icons\imgConnected_16x16.png" />
-    <None Include="Properties\DataSources\icons\imgConnecting_16x16.png" />
-    <None Include="Properties\DataSources\icons\imgDisconnected_16x16.png" />
-    <None Include="Properties\DataSources\icons\imgSettings_16x16.png" />
-    <None Include="Properties\DataSources\icons\scraps\Button Blank Green-01.ico" />
-    <None Include="Properties\DataSources\icons\scraps\Button Blank Red-01.ico" />
-    <None Include="Properties\DataSources\icons\scraps\Button Blank Green-01.png" />
-    <None Include="Properties\DataSources\icons\scraps\Button Blank Red-01.png" />
-    <None Include="Properties\DataSources\icons\scraps\Button Add-01.png" />
-    <None Include="Properties\DataSources\icons\scraps\Button Delete-01.png" />
-    <None Include="Properties\DataSources\icons\scraps\File New-01.png" />
-    <None Include="Properties\DataSources\icons\scraps\File New-01_24.png" />
     <None Include="Properties\DataSources\icons\silk\accept.png" />
     <None Include="Properties\DataSources\icons\silk\add.png" />
-    <None Include="Properties\DataSources\icons\silk\cancel.png" />
     <None Include="Properties\DataSources\icons\silk\delete.png" />
     <None Include="Properties\DataSources\icons\silk\exclamation.png" />
     <None Include="Properties\DataSources\icons\silk\page_white_add.png" />
@@ -319,6 +335,7 @@
     <None Include="Properties\DataSources\icons\pngOpenBIN.png" />
     <None Include="Properties\DataSources\icons\pngSaveBIN.png" />
     <None Include="Properties\DataSources\icons\pngToggleProp.png" />
+    <Content Include="Properties\DataSources\tyre_params.jpg" />
     <Content Include="ReleaseNotes.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
