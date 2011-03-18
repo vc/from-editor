@@ -1,4 +1,4 @@
-﻿namespace FRom.ConsultNS
+﻿namespace FRom
 {
 	partial class FormTyreCalc
 	{
@@ -31,13 +31,13 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTyreCalc));
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.ctlTyresOriginal = new FRom.ConsultNS.UserControlTyreParams();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.ctlTyresNew = new FRom.ConsultNS.UserControlTyreParams();
 			this.label1 = new System.Windows.Forms.Label();
 			this.txtAccurancy = new System.Windows.Forms.TextBox();
 			this.btnOK = new System.Windows.Forms.Button();
 			this.btnCancel = new System.Windows.Forms.Button();
-			this.ctlTyresOriginal = new FRom.ConsultNS.UserControlTyreParams();
-			this.ctlTyresNew = new FRom.ConsultNS.UserControlTyreParams();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
@@ -56,27 +56,46 @@
 			// groupBox1
 			// 
 			this.groupBox1.Controls.Add(this.ctlTyresOriginal);
-			this.groupBox1.Location = new System.Drawing.Point(12, 339);
+			this.groupBox1.Location = new System.Drawing.Point(26, 339);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(310, 68);
+			this.groupBox1.Size = new System.Drawing.Size(281, 68);
 			this.groupBox1.TabIndex = 2;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Original Tyres";
 			// 
+			// ctlTyresOriginal
+			// 
+			this.ctlTyresOriginal.AutoSize = true;
+			this.ctlTyresOriginal.Location = new System.Drawing.Point(6, 19);
+			this.ctlTyresOriginal.Name = "ctlTyresOriginal";
+			this.ctlTyresOriginal.Size = new System.Drawing.Size(268, 40);
+			this.ctlTyresOriginal.TabIndex = 0;
+			this.ctlTyresOriginal.SizesChanged += new FRom.ConsultNS.UserControlTyreParams.SizeChangedEventHandler(this.ctlTyresOriginal_SizesChanged);
+			// 
 			// groupBox2
 			// 
 			this.groupBox2.Controls.Add(this.ctlTyresNew);
-			this.groupBox2.Location = new System.Drawing.Point(12, 413);
+			this.groupBox2.Location = new System.Drawing.Point(26, 413);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(310, 63);
+			this.groupBox2.Size = new System.Drawing.Size(281, 89);
 			this.groupBox2.TabIndex = 2;
 			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = "New Tyres";
+			this.groupBox2.Text = "Current Tyres";
+			// 
+			// ctlTyresNew
+			// 
+			this.ctlTyresNew.AutoSize = true;
+			this.ctlTyresNew.Location = new System.Drawing.Point(6, 19);
+			this.ctlTyresNew.Name = "ctlTyresNew";
+			this.ctlTyresNew.ShowRecomendedParams = true;
+			this.ctlTyresNew.Size = new System.Drawing.Size(268, 61);
+			this.ctlTyresNew.TabIndex = 0;
+			this.ctlTyresNew.SizesChanged += new FRom.ConsultNS.UserControlTyreParams.SizeChangedEventHandler(this.ctlTyresNew_SizesChanged);
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(96, 549);
+			this.label1.Location = new System.Drawing.Point(103, 511);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(78, 13);
 			this.label1.TabIndex = 3;
@@ -84,7 +103,7 @@
 			// 
 			// txtAccurancy
 			// 
-			this.txtAccurancy.Location = new System.Drawing.Point(180, 546);
+			this.txtAccurancy.Location = new System.Drawing.Point(187, 508);
 			this.txtAccurancy.Name = "txtAccurancy";
 			this.txtAccurancy.ReadOnly = true;
 			this.txtAccurancy.Size = new System.Drawing.Size(57, 20);
@@ -93,7 +112,7 @@
 			// 
 			// btnOK
 			// 
-			this.btnOK.Location = new System.Drawing.Point(88, 580);
+			this.btnOK.Location = new System.Drawing.Point(88, 534);
 			this.btnOK.Name = "btnOK";
 			this.btnOK.Size = new System.Drawing.Size(75, 23);
 			this.btnOK.TabIndex = 5;
@@ -104,7 +123,7 @@
 			// btnCancel
 			// 
 			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btnCancel.Location = new System.Drawing.Point(169, 580);
+			this.btnCancel.Location = new System.Drawing.Point(169, 534);
 			this.btnCancel.Name = "btnCancel";
 			this.btnCancel.Size = new System.Drawing.Size(75, 23);
 			this.btnCancel.TabIndex = 5;
@@ -112,31 +131,13 @@
 			this.btnCancel.UseVisualStyleBackColor = true;
 			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
-			// ctlTyresOriginal
-			// 
-			this.ctlTyresOriginal.AutoSize = true;
-			this.ctlTyresOriginal.Location = new System.Drawing.Point(6, 19);
-			this.ctlTyresOriginal.Name = "ctlTyresOriginal";
-			this.ctlTyresOriginal.Size = new System.Drawing.Size(285, 40);
-			this.ctlTyresOriginal.TabIndex = 0;
-			this.ctlTyresOriginal.Tyre = ((FRom.ConsultNS.TyreParams)(resources.GetObject("ctlTyresOriginal.Tyre")));
-			// 
-			// ctlTyresNew
-			// 
-			this.ctlTyresNew.AutoSize = true;
-			this.ctlTyresNew.Location = new System.Drawing.Point(6, 17);
-			this.ctlTyresNew.Name = "ctlTyresNew";
-			this.ctlTyresNew.Size = new System.Drawing.Size(285, 40);
-			this.ctlTyresNew.TabIndex = 0;
-			this.ctlTyresNew.Tyre = ((FRom.ConsultNS.TyreParams)(resources.GetObject("ctlTyresNew.Tyre")));
-			// 
 			// FormTyreCalc
 			// 
 			this.AcceptButton = this.btnOK;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.btnCancel;
-			this.ClientSize = new System.Drawing.Size(332, 636);
+			this.ClientSize = new System.Drawing.Size(332, 566);
 			this.Controls.Add(this.btnCancel);
 			this.Controls.Add(this.btnOK);
 			this.Controls.Add(this.txtAccurancy);
@@ -151,7 +152,7 @@
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "FormTyreCalc";
+			this.Text = "Tyre Calc";
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
@@ -171,7 +172,7 @@
 		private System.Windows.Forms.TextBox txtAccurancy;
 		private System.Windows.Forms.Button btnOK;
 		private System.Windows.Forms.Button btnCancel;
-		private UserControlTyreParams ctlTyresOriginal;
-		private UserControlTyreParams ctlTyresNew;
+		private FRom.ConsultNS.UserControlTyreParams ctlTyresOriginal;
+		private FRom.ConsultNS.UserControlTyreParams ctlTyresNew;
 	}
 }

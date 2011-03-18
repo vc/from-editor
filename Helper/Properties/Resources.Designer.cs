@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FRom.Properties {
+namespace Helper {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace FRom.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace FRom.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FRom.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Helper.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace FRom.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -60,98 +60,98 @@ namespace FRom.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap pngAccept {
+        public static System.Drawing.Bitmap pngAccept {
             get {
                 object obj = ResourceManager.GetObject("pngAccept", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap pngAdd {
+        public static System.Drawing.Bitmap pngAdd {
             get {
                 object obj = ResourceManager.GetObject("pngAdd", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap pngDatabase_save {
+        public static System.Drawing.Bitmap pngDatabase_save {
             get {
                 object obj = ResourceManager.GetObject("pngDatabase_save", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap pngDelete {
+        public static System.Drawing.Bitmap pngDelete {
             get {
                 object obj = ResourceManager.GetObject("pngDelete", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap pngEmulatorStreamMode {
+        public static System.Drawing.Bitmap pngEmulatorStreamMode {
             get {
                 object obj = ResourceManager.GetObject("pngEmulatorStreamMode", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap pngExclamation {
+        public static System.Drawing.Bitmap pngExclamation {
             get {
                 object obj = ResourceManager.GetObject("pngExclamation", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap pngGraphShowSwitch {
+        public static System.Drawing.Bitmap pngGraphShowSwitch {
             get {
                 object obj = ResourceManager.GetObject("pngGraphShowSwitch", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap pngOpenADR {
+        public static System.Drawing.Bitmap pngOpenADR {
             get {
                 object obj = ResourceManager.GetObject("pngOpenADR", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap pngOpenBIN {
+        public static System.Drawing.Bitmap pngOpenBIN {
             get {
                 object obj = ResourceManager.GetObject("pngOpenBIN", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap pngPage_white_add {
+        public static System.Drawing.Bitmap pngPage_white_add {
             get {
                 object obj = ResourceManager.GetObject("pngPage_white_add", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap pngSaveBIN {
+        public static System.Drawing.Bitmap pngSaveBIN {
             get {
                 object obj = ResourceManager.GetObject("pngSaveBIN", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap pngStop {
+        public static System.Drawing.Bitmap pngStop {
             get {
                 object obj = ResourceManager.GetObject("pngStop", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap pngTable_save {
+        public static System.Drawing.Bitmap pngTable_save {
             get {
                 object obj = ResourceManager.GetObject("pngTable_save", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap pngToggleProp {
+        public static System.Drawing.Bitmap pngToggleProp {
             get {
                 object obj = ResourceManager.GetObject("pngToggleProp", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -161,7 +161,7 @@ namespace FRom.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Все известные форматы (*.adr;*.from;*.xml)|*.adr;*.from;*.xml|Файл адресации данных FRom(*.from)|*.from|Файл адресации данных XML(*.xml)|*.xml|Файл RomEdit или Nistune(*.adr)|*.adr.
         /// </summary>
-        internal static string strAdrFilesToShowOpen {
+        public static string strAdrFilesToShowOpen {
             get {
                 return ResourceManager.GetString("strAdrFilesToShowOpen", resourceCulture);
             }
@@ -170,7 +170,7 @@ namespace FRom.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Файл адресации данных XML(*.xml)|*.xml|Файл адресации данных FRom(*.from)|*.from.
         /// </summary>
-        internal static string strAdrFilesToShowSave {
+        public static string strAdrFilesToShowSave {
             get {
                 return ResourceManager.GetString("strAdrFilesToShowSave", resourceCulture);
             }
@@ -179,7 +179,7 @@ namespace FRom.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Все известные файлы (*.adr;*.bin;*.from;*.xml)|*.adr;*.bin;*.from;*.xml|Файл адресации данных XML(*.xml)|*.xml|Файл адресации данных FRom(*.from)|*.from|Файл RomEdit или Nistune(*.adr)|*.adr.
         /// </summary>
-        internal static string strAllKnownFiles {
+        public static string strAllKnownFiles {
             get {
                 return ResourceManager.GetString("strAllKnownFiles", resourceCulture);
             }
@@ -188,7 +188,7 @@ namespace FRom.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Файл прошивки (*.bin)|*.bin|Все файлы (*.*)|*.*.
         /// </summary>
-        internal static string strBinFilesToShowOpen {
+        public static string strBinFilesToShowOpen {
             get {
                 return ResourceManager.GetString("strBinFilesToShowOpen", resourceCulture);
             }
@@ -197,7 +197,7 @@ namespace FRom.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Файл прошивки (*.bin)|*.bin|Все файлы (*.*)|*.*.
         /// </summary>
-        internal static string strBinFilesToShowSave {
+        public static string strBinFilesToShowSave {
             get {
                 return ResourceManager.GetString("strBinFilesToShowSave", resourceCulture);
             }
@@ -206,13 +206,13 @@ namespace FRom.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Данный тип файлов не поддерживается! Выбран файл: &apos;{0}&apos;.
         /// </summary>
-        internal static string strExMsgNotSupportedFileFormat {
+        public static string strExMsgNotSupportedFileFormat {
             get {
                 return ResourceManager.GetString("strExMsgNotSupportedFileFormat", resourceCulture);
             }
         }
         
-        internal static System.Drawing.Bitmap tyre_params {
+        public static System.Drawing.Bitmap tyre_params {
             get {
                 object obj = ResourceManager.GetObject("tyre_params", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));

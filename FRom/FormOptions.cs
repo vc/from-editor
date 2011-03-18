@@ -1,23 +1,108 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using FRom.Emulator;
-using System.IO.Ports;
-using Microsoft.Win32;
-using System.Threading;
 using FRom.ConsultNS;
 using FRom.ConsultNS.Data;
-using System.Runtime.CompilerServices;
+using FRom.Emulator;
 using FRom.Properties;
+using Microsoft.Win32;
+using Helper;
 
 namespace FRom
 {
 	public partial class FormSettings : Form
 	{
+		/// <summary>
+		/// Родитель
+		/// </summary>
+		FormMain _frmParrent;
+
+		RomulatorVersion _emulatorVer;
+
+		ConsultECUPartNumber _consultECUInfo;
+
+		/// <summary>
+		/// Список доступных COM портов
+		/// </summary>
+		List<COMPortsList> _portsList;
+
+
+		/// <summary>
+		/// Конструктор
+		/// </summary>
+		/// <param name="emu"></param>
+		public FormSettings(FormMain frmParrent)
+		{
+			_frmParrent = frmParrent;
+			_portsList = COMPortsList.GetPortNames();
+
+			InitializeComponent();
+			InitializeMenu();
+			InitializeConsult();
+			InitializeEmulator();
+			InitializeSettings();
+		}
+
+		private void cbEmulatorPort_VisibleChanged(object sender, EventArgs e)
+		{
+			COMPortsList com = new COMPortsList(_frmParrent._settings.cfgEmulatorPort);
+			int nPortEmulator = _portsList.BinarySearch(com, com);
+			if (nPortEmulator >= 0)
+				cbEmulatorPort.SelectedIndex = nPortEmulator;
+			InitEmulator(_frmParrent._settings.cfgEmulatorPort);
+		}
+
+		private void cbConsultPort_VisibleChanged(object sender, EventArgs e)
+		{
+			COMPortsList com = new COMPortsList(_frmParrent._settings.cfgConsultPort);
+			int nPortConsult = _portsList.BinarySearch(com, com);
+			if (nPortConsult >= 0)
+				cbConsultPort.SelectedIndex = nPortConsult;
+			InitConsult(_frmParrent._settings.cfgConsultPort);
+		}
+
+		private void InitializeEmulator()
+		{
+			cbEmulatorPort.Items.Clear();
+			cbEmulatorPort.Items.AddRange(_portsList.ToArray());
+			cbEmulatorPort_VisibleChanged(cbEmulatorPort, null);
+		}
+
+		private void InitializeConsult()
+		{
+			cbConsultPort.Items.Clear();
+			cbConsultPort.Items.AddRange(_portsList.ToArray());
+			cbConsultPort_VisibleChanged(cbConsultPort, null);
+		}
+
+		/// <summary>
+		/// Загружаем форму из settings
+		/// </summary>
+		private void InitializeSettings()
+		{
+			this.txtADRFilesPath.Text = cfg.cfgADRFilesPath;
+			this.txtBINFilesPath.Text = cfg.cfgROMFilesPath;
+			this.chkAutoLoadFiles.Checked = cfg.cfgOpenLastConfig;
+			this.chkConsultAutoConnect.Checked = cfg.cfgConsultConnectAtStartup;
+			this.chkEmulatorAutoConnect.Checked = cfg.cfgEmulatorConnectAtStartup;
+			this.chkEmulatorSaveROMToFileAfterDownload.Checked =
+				cfg.cfgEmulatorSaveFileAfterRead;
+			this.chkConsultKeepALive.Enabled = cfg.cfgConsultKeepALive;
+		}
+
+		private void InitializeMenu()
+		{
+			Menu = new MainMenu(new MenuItem[]{
+				new MenuItem("Tyre Calculator", MenuClickTyreCalculator),
+			});
+		}
+
+		Settings cfg
+		{
+			get { return _frmParrent._settings; }
+		}
+
 		protected Romulator _emulator
 		{
 			get { return _frmParrent._emulator; }
@@ -30,36 +115,14 @@ namespace FRom
 			set { _frmParrent._consult = value; }
 		}
 
-		/// <summary>
-		/// Родитель
-		/// </summary>
-		FormMain _frmParrent;
-
-		//bool initEmulatorFlag = false;
-		RomulatorVersion _emulatorVer;
-
-		//bool initConsultFlag = false;
-		ConsultECUPartNumber _consultECUInfo;
-
-		/// <summary>
-		/// Конструктор
-		/// </summary>
-		/// <param name="emu"></param>
-		public FormSettings(FormMain frmParrent)
+		private void MenuClickTyreCalculator(object sender, EventArgs e)
 		{
-			_frmParrent = frmParrent;
-
-			InitializeComponent();
-		}
-
-		/// <summary>
-		/// Выполняется при загрузке формы
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void FormSettings_Load(object sender, EventArgs e)
-		{
-
+			FormTyreCalc frmTyreCalc = new FormTyreCalc(cfg.cfgTyreOrigin, cfg.cfgTyreCurrent);
+			if (frmTyreCalc.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+			{
+				cfg.cfgTyreOrigin = frmTyreCalc._tOrigin;
+				cfg.cfgTyreCurrent = frmTyreCalc._tNew;
+			}
 		}
 
 		/// <summary>
@@ -144,8 +207,7 @@ namespace FRom
 					//Если подключены - отключаемся
 					if (_consult.State != ConsultClassState.ECU_OFFLINE)
 						_consult.Disconnect();
-					_consult.COMPort = port;
-					_consult.Initialise();
+					_consult.Initialise(port);
 					_consultECUInfo = _consult.GetECUInfo();
 					StatusLabel(StatusCommunications.Found, lblStatusConsult, _consultECUInfo.ToString());
 					StatusLabel(StatusCommunications.Found, cbConsultPort, _consultECUInfo.ToString());
@@ -212,7 +274,6 @@ namespace FRom
 			}
 			StatusLabel(textLabel + " " + text, col, o);
 		}
-
 		private void StatusLabel(string text, Color col, object o)
 		{
 			Label lbl = o as Label;
@@ -233,29 +294,6 @@ namespace FRom
 			this.Update();
 		}
 
-		/// <summary>
-		/// Взять список всех COM портов
-		/// </summary>
-		/// <returns>Массив портов</returns>
-		public static string[] GetPortNames()
-		{
-			List<string> serial_ports = new List<string>();
-			using (RegistryKey subkey = Registry.LocalMachine.OpenSubKey("HARDWARE\\DEVICEMAP\\SERIALCOMM"))
-			{
-				if (subkey != null)
-				{
-					string[] names = subkey.GetValueNames();
-					foreach (string value in names)
-					{
-						string port = subkey.GetValue(value, "").ToString();
-						if (port != "")
-							serial_ports.Add(port);
-					}
-				}
-			}
-			return serial_ports.ToArray();
-		}
-
 		#region Properties
 		public Romulator Emulator
 		{
@@ -265,27 +303,25 @@ namespace FRom
 
 		private void btnOk_Click(object sender, EventArgs e)
 		{
-			Properties.Settings set = _frmParrent._settings;
-
-			set.Initialize(
+			cfg.Initialize(
 				new System.Configuration.SettingsContext(),
 				new System.Configuration.SettingsPropertyCollection(),
 				new System.Configuration.SettingsProviderCollection()
 			);
 			//_frmParrent._settings.Providers.Add(
 
-			set.cfg_ADRFilesPath = this.txtADRFilesPath.Text;
-			set.cfg_ROMFilesPath = this.txtBINFilesPath.Text;
-			set.cfg_OpenLastConfig = this.chkAutoLoadFiles.Checked;
-			set.cfg_ConsultPort = this.cbConsultPort.SelectedItem as string;
-			set.cfg_EmulatorPort = this.cbEmulatorPort.SelectedItem as string;
-			set.cfg_ConsultConnectAtStartup = this.chkConsultAutoConnect.Checked;
-			set.cfg_EmulatorConnectAtStartup = this.chkEmulatorAutoConnect.Checked;
-			set.cfg_EmulatorSaveFileAfterRead =
+			cfg.cfgADRFilesPath = this.txtADRFilesPath.Text;
+			cfg.cfgROMFilesPath = this.txtBINFilesPath.Text;
+			cfg.cfgOpenLastConfig = this.chkAutoLoadFiles.Checked;
+			cfg.cfgConsultPort = this.cbConsultPort.SelectedItem as string;
+			cfg.cfgEmulatorPort = this.cbEmulatorPort.SelectedItem as string;
+			cfg.cfgConsultConnectAtStartup = this.chkConsultAutoConnect.Checked;
+			cfg.cfgEmulatorConnectAtStartup = this.chkEmulatorAutoConnect.Checked;
+			cfg.cfgEmulatorSaveFileAfterRead =
 				this.chkEmulatorSaveROMToFileAfterDownload.Checked;
-			set.cfg_ConsultKeepALive = chkConsultKeepALive.Enabled;
+			cfg.cfgConsultKeepALive = chkConsultKeepALive.Enabled;
 
-			set.Save();
+			cfg.Save();
 		}
 
 		private void btnConsultTest_Click(object sender, EventArgs e)
@@ -298,54 +334,6 @@ namespace FRom
 			StatusLabel(StatusCommunications.Search, cbConsultPort);
 
 			InitConsult(port);
-		}
-
-		/// <summary>
-		/// Заполняет sender списком доступных COM портов
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void cbPortItemsStore(object sender, EventArgs e)
-		{
-			ComboBox cb = (ComboBox)sender;
-			cb.Items.AddRange(GetPortNames());
-		}
-
-		private void cbEmulatorPort_VisibleChanged(object sender, EventArgs e)
-		{
-			cbPortItemsStore(sender, e);
-			List<string> ports = new List<string>(GetPortNames());
-			int nPortEmulator = ports.BinarySearch(_frmParrent._settings.cfg_EmulatorPort);
-			if (nPortEmulator >= 0)
-				cbEmulatorPort.SelectedIndex = nPortEmulator;
-			InitEmulator(_frmParrent._settings.cfg_EmulatorPort);
-		}
-
-		private void cbConsultPort_VisibleChanged(object sender, EventArgs e)
-		{
-			cbPortItemsStore(sender, e);
-			List<string> ports = new List<string>(GetPortNames());
-			int nPortConsult = ports.BinarySearch(_frmParrent._settings.cfg_ConsultPort);
-			if (nPortConsult >= 0)
-				cbConsultPort.SelectedIndex = nPortConsult;
-			InitConsult(_frmParrent._settings.cfg_ConsultPort);
-		}
-
-		private void FormSettings_Shown(object sender, EventArgs e)
-		{
-			Settings set = _frmParrent._settings;
-
-			//Загружаем форму из settings			
-			this.txtADRFilesPath.Text = set.cfg_ADRFilesPath;
-			this.txtBINFilesPath.Text = set.cfg_ROMFilesPath;
-			this.chkAutoLoadFiles.Checked = set.cfg_OpenLastConfig;
-			this.chkConsultAutoConnect.Checked = set.cfg_ConsultConnectAtStartup;
-			this.chkEmulatorAutoConnect.Checked = set.cfg_EmulatorConnectAtStartup;
-			this.chkEmulatorSaveROMToFileAfterDownload.Checked =
-				set.cfg_EmulatorSaveFileAfterRead;
-			this.chkConsultKeepALive.Enabled = set.cfg_ConsultKeepALive;
-
-
 		}
 	}
 

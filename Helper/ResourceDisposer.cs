@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
 
-namespace FRom.Helper
+namespace Helper
 {
 	public class ResourceDisposer : IContainer
 	{

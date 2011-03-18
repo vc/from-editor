@@ -342,8 +342,10 @@
 			// 
 			// FormSettings
 			// 
+			this.AcceptButton = this.btnOk;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.CancelButton = this.btnCancel;
 			this.ClientSize = new System.Drawing.Size(681, 441);
 			this.Controls.Add(this.grpLogs);
 			this.Controls.Add(this.grpPathes);
@@ -351,7 +353,7 @@
 			this.Controls.Add(this.btnCancel);
 			this.Controls.Add(this.btnOk);
 			this.Controls.Add(this.grpEmulator);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.HelpButton = true;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
@@ -361,8 +363,6 @@
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "FRom Configuration";
-			this.Load += new System.EventHandler(this.FormSettings_Load);
-			this.Shown += new System.EventHandler(this.FormSettings_Shown);
 			this.grpEmulator.ResumeLayout(false);
 			this.grpEmulator.PerformLayout();
 			this.grpConsult.ResumeLayout(false);

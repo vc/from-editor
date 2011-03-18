@@ -6,33 +6,34 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using FRom.Properties;
+using FRom.ConsultNS;
 
-namespace FRom.ConsultNS
+namespace FRom
 {
 	public partial class FormTyreCalc : Form
 	{
-		TyreParams _tOrigin;
-		TyreParams _tNew;
+		internal TyreParams _tOrigin;
+		internal TyreParams _tNew;
 
-		FormMain _main;
-
-		public FormTyreCalc(FormMain main = null)
+		public FormTyreCalc(TyreParams origin = null, TyreParams current = null)
 		{
 			InitializeComponent();
 
-			_main = main;
-			Settings cfg = _main._settings;
+			_tOrigin = (origin == null)
+				? UserControlTyreParams.DefaultTyre
+				: origin;
 
-			if (cfg.cfgTyreOrigin == null)
-				_tOrigin = ctlTyresOriginal.Tyre;
-			else
-				_tOrigin = cfg.cfgTyreOrigin;
+			_tNew = (current == null)
+				? UserControlTyreParams.DefaultTyre
+				: current;
 
-			if (cfg.cfgTyreCurrent == null)
-				_tNew = ctlTyresNew.Tyre;
-			else
-				_tNew = cfg.cfgTyreCurrent;
+			CalcAcurancy();
+			
+			this.VisibleChanged += new EventHandler(FormTyreCalc_VisibleChanged);
+		}
 
+		void FormTyreCalc_VisibleChanged(object sender, EventArgs e)
+		{
 			CalcAcurancy();
 		}
 
@@ -63,18 +64,13 @@ namespace FRom.ConsultNS
 
 		private void btnOK_Click(object sender, EventArgs e)
 		{
-			if (_main != null)
-			{
-				Settings cfg = _main._settings;
-				cfg.cfgTyreOrigin = _tOrigin;
-				cfg.cfgTyreCurrent = _tNew;
-				cfg.Save();
-			}
+			DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.Close();
 		}
 
 		private void btnCancel_Click(object sender, EventArgs e)
 		{
+			DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.Close();
 		}
 	}

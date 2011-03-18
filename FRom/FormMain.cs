@@ -11,8 +11,7 @@ using FRom.Logger;
 using FRom.Logic;
 using FRom.Properties;
 using Helper;
-using System.ComponentModel;
-using FRom.Helper;
+using Helper.ProgressBar;
 
 namespace FRom
 {
@@ -146,11 +145,11 @@ namespace FRom
 			if (flag)
 			{
 				txtConsultECUInfo.Text = _consult.GetECUInfo().ToString();
-				mnuConsult.Image = Properties.Resources.pngAccept;
+				mnuConsult.Image = Helper.Resources.pngAccept;
 			}
 			else
 			{
-				mnuConsult.Image = Properties.Resources.pngStop;
+				mnuConsult.Image = Helper.Resources.pngStop;
 			}
 		}
 
@@ -175,19 +174,19 @@ namespace FRom
 				_settings.NeedUpgrade = false;
 			}
 			//Проверим на валидность последние пути диалогов
-			if (_settings.cfg_dlgADRPath == null
-				|| _settings.cfg_dlgADRPath.Length == 0
-				|| !new DirectoryInfo(_settings.cfg_dlgADRPath).Exists
+			if (_settings.cfgdlgADRPath == null
+				|| _settings.cfgdlgADRPath.Length == 0
+				|| !new DirectoryInfo(_settings.cfgdlgADRPath).Exists
 			)
 			{
-				_settings.cfg_dlgADRPath = Environment.CurrentDirectory;
+				_settings.cfgdlgADRPath = Environment.CurrentDirectory;
 			}
-			if (_settings.cfg_dlgROMPath == null
-				|| _settings.cfg_dlgROMPath.Length == 0
-				|| !new DirectoryInfo(_settings.cfg_dlgROMPath).Exists
+			if (_settings.cfgdlgROMPath == null
+				|| _settings.cfgdlgROMPath.Length == 0
+				|| !new DirectoryInfo(_settings.cfgdlgROMPath).Exists
 			)
 			{
-				_settings.cfg_dlgROMPath = Environment.CurrentDirectory;
+				_settings.cfgdlgROMPath = Environment.CurrentDirectory;
 			}
 
 			//список доступных интерфейсов диагностики (устройств)
@@ -216,7 +215,7 @@ namespace FRom
 			//класс работы через интерфейс consult
 			_consult = new Consult(_consltDataList[0]);
 			//Если стоит настройка на автоподключение - подключимся к консульту
-			if (_settings.cfg_ConsultConnectAtStartup)
+			if (_settings.cfgConsultConnectAtStartup)
 				menu_Click(mnuConsultConnect);
 
 			//создаем класс работы с ROM/ADR Файлами
@@ -226,16 +225,16 @@ namespace FRom
 			//InitInterface(_bin, null);
 
 			//Откроем предыдущие файлы конфигурации если необходимо
-			if (_settings.cfg_OpenLastConfig)
+			if (_settings.cfgOpenLastConfig)
 			{
-				if (_settings.cfg_RecentAdrFiles.Count > 0 && File.Exists(_settings.cfg_RecentAdrFiles[0]))
+				if (_settings.cfgRecentAdrFiles.Count > 0 && File.Exists(_settings.cfgRecentAdrFiles[0]))
 				{
-					try { _bin.OpenAddressFile(_settings.cfg_RecentAdrFiles[0]); }
+					try { _bin.OpenAddressFile(_settings.cfgRecentAdrFiles[0]); }
 					catch { }
 				}
-				if (_settings.cfg_RecentBinFiles.Count > 0 && File.Exists(_settings.cfg_RecentBinFiles[0]))
+				if (_settings.cfgRecentBinFiles.Count > 0 && File.Exists(_settings.cfgRecentBinFiles[0]))
 				{
-					try { _bin.OpenROMFile(_settings.cfg_RecentBinFiles[0]); }
+					try { _bin.OpenROMFile(_settings.cfgRecentBinFiles[0]); }
 					catch { _bin.Clear(); }
 				}
 			}
@@ -284,8 +283,7 @@ namespace FRom
 				_bin.OpenROMFile(romFileName);
 				string addressFileName = HelperClass.FindFolder("data") + "HCR32_RB26_256_E_Z32_444cc.adr";
 				_bin.OpenAddressFile(addressFileName);
-				_log.LogLevel = EventEntryType.Debug;
-				_Debug();
+				_log.LogLevel = EventEntryType.Debug;				
 			}
 			catch (Exception ex)
 			{
@@ -375,7 +373,7 @@ namespace FRom
 				Error(ex, "Ошибка при скачке данных из эмулятора", "Emulator Download Error");
 			}
 
-			if (_settings.cfg_EmulatorSaveFileAfterRead)
+			if (_settings.cfgEmulatorSaveFileAfterRead)
 			{
 				string fileName = Path.Combine(Environment.CurrentDirectory, DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_emulator.bin");
 
@@ -450,12 +448,16 @@ namespace FRom
 			_log.WriteEntry(this, msg);
 			MessageBox.Show(this, msg, caption, MessageBoxButtons.OK, icon);
 		}
+
 		private void Message(Exception ex, string caption = "", MessageBoxIcon icon = MessageBoxIcon.Information)
 		{
 			if (caption == "")
 				caption = Application.ProductName;
 			string exMsg = HelperClass.GetExceptionMessages(ex);
-			MessageBox.Show(this, exMsg, caption, MessageBoxButtons.OK, icon);
+			HelperClass.Invoke(this, delegate()
+			{
+				MessageBox.Show(this, exMsg, caption, MessageBoxButtons.OK, icon);
+			});
 		}
 		#endregion
 
@@ -507,8 +509,8 @@ namespace FRom
 
 			StringCollection files =
 				(menu == mnuRecentFilesROM)
-				? (_settings.cfg_RecentBinFiles)
-				: (_settings.cfg_RecentAdrFiles);
+				? (_settings.cfgRecentBinFiles)
+				: (_settings.cfgRecentAdrFiles);
 
 
 			if (files.Count == 0)
@@ -526,17 +528,17 @@ namespace FRom
 
 		private void InitAddAdrRecentFiles(string fileName)
 		{
-			if (_settings.cfg_RecentAdrFiles == null) return;
-			if (_settings.cfg_RecentAdrFiles.Contains(fileName))
-				_settings.cfg_RecentAdrFiles.Remove(fileName);
-			_settings.cfg_RecentAdrFiles.Insert(0, fileName);
+			if (_settings.cfgRecentAdrFiles == null) return;
+			if (_settings.cfgRecentAdrFiles.Contains(fileName))
+				_settings.cfgRecentAdrFiles.Remove(fileName);
+			_settings.cfgRecentAdrFiles.Insert(0, fileName);
 		}
 		private void InitAddBinRecentFiles(string fileName)
 		{
-			if (_settings.cfg_RecentBinFiles == null) return;
-			if (_settings.cfg_RecentBinFiles.Contains(fileName))
-				_settings.cfg_RecentBinFiles.Remove(fileName);
-			_settings.cfg_RecentBinFiles.Insert(0, fileName);
+			if (_settings.cfgRecentBinFiles == null) return;
+			if (_settings.cfgRecentBinFiles.Contains(fileName))
+				_settings.cfgRecentBinFiles.Remove(fileName);
+			_settings.cfgRecentBinFiles.Insert(0, fileName);
 		}
 
 		/// <summary>
@@ -645,7 +647,7 @@ namespace FRom
 		private void UIConsultSpeedTrial()
 		{
 			if (_frmSpeedTrial == null || _frmSpeedTrial.IsDisposed)
-				_frmSpeedTrial = new FormSpeedTrial(this);
+				_frmSpeedTrial = new FormSpeedTrial(this._consult);
 			_frmSpeedTrial.StartPosition = FormStartPosition.CenterParent;
 			_frmSpeedTrial.Show(this);
 		}
@@ -686,7 +688,7 @@ namespace FRom
 		private void UIConsultSensorsLive()
 		{
 			if (_frmConsult == null || _frmConsult.IsDisposed)
-				_frmConsult = new FormLiveScan(this);
+				_frmConsult = new FormLiveScan(this._consult);
 			_frmConsult.Show(this);
 		}
 
@@ -730,8 +732,8 @@ namespace FRom
 
 		private void UIOpenROMFile()
 		{
-			string fileName = HelperClass.ShowFileDialog(Resources.strBinFilesToShowOpen, false, _settings.cfg_dlgROMPath, this);
-			_settings.cfg_dlgROMPath = fileName;
+			string fileName = HelperClass.ShowFileDialog(Resources.strBinFilesToShowOpen, false, _settings.cfgdlgROMPath, this);
+			_settings.cfgdlgROMPath = fileName;
 			if (fileName != "")
 			{
 				string recentFileName = _bin.DataSourceROM;
@@ -743,8 +745,8 @@ namespace FRom
 
 		private void UIOpenAddressFile()
 		{
-			string fileName = HelperClass.ShowFileDialog(Resources.strAdrFilesToShowOpen, false, _settings.cfg_dlgADRPath, this);
-			_settings.cfg_dlgADRPath = fileName;
+			string fileName = HelperClass.ShowFileDialog(Resources.strAdrFilesToShowOpen, false, _settings.cfgdlgADRPath, this);
+			_settings.cfgdlgADRPath = fileName;
 			if (fileName != "")
 			{
 				string recentFileName = _bin.DataSourceAddress;
@@ -758,8 +760,8 @@ namespace FRom
 		{
 			if (_bin.Initialized)
 			{
-				string fileName = HelperClass.ShowFileDialog(Resources.strBinFilesToShowSave, true, _settings.cfg_dlgROMPath, this);
-				_settings.cfg_dlgROMPath = fileName;
+				string fileName = HelperClass.ShowFileDialog(Resources.strBinFilesToShowSave, true, _settings.cfgdlgROMPath, this);
+				_settings.cfgdlgROMPath = fileName;
 				if (fileName != "")
 				{
 					_bin.SaveBin(fileName);
@@ -832,15 +834,26 @@ namespace FRom
 				_consult.Disconnect();
 			}
 			else
-				try
+			{
+				using (IProgressBar _progressForm = new Form("Consult init..."))
 				{
-					_consult.COMPort = _settings.cfg_ConsultPort;
-					_consult.Initialise();
+					ExecuteCallback _callback = delegate()
+					{
+						try
+						{
+							_consult.Initialise(_settings.cfgConsultPort);
+						}
+						catch (ConsultException ex)
+						{
+							Message(ex, "Connect to ECU failed!", MessageBoxIcon.Error);					
+							_progressForm.StopProgressBar();
+							//MessageBox.Show(ex.Message);
+						}
+					};
+					_progressForm.ShowProgressBar(_callback);
 				}
-				catch (ConsultException ex)
-				{
-					Message(ex, "Connect to ECU failed!", MessageBoxIcon.Error);
-				}
+				
+			}
 			InitializeConsultMenu();
 		}
 		#endregion

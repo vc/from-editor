@@ -2,64 +2,70 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FRom.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="cfg_RecentBinFiles" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="cfgRecentBinFiles" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" /&gt;</Value>
     </Setting>
-    <Setting Name="cfg_RecentAdrFiles" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="cfgRecentAdrFiles" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" /&gt;</Value>
     </Setting>
-    <Setting Name="cfg_OpenLastConfig" Type="System.Boolean" Scope="User">
+    <Setting Name="cfgOpenLastConfig" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="cfg_dlgADRPath" Type="System.String" Scope="User">
+    <Setting Name="cfgdlgADRPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="cfg_dlgROMPath" Type="System.String" Scope="User">
+    <Setting Name="cfgdlgROMPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="cfg_ADRFilesPath" Type="System.String" Scope="User">
+    <Setting Name="cfgADRFilesPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">adr\</Value>
     </Setting>
-    <Setting Name="cfg_ROMFilesPath" Type="System.String" Scope="User">
+    <Setting Name="cfgROMFilesPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">bin\</Value>
     </Setting>
-    <Setting Name="cfg_ConsultPort" Type="System.String" Scope="User">
+    <Setting Name="cfgConsultPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM11</Value>
     </Setting>
-    <Setting Name="cfg_EmulatorPort" Type="System.String" Scope="User">
+    <Setting Name="cfgEmulatorPort" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="cfg_ConsultConnectAtStartup" Type="System.Boolean" Scope="User">
+    <Setting Name="cfgConsultConnectAtStartup" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="cfg_EmulatorConnectAtStartup" Type="System.Boolean" Scope="User">
+    <Setting Name="cfgEmulatorConnectAtStartup" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="NeedUpgrade" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="cfg_EmulatorSaveFileAfterRead" Type="System.Boolean" Scope="User">
+    <Setting Name="cfgEmulatorSaveFileAfterRead" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="cfg_ConsultDiagECUType" Type="System.Char" Scope="User">
+    <Setting Name="cfgConsultDiagECUType" Type="System.Char" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="cfg_UserName" Type="System.String" Scope="User">
+    <Setting Name="cfgUserName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="cfg_UserEmail" Type="System.String" Scope="User">
+    <Setting Name="cfgUserEmail" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="cfg_ConsultKeepALive" Type="System.Boolean" Scope="User">
+    <Setting Name="cfgConsultKeepALive" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="cfg_FormLogTopMost" Type="System.Boolean" Scope="User">
+    <Setting Name="cfgFormLogTopMost" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="cfg_FormLogAttachToMain" Type="System.Boolean" Scope="User">
+    <Setting Name="cfgFormLogAttachToMain" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="cfgTyreOrigin" Type="FRom.ConsultNS.TyreParams" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="cfgTyreCurrent" Type="FRom.ConsultNS.TyreParams" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

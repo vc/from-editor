@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Net.Mail;
-using System.Diagnostics;
 using System.Threading;
-using System.Net;
 using Helper;
 
 namespace FRom.Logger

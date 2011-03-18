@@ -42,8 +42,8 @@ namespace FRom
 
 		private void Init(string message, List<string> attachments, bool enableAttacheents)
 		{
-			txtName.Text = _frmParrent._settings.cfg_UserName;
-			txtEmail.Text = _frmParrent._settings.cfg_UserEmail;
+			txtName.Text = _frmParrent._settings.cfgUserName;
+			txtEmail.Text = _frmParrent._settings.cfgUserEmail;
 
 			txtBugInfo.Text = message;
 
@@ -101,8 +101,8 @@ namespace FRom
 				message,
 				_attachments);
 
-			_frmParrent._settings.cfg_UserName = txtName.Text;
-			_frmParrent._settings.cfg_UserEmail = txtEmail.Text;
+			_frmParrent._settings.cfgUserName = txtName.Text;
+			_frmParrent._settings.cfgUserEmail = txtEmail.Text;
 			_frmParrent._settings.Save();
 
 			this.Dispose(true);

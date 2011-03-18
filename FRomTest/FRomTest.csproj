@@ -90,9 +90,21 @@
       <Project>{C3E9C71D-47C7-469E-81EE-A9D39025EB71}</Project>
       <Name>ColorBar</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Consult\Consult.csproj">
+      <Project>{17C11826-AB02-4F0D-9113-9A8E93A5F30D}</Project>
+      <Name>Consult</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FRom\FRom.csproj">
       <Project>{16CC93F2-2E3A-437F-9AA7-BC2BC128155F}</Project>
       <Name>FRom</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logger\Logger.csproj">
+      <Project>{2FEED9BA-ABDA-420A-9624-A943E1068D02}</Project>
+      <Name>Logger</Name>
     </ProjectReference>
     <ProjectReference Include="..\OpenGLControl\OpenGLControl.csproj">
       <Project>{3A7BCDA8-1A82-45B9-90B5-98A837BC551F}</Project>

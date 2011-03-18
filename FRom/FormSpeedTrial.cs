@@ -13,7 +13,7 @@ namespace FRom.ConsultNS
 {
 	public partial class FormSpeedTrial : Form, IDisposable
 	{
-		FormMain _parrent;
+		Consult _consult;
 		bool _started = false;
 		ConsultSensor _sensSpeed;
 
@@ -28,48 +28,27 @@ namespace FRom.ConsultNS
 
 		Dictionary<KeyValuePair<int, int>, SpeedTrial> _st;
 
-		public FormSpeedTrial(FormMain frm)
+		public FormSpeedTrial(Consult consult)
 		{
-			_parrent = frm;
+			_consult = consult;
 
 			InitializeConsult();
 			InitializeComponent();
-			InitializeMenu();
-		}
-
-		private void InitializeMenu()
-		{
-			Menu = new MainMenu(new MenuItem[]{
-				new MenuItem("Tyre Adjust", MenuClick),
-			});
-		}
-
-		FormTyreCalc frmTyreCalc;
-		private void MenuClick(object sender, EventArgs e)
-		{
-			if (frmTyreCalc == null)
-				frmTyreCalc = new FormTyreCalc(_parrent);
-			frmTyreCalc.ShowDialog();
 		}
 
 		private void InitializeConsult()
 		{
 			ConsultData data = new ConsultData(new DataEngine());
-			if (Consult.DataSource.ToString() != data.ToString())
+			if (_consult.DataSource.ToString() != data.ToString())
 			{
-				Consult.DataSource = data;
+				_consult.DataSource = data;
 				_sensSpeed = data.ValidSensors["Vehicle speed"];
 			}
 			else
 			{
-				_sensSpeed = Consult.DataSource.ValidSensors["Vehicle speed"];
+				_sensSpeed = _consult.DataSource.ValidSensors["Vehicle speed"];
 			}
-			Consult.MonitoringSensors.Add(_sensSpeed);
-		}
-
-		Consult Consult
-		{
-			get { return _parrent._consult; }
+			_consult.MonitoringSensors.Add(_sensSpeed);
 		}
 
 		private void btnStartStop_Click(object sender, EventArgs e)
@@ -105,7 +84,7 @@ namespace FRom.ConsultNS
 
 			_sensSpeed.NewDataFloat += new ConsultSensor.SensorNewDataFloatEven(sens_NewDataFloat);
 
-			Consult.MonitoringSensors.SensorStartLive();
+			_consult.MonitoringSensors.SensorStartLive();
 		}
 
 		/// <summary>
@@ -149,8 +128,8 @@ namespace FRom.ConsultNS
 		private void Stop()
 		{
 			_sensSpeed.NewDataFloat -= new ConsultSensor.SensorNewDataFloatEven(sens_NewDataFloat);
-			if (Consult.MonitoringSensors.IsScanning)
-				Consult.MonitoringSensors.SensorStopLive();
+			if (_consult.MonitoringSensors.IsScanning)
+				_consult.MonitoringSensors.SensorStopLive();
 		}
 
 		private void btnExit_Click(object sender, EventArgs e)

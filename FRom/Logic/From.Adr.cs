@@ -149,7 +149,7 @@ namespace FRom.Logic
 						}
 						break;
 					case "ADR": LoadAddrBase(fileName); break;
-					default: throw new Exception(String.Format(Resources.strExMsgNotSupportedFileFormat, fileName));
+					default: throw new Exception(String.Format(Helper.Resources.strExMsgNotSupportedFileFormat, fileName));
 				}
 				_filenameAddr = fileName;
 				//Дергаем событие смены источника данных
@@ -183,7 +183,7 @@ namespace FRom.Logic
 					}
 					break;
 				//case "ADR": LoadFromADR(fileName); break;
-				default: throw new Exception(Resources.strExMsgNotSupportedFileFormat);
+				default: throw new Exception(Helper.Resources.strExMsgNotSupportedFileFormat);
 			}
 		}
 

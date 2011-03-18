@@ -107,13 +107,13 @@ namespace FRom.ConsultNS
 				{
 					case ConsultClassState.ECU_OFFLINE:
 						base._consultData = value;
-						break;					
+						break;
 					default:
 						Disconnect();
 						base._consultData = value;
 						Initialise();
 						break;
-				}				
+				}
 			}
 		}
 

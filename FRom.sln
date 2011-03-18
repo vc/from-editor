@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FRom", "FRom\FRom.csproj", "{16CC93F2-2E3A-437F-9AA7-BC2BC128155F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{17C11826-AB02-4F0D-9113-9A8E93A5F30D} = {17C11826-AB02-4F0D-9113-9A8E93A5F30D}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2963AAE0-DAFF-4568-B74F-A8A7B974AC29}"
 	ProjectSection(SolutionItems) = preProject
@@ -17,6 +20,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AquaGauge", "AquaGauge\AquaGauge.csproj", "{0E5542E0-FC5D-4F67-950D-9F28C5D1225A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorBar", "ColorBar\ColorBar.csproj", "{C3E9C71D-47C7-469E-81EE-A9D39025EB71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consult", "Consult\Consult.csproj", "{17C11826-AB02-4F0D-9113-9A8E93A5F30D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helper", "Helper\Helper.csproj", "{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "Logger\Logger.csproj", "{2FEED9BA-ABDA-420A-9624-A943E1068D02}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -83,13 +92,43 @@ Global
 		{C3E9C71D-47C7-469E-81EE-A9D39025EB71}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C3E9C71D-47C7-469E-81EE-A9D39025EB71}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C3E9C71D-47C7-469E-81EE-A9D39025EB71}.Release|x86.ActiveCfg = Release|Any CPU
+		{17C11826-AB02-4F0D-9113-9A8E93A5F30D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17C11826-AB02-4F0D-9113-9A8E93A5F30D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17C11826-AB02-4F0D-9113-9A8E93A5F30D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{17C11826-AB02-4F0D-9113-9A8E93A5F30D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{17C11826-AB02-4F0D-9113-9A8E93A5F30D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{17C11826-AB02-4F0D-9113-9A8E93A5F30D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17C11826-AB02-4F0D-9113-9A8E93A5F30D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17C11826-AB02-4F0D-9113-9A8E93A5F30D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{17C11826-AB02-4F0D-9113-9A8E93A5F30D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{17C11826-AB02-4F0D-9113-9A8E93A5F30D}.Release|x86.ActiveCfg = Release|Any CPU
+		{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}.Release|x86.ActiveCfg = Release|Any CPU
+		{2FEED9BA-ABDA-420A-9624-A943E1068D02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FEED9BA-ABDA-420A-9624-A943E1068D02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FEED9BA-ABDA-420A-9624-A943E1068D02}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2FEED9BA-ABDA-420A-9624-A943E1068D02}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2FEED9BA-ABDA-420A-9624-A943E1068D02}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2FEED9BA-ABDA-420A-9624-A943E1068D02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FEED9BA-ABDA-420A-9624-A943E1068D02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FEED9BA-ABDA-420A-9624-A943E1068D02}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2FEED9BA-ABDA-420A-9624-A943E1068D02}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2FEED9BA-ABDA-420A-9624-A943E1068D02}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		BuildVersion_BuildVersioningStyle = None.None.None.Increment
-		BuildVersion_UpdateFileVersion = False
 		BuildVersion_UpdateAssemblyVersion = False
+		BuildVersion_UpdateFileVersion = False
+		BuildVersion_BuildVersioningStyle = None.None.None.Increment
 	EndGlobalSection
 EndGlobal

@@ -485,7 +485,7 @@ namespace FRom
 			// mnuEmulatorStreamMode
 			// 
 			this.mnuEmulatorStreamMode.CheckOnClick = true;
-			this.mnuEmulatorStreamMode.Image = global::FRom.Properties.Resources.pngEmulatorStreamMode;
+			this.mnuEmulatorStreamMode.Image = global::Helper.Resources.pngEmulatorStreamMode;
 			this.mnuEmulatorStreamMode.Name = "mnuEmulatorStreamMode";
 			this.mnuEmulatorStreamMode.Size = new System.Drawing.Size(137, 22);
 			this.mnuEmulatorStreamMode.Text = "Stream Mode";
@@ -515,7 +515,7 @@ namespace FRom
             this.toolStripSeparator9,
             this.mnuConsultMode,
             this.mnuConsultConnect});
-			this.mnuConsult.Image = global::FRom.Properties.Resources.pngStop;
+			this.mnuConsult.Image = global::Helper.Resources.pngStop;
 			this.mnuConsult.Name = "mnuConsult";
 			this.mnuConsult.Size = new System.Drawing.Size(71, 21);
 			this.mnuConsult.Text = "&Consult";
@@ -653,7 +653,7 @@ namespace FRom
 			// btnOpenADR
 			// 
 			this.btnOpenADR.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btnOpenADR.Image = global::FRom.Properties.Resources.pngOpenADR;
+			this.btnOpenADR.Image = global::Helper.Resources.pngOpenADR;
 			this.btnOpenADR.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnOpenADR.Name = "btnOpenADR";
 			this.btnOpenADR.Size = new System.Drawing.Size(23, 22);
@@ -663,7 +663,7 @@ namespace FRom
 			// btnOpenBIN
 			// 
 			this.btnOpenBIN.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btnOpenBIN.Image = global::FRom.Properties.Resources.pngOpenBIN;
+			this.btnOpenBIN.Image = global::Helper.Resources.pngOpenBIN;
 			this.btnOpenBIN.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnOpenBIN.Name = "btnOpenBIN";
 			this.btnOpenBIN.Size = new System.Drawing.Size(23, 22);
@@ -674,7 +674,7 @@ namespace FRom
 			// 
 			this.btnSaveBIN.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.btnSaveBIN.Enabled = false;
-			this.btnSaveBIN.Image = global::FRom.Properties.Resources.pngSaveBIN;
+			this.btnSaveBIN.Image = global::Helper.Resources.pngSaveBIN;
 			this.btnSaveBIN.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnSaveBIN.Name = "btnSaveBIN";
 			this.btnSaveBIN.Size = new System.Drawing.Size(23, 22);
@@ -686,7 +686,7 @@ namespace FRom
 			this.btnToggleProp.Checked = true;
 			this.btnToggleProp.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.btnToggleProp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btnToggleProp.Image = global::FRom.Properties.Resources.pngToggleProp;
+			this.btnToggleProp.Image = global::Helper.Resources.pngToggleProp;
 			this.btnToggleProp.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnToggleProp.Name = "btnToggleProp";
 			this.btnToggleProp.Size = new System.Drawing.Size(23, 22);
@@ -700,7 +700,7 @@ namespace FRom
 			// btnEmulatorStreamMode
 			// 
 			this.btnEmulatorStreamMode.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btnEmulatorStreamMode.Image = global::FRom.Properties.Resources.pngEmulatorStreamMode;
+			this.btnEmulatorStreamMode.Image = global::Helper.Resources.pngEmulatorStreamMode;
 			this.btnEmulatorStreamMode.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnEmulatorStreamMode.Name = "btnEmulatorStreamMode";
 			this.btnEmulatorStreamMode.Size = new System.Drawing.Size(23, 22);
@@ -715,7 +715,7 @@ namespace FRom
 			// btnGraphShowSwitch
 			// 
 			this.btnGraphShowSwitch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btnGraphShowSwitch.Image = global::FRom.Properties.Resources.pngGraphShowSwitch;
+			this.btnGraphShowSwitch.Image = global::Helper.Resources.pngGraphShowSwitch;
 			this.btnGraphShowSwitch.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnGraphShowSwitch.Name = "btnGraphShowSwitch";
 			this.btnGraphShowSwitch.Size = new System.Drawing.Size(23, 22);

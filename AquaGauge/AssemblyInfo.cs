@@ -5,8 +5,8 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyVersion("2.1.4021.38138")]
-[assembly: AssemblyFileVersion("2.1.0.9")]
+[assembly: AssemblyVersion("2.1.4021.38153")]
+[assembly: AssemblyFileVersion("2.1.0.24")]
 [assembly: AssemblyDescription("")]
 [assembly: Debuggable(DebuggableAttribute.DebuggingModes.DisableOptimizations | DebuggableAttribute.DebuggingModes.EnableEditAndContinue | DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints | DebuggableAttribute.DebuggingModes.Default)]
 [assembly: CompilationRelaxations(8)]

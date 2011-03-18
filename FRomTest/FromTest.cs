@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using FRom.Logger;
 using FRom.Logic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FRom.Logger;
 
 namespace FRomTest
 {

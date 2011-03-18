@@ -27,12 +27,12 @@ namespace FRom.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
             "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" />")]
-        public global::System.Collections.Specialized.StringCollection cfg_RecentBinFiles {
+        public global::System.Collections.Specialized.StringCollection cfgRecentBinFiles {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["cfg_RecentBinFiles"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["cfgRecentBinFiles"]));
             }
             set {
-                this["cfg_RecentBinFiles"] = value;
+                this["cfgRecentBinFiles"] = value;
             }
         }
         
@@ -40,120 +40,120 @@ namespace FRom.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
             "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" />")]
-        public global::System.Collections.Specialized.StringCollection cfg_RecentAdrFiles {
+        public global::System.Collections.Specialized.StringCollection cfgRecentAdrFiles {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["cfg_RecentAdrFiles"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["cfgRecentAdrFiles"]));
             }
             set {
-                this["cfg_RecentAdrFiles"] = value;
+                this["cfgRecentAdrFiles"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool cfg_OpenLastConfig {
+        public bool cfgOpenLastConfig {
             get {
-                return ((bool)(this["cfg_OpenLastConfig"]));
+                return ((bool)(this["cfgOpenLastConfig"]));
             }
             set {
-                this["cfg_OpenLastConfig"] = value;
+                this["cfgOpenLastConfig"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string cfg_dlgADRPath {
+        public string cfgdlgADRPath {
             get {
-                return ((string)(this["cfg_dlgADRPath"]));
+                return ((string)(this["cfgdlgADRPath"]));
             }
             set {
-                this["cfg_dlgADRPath"] = value;
+                this["cfgdlgADRPath"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string cfg_dlgROMPath {
+        public string cfgdlgROMPath {
             get {
-                return ((string)(this["cfg_dlgROMPath"]));
+                return ((string)(this["cfgdlgROMPath"]));
             }
             set {
-                this["cfg_dlgROMPath"] = value;
+                this["cfgdlgROMPath"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("adr\\")]
-        public string cfg_ADRFilesPath {
+        public string cfgADRFilesPath {
             get {
-                return ((string)(this["cfg_ADRFilesPath"]));
+                return ((string)(this["cfgADRFilesPath"]));
             }
             set {
-                this["cfg_ADRFilesPath"] = value;
+                this["cfgADRFilesPath"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("bin\\")]
-        public string cfg_ROMFilesPath {
+        public string cfgROMFilesPath {
             get {
-                return ((string)(this["cfg_ROMFilesPath"]));
+                return ((string)(this["cfgROMFilesPath"]));
             }
             set {
-                this["cfg_ROMFilesPath"] = value;
+                this["cfgROMFilesPath"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("COM11")]
-        public string cfg_ConsultPort {
+        public string cfgConsultPort {
             get {
-                return ((string)(this["cfg_ConsultPort"]));
+                return ((string)(this["cfgConsultPort"]));
             }
             set {
-                this["cfg_ConsultPort"] = value;
+                this["cfgConsultPort"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string cfg_EmulatorPort {
+        public string cfgEmulatorPort {
             get {
-                return ((string)(this["cfg_EmulatorPort"]));
+                return ((string)(this["cfgEmulatorPort"]));
             }
             set {
-                this["cfg_EmulatorPort"] = value;
+                this["cfgEmulatorPort"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool cfg_ConsultConnectAtStartup {
+        public bool cfgConsultConnectAtStartup {
             get {
-                return ((bool)(this["cfg_ConsultConnectAtStartup"]));
+                return ((bool)(this["cfgConsultConnectAtStartup"]));
             }
             set {
-                this["cfg_ConsultConnectAtStartup"] = value;
+                this["cfgConsultConnectAtStartup"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool cfg_EmulatorConnectAtStartup {
+        public bool cfgEmulatorConnectAtStartup {
             get {
-                return ((bool)(this["cfg_EmulatorConnectAtStartup"]));
+                return ((bool)(this["cfgEmulatorConnectAtStartup"]));
             }
             set {
-                this["cfg_EmulatorConnectAtStartup"] = value;
+                this["cfgEmulatorConnectAtStartup"] = value;
             }
         }
         
@@ -172,83 +172,105 @@ namespace FRom.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool cfg_EmulatorSaveFileAfterRead {
+        public bool cfgEmulatorSaveFileAfterRead {
             get {
-                return ((bool)(this["cfg_EmulatorSaveFileAfterRead"]));
+                return ((bool)(this["cfgEmulatorSaveFileAfterRead"]));
             }
             set {
-                this["cfg_EmulatorSaveFileAfterRead"] = value;
+                this["cfgEmulatorSaveFileAfterRead"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public char cfg_ConsultDiagECUType {
+        public char cfgConsultDiagECUType {
             get {
-                return ((char)(this["cfg_ConsultDiagECUType"]));
+                return ((char)(this["cfgConsultDiagECUType"]));
             }
             set {
-                this["cfg_ConsultDiagECUType"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string cfg_UserName {
-            get {
-                return ((string)(this["cfg_UserName"]));
-            }
-            set {
-                this["cfg_UserName"] = value;
+                this["cfgConsultDiagECUType"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string cfg_UserEmail {
+        public string cfgUserName {
             get {
-                return ((string)(this["cfg_UserEmail"]));
+                return ((string)(this["cfgUserName"]));
             }
             set {
-                this["cfg_UserEmail"] = value;
+                this["cfgUserName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string cfgUserEmail {
+            get {
+                return ((string)(this["cfgUserEmail"]));
+            }
+            set {
+                this["cfgUserEmail"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool cfg_ConsultKeepALive {
+        public bool cfgConsultKeepALive {
             get {
-                return ((bool)(this["cfg_ConsultKeepALive"]));
+                return ((bool)(this["cfgConsultKeepALive"]));
             }
             set {
-                this["cfg_ConsultKeepALive"] = value;
+                this["cfgConsultKeepALive"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool cfg_FormLogTopMost {
+        public bool cfgFormLogTopMost {
             get {
-                return ((bool)(this["cfg_FormLogTopMost"]));
+                return ((bool)(this["cfgFormLogTopMost"]));
             }
             set {
-                this["cfg_FormLogTopMost"] = value;
+                this["cfgFormLogTopMost"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool cfg_FormLogAttachToMain {
+        public bool cfgFormLogAttachToMain {
             get {
-                return ((bool)(this["cfg_FormLogAttachToMain"]));
+                return ((bool)(this["cfgFormLogAttachToMain"]));
             }
             set {
-                this["cfg_FormLogAttachToMain"] = value;
+                this["cfgFormLogAttachToMain"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::FRom.ConsultNS.TyreParams cfgTyreOrigin {
+            get {
+                return ((global::FRom.ConsultNS.TyreParams)(this["cfgTyreOrigin"]));
+            }
+            set {
+                this["cfgTyreOrigin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::FRom.ConsultNS.TyreParams cfgTyreCurrent {
+            get {
+                return ((global::FRom.ConsultNS.TyreParams)(this["cfgTyreCurrent"]));
+            }
+            set {
+                this["cfgTyreCurrent"] = value;
             }
         }
     }

@@ -36,6 +36,8 @@
 			this.cmbRadius = new System.Windows.Forms.ComboBox();
 			this.txtDiameter = new System.Windows.Forms.TextBox();
 			this.lblDiameter = new System.Windows.Forms.Label();
+			this.label1 = new System.Windows.Forms.Label();
+			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
 			// lblWidth
@@ -97,7 +99,7 @@
 			this.txtDiameter.Location = new System.Drawing.Point(219, 16);
 			this.txtDiameter.Name = "txtDiameter";
 			this.txtDiameter.ReadOnly = true;
-			this.txtDiameter.Size = new System.Drawing.Size(60, 20);
+			this.txtDiameter.Size = new System.Drawing.Size(85, 20);
 			this.txtDiameter.TabIndex = 3;
 			// 
 			// lblDiameter
@@ -105,15 +107,33 @@
 			this.lblDiameter.AutoSize = true;
 			this.lblDiameter.Location = new System.Drawing.Point(216, 0);
 			this.lblDiameter.Name = "lblDiameter";
-			this.lblDiameter.Size = new System.Drawing.Size(66, 13);
+			this.lblDiameter.Size = new System.Drawing.Size(88, 13);
 			this.lblDiameter.TabIndex = 0;
-			this.lblDiameter.Text = "Diameter (D)";
+			this.lblDiameter.Text = "Diameter, mm (D)";
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(-3, 40);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(156, 13);
+			this.label1.TabIndex = 0;
+			this.label1.Text = "Recomended Disk Width (Inch)";
+			// 
+			// textBox1
+			// 
+			this.textBox1.Location = new System.Drawing.Point(219, 37);
+			this.textBox1.Name = "textBox1";
+			this.textBox1.ReadOnly = true;
+			this.textBox1.Size = new System.Drawing.Size(60, 20);
+			this.textBox1.TabIndex = 3;
 			// 
 			// UserControlTyreParams
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoSize = true;
+			this.Controls.Add(this.textBox1);
 			this.Controls.Add(this.txtDiameter);
 			this.Controls.Add(this.cmbRadius);
 			this.Controls.Add(this.cmbHeight);
@@ -121,9 +141,10 @@
 			this.Controls.Add(this.lblDiameter);
 			this.Controls.Add(this.lblRadius);
 			this.Controls.Add(this.lblHeight);
+			this.Controls.Add(this.label1);
 			this.Controls.Add(this.lblWidth);
 			this.Name = "UserControlTyreParams";
-			this.Size = new System.Drawing.Size(285, 40);
+			this.Size = new System.Drawing.Size(307, 60);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -139,5 +160,7 @@
 		private System.Windows.Forms.ComboBox cmbRadius;
 		private System.Windows.Forms.TextBox txtDiameter;
 		private System.Windows.Forms.Label lblDiameter;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.TextBox textBox1;
 	}
 }

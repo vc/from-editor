@@ -144,7 +144,7 @@ namespace Helper
 			catch (ObjectDisposedException) { }
 		}
 
-		internal static void Invoke(Control ctrl, MethodInvoker methodToInvoke)
+		public static void Invoke(Control ctrl, MethodInvoker methodToInvoke)
 		{
 			try
 			{
@@ -161,6 +161,7 @@ namespace Helper
 			}
 			catch (ObjectDisposedException) { }
 		}
+
 	}
 
 }

@@ -53,8 +53,7 @@ namespace FRomTest
 		{
 			lock (_target)
 			{
-				_target.COMPort = _port;
-				_target.Initialise();
+				_target.Initialise(_port);
 				Assert.IsTrue(_target.State == ConsultClassState.ECU_IDLE);
 			}
 		}
@@ -68,9 +67,8 @@ namespace FRomTest
 			lock (_target)
 			{
 				try
-				{
-					_target.COMPort = _port;
-					_target.Initialise();
+				{					
+					_target.Initialise(_port);
 				}
 				catch (Exception ex)
 				{
