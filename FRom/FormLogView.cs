@@ -4,8 +4,8 @@ using System.ComponentModel;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using FRom.Logger;
 using Helper;
+using Helper.Logger;
 
 namespace FRom
 {
@@ -63,11 +63,11 @@ namespace FRom
 			}
 
 			_mnuStayOnTop = new MenuItem(_cMenuStayOnTop, MenuClick);
-			_mnuStayOnTop.Checked = _parrent._settings.cfgFormLogTopMost;
+			_mnuStayOnTop.Checked = _parrent._cfg.cfgFormLogTopMost;
 			MenuClick(_mnuStayOnTop, null);
 
 			_mnuAttachToMain = new MenuItem(_cMenuAttachToMain, MenuClick);
-			_mnuAttachToMain.Checked = _parrent._settings.cfgFormLogAttachToMain;
+			_mnuAttachToMain.Checked = _parrent._cfg.cfgFormLogAttachToMain;
 			MenuClick(_mnuAttachToMain, null);
 
 			//Main menu
@@ -196,8 +196,8 @@ namespace FRom
 		protected override void OnClosing(CancelEventArgs e)
 		{
 			//Save settings
-			_parrent._settings.cfgFormLogTopMost = _mnuStayOnTop.Checked;
-			_parrent._settings.cfgFormLogAttachToMain = _mnuAttachToMain.Checked;
+			_parrent._cfg.cfgFormLogTopMost = _mnuStayOnTop.Checked;
+			_parrent._cfg.cfgFormLogAttachToMain = _mnuAttachToMain.Checked;
 
 			_log.NewMessage -= new EventHandler<NewMessageEventArgs>(_log_NewMessage);
 			DisposeResources(true);

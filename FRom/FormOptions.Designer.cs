@@ -114,7 +114,6 @@
 			this.cbEmulatorPort.Name = "cbEmulatorPort";
 			this.cbEmulatorPort.Size = new System.Drawing.Size(100, 21);
 			this.cbEmulatorPort.TabIndex = 9;
-			this.cbEmulatorPort.VisibleChanged += new System.EventHandler(this.cbEmulatorPort_VisibleChanged);
 			// 
 			// btnEmulatorTest
 			// 
@@ -222,7 +221,6 @@
 			this.cbConsultPort.Name = "cbConsultPort";
 			this.cbConsultPort.Size = new System.Drawing.Size(100, 21);
 			this.cbConsultPort.TabIndex = 9;
-			this.cbConsultPort.VisibleChanged += new System.EventHandler(this.cbConsultPort_VisibleChanged);
 			// 
 			// lblPortConsult
 			// 

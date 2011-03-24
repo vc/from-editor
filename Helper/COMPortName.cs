@@ -6,11 +6,11 @@ using Microsoft.Win32;
 namespace Helper
 {
 
-	public class COMPortsList : IComparer<COMPortsList>
+	public class COMPortName : IComparer<COMPortName>
 	{
 		string _port;
 		bool _isUsed;
-		public COMPortsList(string port, bool isUsed = false)
+		public COMPortName(string port, bool isUsed = false)
 		{
 			_port = port;
 			_isUsed = isUsed;
@@ -18,16 +18,35 @@ namespace Helper
 
 		public override string ToString()
 		{
-			return String.Format("{0} {1}",
+			return String.Format("{0}{1}",
 				_port,
-				_isUsed ? "<<used>>" : ""
+				_isUsed ? " <<used>>" : ""
 				);
 
 		}
 
+		/// <summary>
+		/// Имя COM порта
+		/// </summary>
+		public string PortName
+		{
+			get { return _port; }
+			set { _port = value; }
+		}
+
+		/// <summary>
+		/// Занят ли порт
+		/// </summary>
+		public bool IsUsed
+		{
+			get { return _isUsed; }
+			set { _isUsed = value; }
+		}
+
+
 		#region IComparer<Coms> Members
 
-		public int Compare(COMPortsList x, COMPortsList y)
+		public int Compare(COMPortName x, COMPortName y)
 		{
 			return x._port == y._port ? 0 : -1;
 		}
@@ -38,9 +57,9 @@ namespace Helper
 		/// Взять список всех COM портов
 		/// </summary>
 		/// <returns>Список портов</returns>
-		public static List<COMPortsList> GetPortNames()
+		public static List<COMPortName> GetPortNames(bool openPortsOnly = false)
 		{
-			List<COMPortsList> serial_ports = new List<COMPortsList>();
+			List<COMPortName> serial_ports = new List<COMPortName>();
 			using (RegistryKey subkey = Registry.LocalMachine.OpenSubKey("HARDWARE\\DEVICEMAP\\SERIALCOMM"))
 			{
 				if (subkey != null)
@@ -51,7 +70,10 @@ namespace Helper
 						string port = subkey.GetValue(value, "").ToString();
 						if (port != "")
 						{
-							serial_ports.Add(new COMPortsList(port, !CheckAccessPort(port)));
+							bool isAccesible = IsPortFree(port);
+							if (openPortsOnly && !isAccesible)
+								continue;
+							serial_ports.Add(new COMPortName(port, !isAccesible));
 						}
 					}
 				}
@@ -64,7 +86,7 @@ namespace Helper
 		/// </summary>
 		/// <param name="port">имя порта</param>
 		/// <returns>true - порт доступен. false - порт НЕ доступен</returns>
-		public static bool CheckAccessPort(string port)
+		public static bool IsPortFree(string port)
 		{
 			using (SerialPort tmp = new SerialPort(port))
 				try

@@ -27,8 +27,11 @@ namespace FRom
 				? UserControlTyreParams.DefaultTyre
 				: current;
 
+			ctlTyresOriginal.Tyre = _tOrigin;
+			ctlTyresNew.Tyre = _tNew;
+
 			CalcAcurancy();
-			
+
 			this.VisibleChanged += new EventHandler(FormTyreCalc_VisibleChanged);
 		}
 
@@ -59,7 +62,7 @@ namespace FRom
 		/// </summary>
 		public double K
 		{
-			get { return _tOrigin / _tNew; }
+			get { return TyreParams.CalcK(_tOrigin,_tNew); }
 		}
 
 		private void btnOK_Click(object sender, EventArgs e)

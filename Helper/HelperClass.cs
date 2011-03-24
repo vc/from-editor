@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using Ionic.Zip;
+using Helper.ProgressBar;
+using System.Drawing;
+using Helper.Logger;
 
 namespace Helper
 {
@@ -162,6 +167,195 @@ namespace Helper
 			catch (ObjectDisposedException) { }
 		}
 
-	}
+		/// <summary>
+		/// Интерактивное сообщение пользователю
+		/// </summary>
+		/// <param name="ctrl">Откуда сообщение</param>
+		/// <param name="msg">Сообщение</param>
+		/// <param name="caption">Заголовок</param>
+		/// <param name="icon">Значек диалога</param>
+		/// <param name="buttons">Кнопки</param>
+		/// <returns>Резльтат диалога</returns>
+		public static DialogResult Message(Control ctrl, string msg,
+			string caption = null,
+			MessageBoxIcon icon = MessageBoxIcon.Information,
+			MessageBoxButtons buttons = MessageBoxButtons.OK)
+		{
+			if (caption == null)
+				caption = GetProductInfo(ctrl);
 
+			EventEntryType logEventType = icon == MessageBoxIcon.Error
+				? EventEntryType.Error
+				: EventEntryType.Event;
+			Log.Instance.WriteEntry(ctrl, msg, logEventType);
+
+			DialogResult res = System.Windows.Forms.DialogResult.OK;
+			HelperClass.Invoke(ctrl, delegate()
+			{
+				res = MessageBox.Show(ctrl, msg, caption, buttons, icon);
+			});
+			Logger.Log.Instance.WriteEntry(ctrl, "DialogResult=" + res.ToString());
+			return res;
+		}
+		/// <summary>
+		/// Интерактивное сообщение пользователю
+		/// </summary>
+		/// <param name="ctrl">Откуда сообщение</param>
+		/// <param name="ex">Исключение как источник сообщения</param>
+		/// <param name="caption">Заголовок</param>
+		/// <param name="icon">Значек диалога</param>
+		/// <param name="buttons">Кнопки</param>
+		/// <returns>Резльтат диалога</returns>
+		public static DialogResult Message(Control ctrl, Exception ex,
+			string caption = null,
+			MessageBoxIcon icon = MessageBoxIcon.Error,
+			MessageBoxButtons buttons = MessageBoxButtons.OK)
+		{
+			string msg = HelperClass.GetExceptionMessages(ex);
+
+			return Message(ctrl, msg, caption, icon, buttons);
+		}
+
+		/// <summary>
+		/// Взять имя файла без расширения
+		/// </summary>
+		/// <param name="file"></param>
+		/// <returns></returns>
+		public static string GetFileName(FileInfo file)
+		{
+			return file.Name.Substring(0, file.Name.LastIndexOf('.'));
+		}
+
+		static IProgressBar _progressZip;
+		/// <summary>
+		/// Сархивировать файлы в MemoryStream
+		/// </summary>
+		/// <param name="attachments">Список файлов</param>
+		/// <returns>Поток данных</returns>
+		public static MemoryStream CreateZipAttachement(List<string> attachments)
+		{
+			_progressZip = FormProgressBar.GetInstance("Packing log file...");
+			MemoryStream st = new MemoryStream();
+			ZipFile zip = new ZipFile();
+
+
+			lock (_progressZip)
+			{
+				foreach (string file in attachments)
+					try { zip.AddFile(file, ""); }
+					catch { }
+				_progressZip.ShowProgressBar(delegate() { zip.Save(st); });
+			}
+
+			_progressZip.Dispose();
+			_progressZip = null;
+			return st;
+		}
+
+		/// <summary>
+		/// Получить первое свободное имя файла в указанной папке
+		/// </summary>
+		/// <param name="fi">Имя файла для поиска первого незанятого имени</param>
+		/// <param name="formatString">Строка формаирования индекса {0} - имя файла {1}-порядковый индекс, {2} - расширение {3}-дата</param>
+		/// <returns>Имя файла, которого не существует			</returns>
+		public static FileInfo GetFirstFreeFileName(FileInfo fi, string formatString = "{0}[{3:yyyy-MM-dd}]_{1}{2}")
+		{
+			FileInfo fiCurrent;
+			int i = 0;
+
+			do
+			{
+				string tmp = String.Format(formatString,
+							HelperClass.GetFileName(fi),
+							i++,
+							fi.Extension,
+							DateTime.Now
+						);
+				fiCurrent = new FileInfo(
+					Path.Combine(
+						fi.Directory.FullName,
+						tmp
+					)
+				);
+			} while (File.Exists(fiCurrent.FullName));
+
+			return fiCurrent;
+		}
+
+		/// <summary>
+		/// Получить дефолтовые настройки формы
+		/// </summary>
+		/// <param name="caption">Заголовок (если пустой - имя и версия продукта)</param>
+		/// <param name="controls">Массив контролов для добавления на форму</param>
+		public static void GetDefaultDialogForm(string caption = null, Control[] controls = null)
+		{
+			Form frm = new Form();
+			frm.SuspendLayout();
+			//frm.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			frm.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			frm.ClientSize = new System.Drawing.Size(406, 200);
+			frm.AutoSize = true;
+			if (controls != null)
+				foreach (Control i in controls)
+					frm.Controls.Add(i);
+			frm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+			frm.MaximizeBox = false;
+			frm.MinimizeBox = false;
+			//frm.Name = ;
+			frm.ShowIcon = false;
+			frm.ShowInTaskbar = false;
+			frm.Text = caption == null ? GetProductInfo(frm) : caption;
+			frm.ResumeLayout(false);
+		}
+
+		public static string GetProductInfo(Control ctrl)
+		{
+			return String.Format("{0} ({1})",
+								ctrl.ProductName,
+								ctrl.ProductVersion
+								);
+		}
+
+		public static DialogResult InputBox(string title, string promptText, ref string value)
+		{
+			Form form = new Form();
+			Label label = new Label();
+			TextBox textBox = new TextBox();
+			Button buttonOk = new Button();
+			Button buttonCancel = new Button();
+
+			form.Text = title;
+			label.Text = promptText;
+			textBox.Text = value;
+
+			buttonOk.Text = "OK";
+			buttonCancel.Text = "Cancel";
+			buttonOk.DialogResult = DialogResult.OK;
+			buttonCancel.DialogResult = DialogResult.Cancel;
+
+			label.SetBounds(9, 20, 372, 13);
+			textBox.SetBounds(12, 36, 372, 20);
+			buttonOk.SetBounds(228, 72, 75, 23);
+			buttonCancel.SetBounds(309, 72, 75, 23);
+
+			label.AutoSize = true;
+			textBox.Anchor = textBox.Anchor | AnchorStyles.Right;
+			buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+			buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+
+			form.ClientSize = new Size(396, 107);
+			form.Controls.AddRange(new Control[] { label, textBox, buttonOk, buttonCancel });
+			form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
+			form.FormBorderStyle = FormBorderStyle.FixedDialog;
+			form.StartPosition = FormStartPosition.CenterScreen;
+			form.MinimizeBox = false;
+			form.MaximizeBox = false;
+			form.AcceptButton = buttonOk;
+			form.CancelButton = buttonCancel;
+
+			DialogResult dialogResult = form.ShowDialog();
+			value = textBox.Text;
+			return dialogResult;
+		}
+	}
 }

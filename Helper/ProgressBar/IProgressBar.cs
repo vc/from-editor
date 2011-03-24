@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Helper.ProgressBar
 {
+	public delegate void IterationCallback(InteratorEventArgs e);
+	public delegate void ExecuteCallback();
+
 	public interface IProgressBar : IDisposable
 	{
 		/// <summary>
@@ -24,6 +27,10 @@ namespace Helper.ProgressBar
 		/// </summary>
 		/// <param name="callback">То что будет выполняться в потоке</param>
 		void ShowProgressBar(ExecuteCallback callback);
+
+		void SetCurrentState(string text, int index, int? total = null);
+
+		void ShowProgressBar();
 
 		/// <summary>
 		/// Остановить прогрес бар 

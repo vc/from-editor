@@ -12,6 +12,7 @@
     <AssemblyName>Helper</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -24,7 +25,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -46,6 +46,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ionic.Zip.Reduced">
+      <HintPath>externals\Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -53,15 +56,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="COMPortsList.cs" />
+    <Compile Include="COMPortName.cs" />
     <Compile Include="Debug.cs" />
     <Compile Include="HelperClass.cs" />
     <Compile Include="ListIndexString.cs" />
+    <Compile Include="Logger\Event.cs" />
+    <Compile Include="Logger\FileLogger.cs" />
+    <Compile Include="Logger\Logger.cs" />
+    <Compile Include="Logger\NewMessageEventArgs.cs" />
+    <Compile Include="Logger\TimeStreamWriter.cs" />
+    <Compile Include="Logger\UserSettings.cs" />
     <Compile Include="ProgressBar\InteratorEventArgs.cs" />
     <Compile Include="ProgressBar\IProgressBar.cs" />
-    <Compile Include="ProgressBar\ProgressBarForm.cs" />
-    <Compile Include="ProgressBar\ProgressBarForm.Designer.cs">
-      <DependentUpon>ProgressBarForm.cs</DependentUpon>
+    <Compile Include="ProgressBar\FormProgressBar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProgressBar\FormProgressBar.Designer.cs">
+      <DependentUpon>FormProgressBar.cs</DependentUpon>
     </Compile>
     <Content Include="ProgressBar\ProgressBarSample.txt" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,8 +103,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ProgressBar\ProgressBarForm.resx">
-      <DependentUpon>ProgressBarForm.cs</DependentUpon>
+    <EmbeddedResource Include="ProgressBar\FormProgressBar.resx">
+      <DependentUpon>FormProgressBar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -121,6 +132,11 @@
     <None Include="Properties\DataSources\icons\silk\page_white_add.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

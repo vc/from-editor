@@ -1,9 +1,8 @@
 ﻿using System;
-using System.IO.Ports;
-using FRom.Emulator;
-using FRom.Logger;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
+using FRom.Emulator;
+using Helper.Logger;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FRomTest
 {

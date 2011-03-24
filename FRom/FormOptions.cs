@@ -6,8 +6,8 @@ using FRom.ConsultNS;
 using FRom.ConsultNS.Data;
 using FRom.Emulator;
 using FRom.Properties;
-using Microsoft.Win32;
 using Helper;
+using Helper.ProgressBar;
 
 namespace FRom
 {
@@ -25,7 +25,7 @@ namespace FRom
 		/// <summary>
 		/// Список доступных COM портов
 		/// </summary>
-		List<COMPortsList> _portsList;
+		List<COMPortName> _portsList;
 
 
 		/// <summary>
@@ -35,60 +35,63 @@ namespace FRom
 		public FormSettings(FormMain frmParrent)
 		{
 			_frmParrent = frmParrent;
-			_portsList = COMPortsList.GetPortNames();
+			_portsList = COMPortName.GetPortNames();
 
 			InitializeComponent();
+
+			cbConsultPort.SelectedIndexChanged += new EventHandler(cbPorts_SelectedIndexChanged);
+			cbEmulatorPort.SelectedIndexChanged += new EventHandler(cbPorts_SelectedIndexChanged);
+
 			InitializeMenu();
 			InitializeConsult();
 			InitializeEmulator();
-			InitializeSettings();
+			LoadSettings();
+			UpdateButtons();
 		}
 
-		private void cbEmulatorPort_VisibleChanged(object sender, EventArgs e)
+		void cbPorts_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			COMPortsList com = new COMPortsList(_frmParrent._settings.cfgEmulatorPort);
-			int nPortEmulator = _portsList.BinarySearch(com, com);
-			if (nPortEmulator >= 0)
-				cbEmulatorPort.SelectedIndex = nPortEmulator;
-			InitEmulator(_frmParrent._settings.cfgEmulatorPort);
+			UpdateButtons();
 		}
 
-		private void cbConsultPort_VisibleChanged(object sender, EventArgs e)
+		/// <summary>
+		/// Выбрать COM в ComboBox
+		/// </summary>
+		/// <param name="port"></param>
+		/// <param name="cb"></param>
+		void ComboBoxSelectedIndexUpdate(COMPortName port, ComboBox cb)
 		{
-			COMPortsList com = new COMPortsList(_frmParrent._settings.cfgConsultPort);
-			int nPortConsult = _portsList.BinarySearch(com, com);
-			if (nPortConsult >= 0)
-				cbConsultPort.SelectedIndex = nPortConsult;
-			InitConsult(_frmParrent._settings.cfgConsultPort);
+			int nPort = _portsList.BinarySearch(port, port);
+			if (nPort >= 0)
+				cb.SelectedIndex = nPort;
 		}
 
 		private void InitializeEmulator()
 		{
 			cbEmulatorPort.Items.Clear();
 			cbEmulatorPort.Items.AddRange(_portsList.ToArray());
-			cbEmulatorPort_VisibleChanged(cbEmulatorPort, null);
+			ComboBoxSelectedIndexUpdate(new COMPortName(cfg.cfgEmulatorPort), cbEmulatorPort);
 		}
 
 		private void InitializeConsult()
 		{
 			cbConsultPort.Items.Clear();
 			cbConsultPort.Items.AddRange(_portsList.ToArray());
-			cbConsultPort_VisibleChanged(cbConsultPort, null);
+			ComboBoxSelectedIndexUpdate(new COMPortName(cfg.cfgConsultPort), cbConsultPort);
 		}
 
-		/// <summary>
-		/// Загружаем форму из settings
-		/// </summary>
-		private void InitializeSettings()
+		private void UpdateButtons()
 		{
-			this.txtADRFilesPath.Text = cfg.cfgADRFilesPath;
-			this.txtBINFilesPath.Text = cfg.cfgROMFilesPath;
-			this.chkAutoLoadFiles.Checked = cfg.cfgOpenLastConfig;
-			this.chkConsultAutoConnect.Checked = cfg.cfgConsultConnectAtStartup;
-			this.chkEmulatorAutoConnect.Checked = cfg.cfgEmulatorConnectAtStartup;
-			this.chkEmulatorSaveROMToFileAfterDownload.Checked =
-				cfg.cfgEmulatorSaveFileAfterRead;
-			this.chkConsultKeepALive.Enabled = cfg.cfgConsultKeepALive;
+			const string scan = "Scan";
+			const string test = "Test";
+
+			btnConsultTest.Text = cbConsultPort.SelectedItem == null
+				? scan
+				: test;
+
+			btnEmulatorTest.Text = cbEmulatorPort.SelectedItem == null
+				? scan
+				: test;
 		}
 
 		private void InitializeMenu()
@@ -98,23 +101,6 @@ namespace FRom
 			});
 		}
 
-		Settings cfg
-		{
-			get { return _frmParrent._settings; }
-		}
-
-		protected Romulator _emulator
-		{
-			get { return _frmParrent._emulator; }
-			set { _frmParrent._emulator = value; }
-		}
-
-		protected Consult _consult
-		{
-			get { return _frmParrent._consult; }
-			set { _frmParrent._consult = value; }
-		}
-
 		private void MenuClickTyreCalculator(object sender, EventArgs e)
 		{
 			FormTyreCalc frmTyreCalc = new FormTyreCalc(cfg.cfgTyreOrigin, cfg.cfgTyreCurrent);
@@ -122,6 +108,8 @@ namespace FRom
 			{
 				cfg.cfgTyreOrigin = frmTyreCalc._tOrigin;
 				cfg.cfgTyreCurrent = frmTyreCalc._tNew;
+
+				ConsultSensor._speedCorrect = TyreParams.CalcK(frmTyreCalc._tOrigin, frmTyreCalc._tNew);
 			}
 		}
 
@@ -129,7 +117,7 @@ namespace FRom
 		/// Попытка инициализации эмулятора
 		/// </summary>
 		/// <param name="port"></param>
-		void InitEmulator(string port)
+		void ConnectEmulator(string port)
 		{
 			_emulatorVer = null;
 			//Класса эмулятор не существует и выбран COM порт
@@ -187,58 +175,97 @@ namespace FRom
 			{
 				StatusLabel(StatusCommunications.Search, lblStatusEmulator);
 				this.Update();
-				InitEmulator(port);
+				ConnectEmulator(port);
 			}
 		}
 
-		private void InitConsult(string port)
+		private void ConnectConsult(COMPortName comPort = null)
 		{
+			string port = comPort == null ? "" : comPort.PortName;
+
 			_consultECUInfo = null;
 			//Если Класса не существует - внештатная ситуация
 			if (_consult == null)
 				throw new NullReferenceException("Не создан экземпляр класса Consult!");
-			if (port == null)
-				return;
 
-			//выбран конкретный порт. пробуем к нему подключиться
-			if (port != "")
+			//Порт пуст. будем искать консульт на всех свободных портах
+			if (String.IsNullOrEmpty(port))
+			{
+				if (!_consult.IsOnline)
+				{
+					List<COMPortName> lstAccesiblePorts = COMPortName.GetPortNames(true);
+					using (IProgressBar progressCOMSearch = FormProgressBar.GetInstance("Initialize consult on "))
+					{
+						progressCOMSearch.ShowProgressBar(delegate()
+						{
+							foreach (COMPortName i in lstAccesiblePorts)
+							{
+								progressCOMSearch.SetCurrentState(i.PortName);
+								try
+								{
+									_consult.Initialise(i.PortName);
+									_consultECUInfo = _consult.GetECUInfo();
+									break;
+								}
+								catch (ConsultException)
+								{ continue; }
+							}
+						});
+					}
+
+					if (_consult.IsOnline)
+					{
+						StatusLabel(StatusCommunications.Found, lblStatusConsult, _consultECUInfo.ToString());
+						StatusLabel(StatusCommunications.Found, cbConsultPort, _consultECUInfo.ToString());
+
+						port = _consult.COMPort;
+						_consult.Disconnect();
+						ComboBoxSelectedIndexUpdate(new COMPortName(_consult.COMPort), cbConsultPort);
+					}
+					else
+					{
+						StatusLabel(StatusCommunications.NotFound, lblStatusConsult);
+						StatusLabel(StatusCommunications.NotFound, cbConsultPort);
+					}
+				}
+			}
+			//выбран конкретный порт
+			else
+			{
 				try
 				{
-					//Если подключены - отключаемся
-					if (_consult.State != ConsultClassState.ECU_OFFLINE)
+					//выбранный порт отличается от того по которому сейчас работает консульт				
+					//выбранный порт новый и consult уже подключен, отключимся
+					if (port != _consult.COMPort && _consult.IsOnline)
 						_consult.Disconnect();
-					_consult.Initialise(port);
-					_consultECUInfo = _consult.GetECUInfo();
-					StatusLabel(StatusCommunications.Found, lblStatusConsult, _consultECUInfo.ToString());
-					StatusLabel(StatusCommunications.Found, cbConsultPort, _consultECUInfo.ToString());
+
+					using (IProgressBar progress = FormProgressBar.GetInstance("Consult initialization on " + port))
+					{
+						progress.ShowProgressBar(delegate()
+						{
+							try
+							{
+								_consult.Initialise(port);
+								_consultECUInfo = _consult.GetECUInfo();
+
+								StatusLabel(StatusCommunications.Found, lblStatusConsult, _consultECUInfo.ToString());
+								StatusLabel(StatusCommunications.Found, cbConsultPort, _consultECUInfo.ToString());
+							}
+							catch (ConsultException ex)
+							{
+								StatusLabel(StatusCommunications.NotFound, lblStatusConsult, ex.Message);
+								StatusLabel(StatusCommunications.NotFound, cbConsultPort, ex.Message);
+							}
+						});
+					}
 				}
 				catch (ConsultException ex)
 				{
 					StatusLabel(ex.Message, Color.Red, lblStatusConsult);
 					StatusLabel(ex.Message, Color.Red, cbConsultPort);
+					return;
 				}
-			//Переоткрываем последний выбранный
-			else if (port == "")
-				try
-				{
-					_consultECUInfo = _consult.GetECUInfo();
-					StatusLabel(StatusCommunications.Found, lblStatusEmulator, _consultECUInfo.ToString());
-					string consPort = _consult.COMPort.ToUpper();
-					foreach (var i in cbConsultPort.Items)
-					{
-						if (i.ToString().CompareTo(consPort) == 0)
-						{
-							cbConsultPort.SelectedItem = i;
-							break;
-						}
-					}
-				}
-				catch (Exception ex)
-				{
-					StatusLabel(ex.Message, Color.Red, lblStatusConsult);
-				}
-			else
-				StatusLabel(StatusCommunications.Default, lblStatusConsult);
+			}
 		}
 
 		/// <summary>
@@ -258,7 +285,7 @@ namespace FRom
 					col = Color.Black;
 					break;
 				case StatusCommunications.Found:
-					textLabel = "Обнаружен: v";
+					textLabel = "Обнаружен: ";
 					col = Color.Green;
 					break;
 				case StatusCommunications.NotFound:
@@ -279,42 +306,71 @@ namespace FRom
 			Label lbl = o as Label;
 			ComboBox cb = o as ComboBox;
 
-			if (lbl != null)
+			HelperClass.Invoke(this, delegate()
 			{
-				lbl.Text = text;
-				lbl.ForeColor = col;
-			}
-			else if (cb != null)
-			{
-				cb.BackColor = col;
-				ToolTip toolTip1 = new ToolTip();
-				//toolTip1.SetToolTip(cb, text);
-				toolTip1.Show(text, cb);
-			}
-			this.Update();
+				if (lbl != null)
+				{
+					lbl.Text = text;
+					//ToolTip tt = new ToolTip(Components);
+					//tt.IsBalloon = true;
+					//tt.SetToolTip(lbl, text);
+					lbl.ForeColor = col;
+				}
+				else if (cb != null)
+				{
+					cb.BackColor = col;
+					//ToolTip toolTip1 = new ToolTip();
+					//toolTip1.SetToolTip(cb, text);
+					//toolTip1.Show(text, cb, 50);
+				}
+				this.Update();
+			});
 		}
 
 		#region Properties
-		public Romulator Emulator
+		Settings cfg
 		{
-			get { return _emulator; }
+			get { return _frmParrent._cfg; }
+		}
+
+		protected Romulator _emulator
+		{
+			get { return _frmParrent._emulator; }
+			set { _frmParrent._emulator = value; }
+		}
+
+		protected Consult _consult
+		{
+			get { return _frmParrent._consult; }
+			set { _frmParrent._consult = value; }
 		}
 		#endregion
 
 		private void btnOk_Click(object sender, EventArgs e)
+		{
+			SaveSettings();
+		}
+
+		private void SaveSettings()
 		{
 			cfg.Initialize(
 				new System.Configuration.SettingsContext(),
 				new System.Configuration.SettingsPropertyCollection(),
 				new System.Configuration.SettingsProviderCollection()
 			);
-			//_frmParrent._settings.Providers.Add(
 
 			cfg.cfgADRFilesPath = this.txtADRFilesPath.Text;
 			cfg.cfgROMFilesPath = this.txtBINFilesPath.Text;
 			cfg.cfgOpenLastConfig = this.chkAutoLoadFiles.Checked;
-			cfg.cfgConsultPort = this.cbConsultPort.SelectedItem as string;
-			cfg.cfgEmulatorPort = this.cbEmulatorPort.SelectedItem as string;
+
+			cfg.cfgConsultPort = (this.cbConsultPort.SelectedItem as COMPortName) == null
+				? ""
+				: (this.cbConsultPort.SelectedItem as COMPortName).PortName;
+
+			cfg.cfgEmulatorPort = (this.cbEmulatorPort.SelectedItem as COMPortName) == null
+				? ""
+				: (this.cbEmulatorPort.SelectedItem as COMPortName).PortName;
+
 			cfg.cfgConsultConnectAtStartup = this.chkConsultAutoConnect.Checked;
 			cfg.cfgEmulatorConnectAtStartup = this.chkEmulatorAutoConnect.Checked;
 			cfg.cfgEmulatorSaveFileAfterRead =
@@ -324,25 +380,54 @@ namespace FRom
 			cfg.Save();
 		}
 
+		/// <summary>
+		/// Загружаем форму из settings
+		/// </summary>
+		private void LoadSettings()
+		{
+			this.txtADRFilesPath.Text = cfg.cfgADRFilesPath;
+			this.txtBINFilesPath.Text = cfg.cfgROMFilesPath;
+			this.chkAutoLoadFiles.Checked = cfg.cfgOpenLastConfig;
+
+			this.chkConsultAutoConnect.Checked = cfg.cfgConsultConnectAtStartup;
+			this.chkConsultKeepALive.Enabled = cfg.cfgConsultKeepALive;
+			ComboBoxSelectedIndexUpdate(new COMPortName(cfg.cfgConsultPort), cbConsultPort);
+
+			this.chkEmulatorAutoConnect.Checked = cfg.cfgEmulatorConnectAtStartup;
+			this.chkEmulatorSaveROMToFileAfterDownload.Checked = cfg.cfgEmulatorSaveFileAfterRead;
+			ComboBoxSelectedIndexUpdate(new COMPortName(cfg.cfgEmulatorPort), cbEmulatorPort);
+		}
+
 		private void btnConsultTest_Click(object sender, EventArgs e)
 		{
-			if (cbConsultPort.SelectedItem == null)
-				return;
-			string port = cbConsultPort.SelectedItem.ToString();
+			COMPortName port = cbConsultPort.SelectedItem as COMPortName;
 
 			StatusLabel(StatusCommunications.Search, lblStatusConsult);
 			StatusLabel(StatusCommunications.Search, cbConsultPort);
 
-			InitConsult(port);
+			ConnectConsult(port);
+		}
+
+		enum StatusCommunications
+		{
+			Default,
+			Found,
+			NotFound,
+			Search
+		}
+
+		public System.ComponentModel.IContainer Components
+		{
+			get
+			{
+				if (components == null)
+					components = new Helper.ResourceDisposer();
+				return components;
+			}
+			set { components = value; }
 		}
 	}
 
 
-	enum StatusCommunications
-	{
-		Default,
-		Found,
-		NotFound,
-		Search
-	}
+
 }

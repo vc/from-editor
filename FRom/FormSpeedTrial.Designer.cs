@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.grpResults = new System.Windows.Forms.GroupBox();
-			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.txtResult = new System.Windows.Forms.TextBox();
 			this.grpCurrentSpeed = new System.Windows.Forms.GroupBox();
 			this.lblCurrentSpeed = new System.Windows.Forms.Label();
 			this.btnStartStop = new System.Windows.Forms.Button();
@@ -40,7 +40,7 @@
 			// 
 			// grpResults
 			// 
-			this.grpResults.Controls.Add(this.textBox1);
+			this.grpResults.Controls.Add(this.txtResult);
 			this.grpResults.Location = new System.Drawing.Point(12, 12);
 			this.grpResults.Name = "grpResults";
 			this.grpResults.Size = new System.Drawing.Size(284, 181);
@@ -48,16 +48,18 @@
 			this.grpResults.TabStop = false;
 			this.grpResults.Text = "Result";
 			// 
-			// textBox1
+			// txtResult
 			// 
-			this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.textBox1.Location = new System.Drawing.Point(3, 16);
-			this.textBox1.Multiline = true;
-			this.textBox1.Name = "textBox1";
-			this.textBox1.ReadOnly = true;
-			this.textBox1.Size = new System.Drawing.Size(278, 162);
-			this.textBox1.TabIndex = 1;
+			this.txtResult.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txtResult.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.txtResult.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.txtResult.Location = new System.Drawing.Point(3, 16);
+			this.txtResult.Multiline = true;
+			this.txtResult.Name = "textBox1";
+			this.txtResult.ReadOnly = true;
+			this.txtResult.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txtResult.Size = new System.Drawing.Size(278, 162);
+			this.txtResult.TabIndex = 1;
 			// 
 			// grpCurrentSpeed
 			// 
@@ -133,7 +135,7 @@
 		#endregion
 
 		private System.Windows.Forms.GroupBox grpResults;
-		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.TextBox txtResult;
 		private System.Windows.Forms.GroupBox grpCurrentSpeed;
 		private System.Windows.Forms.Label lblCurrentSpeed;
 		private System.Windows.Forms.Button btnStartStop;

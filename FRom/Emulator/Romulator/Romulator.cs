@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using FRom.Logger;
 using System.IO.Ports;
 
 namespace FRom.Emulator

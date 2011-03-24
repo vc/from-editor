@@ -4,22 +4,23 @@ using System.Windows.Forms;
 
 namespace Helper.ProgressBar
 {
-	public partial class FormProgressBar : FormProgressBar, IProgressBar
+	public partial class FormProgressBar : Form, IProgressBar
 	{
-		private int count;
-		private Thread thread;
-		private System.Windows.Forms.Timer timer;
+		private int _count;
+		private Thread _thread;
+		private System.Windows.Forms.Timer _timer;
 
 		/// <summary>
 		/// Конструкто
 		/// </summary>
 		/// <param name="formCaption">Заголовок формы</param>
-		public FormProgressBar(string formCaption)
+		protected FormProgressBar(string formCaption)
 		{
 			InitializeComponent();
 			this.Tag = this.Text = formCaption;
 		}
 
+		delegate void helpDelegateEvent(string text, int index, int? total);
 		delegate void helpDelegateState(string str);
 		delegate void helpDelegateInc();
 
@@ -55,30 +56,42 @@ namespace Helper.ProgressBar
 		/// </summary>
 		private void CloseThread()
 		{
-			if (this.thread != null)
+			if (this._thread != null)
 			{
-				this.thread.Abort();
-				this.thread.Join();
-				this.thread = null;
+				this._thread.Abort();
+				this._thread.Join();
+				this._thread = null;
 			}
-			if (this.timer != null)
+			if (this._timer != null)
 			{
-				this.timer.Stop();
-				this.timer.Dispose();
-				this.timer = null;
+				this._timer.Stop();
+				this._timer.Dispose();
+				this._timer = null;
 			}
 		}
 
 		private void ProgressBarForm_Shown(object sender, EventArgs e)
 		{
-			if (this.timer != null)
-				this.timer.Start();
-			if (this.thread != null)
-				this.thread.Start();
+			if (this._timer != null)
+				this._timer.Start();
+			if (this._thread != null)
+				this._thread.Start();
 		}
 
-		private IterationCallback iterationCallback;
-		private ExecuteCallback executeCallback;
+		/// <summary>
+		/// итерационный Callback
+		/// </summary>
+		private IterationCallback _iterationCallback;
+
+		/// <summary>
+		/// Обычный callback без параметров
+		/// </summary>
+		private ExecuteCallback _executeCallback;
+
+		public static IProgressBar GetInstance(string caption = "")
+		{
+			return new FormProgressBar(caption);
+		}
 
 		#region IProgressBar Members
 
@@ -95,36 +108,66 @@ namespace Helper.ProgressBar
 			}
 		}
 
+		public void SetCurrentState(string text, int index, int? total = null)
+		{
+			HelperClass.BeginInvoke(this, delegate()
+			{
+				if (total != null)
+					progressBar.Maximum = (int)total;
+				progressBar.Value = index;
+
+				this.Text = String.Format("{0} [{1}]",
+					this.Tag,
+					text
+					);
+				this.Refresh();
+				//Application.DoEvents();
+				//SetCurrentState(text);
+			});
+		}
+
 		public void ShowProgressBar(int count, IterationCallback callback)
 		{
-			this.iterationCallback = callback;
-			this.count = count;
-			this.progressBar.Maximum = this.count;
-			this.thread = new Thread(Execute);
-			this.thread.Name = "ProgressForm Thread";
+			this._iterationCallback = callback;
+			this._count = count;
+			this.progressBar.Maximum = this._count;
+
+			this._thread = new Thread(Execute);
+			this._thread.Name = "ProgressForm Iteration Thread";
+
 			this.ShowDialog();
 			this.CloseThread();
 		}
 
 		public void ShowProgressBar(ExecuteCallback callback)
 		{
-			this.executeCallback = callback;
+			this._executeCallback = callback;
 			this.progressBar.Maximum = 50;
 			this.btnCancel.Enabled = false;
-			this.timer = new System.Windows.Forms.Timer();
-			this.timer.Interval = 100;
-			this.timer.Tick += new EventHandler(timer_Tick);
-			this.thread = new Thread(ExecuteOnce);
-			this.thread.Name = "ProgressForm Thread";
+
+			this._timer = new System.Windows.Forms.Timer();
+			this._timer.Interval = 100;
+			this._timer.Tick += new EventHandler(timer_Tick);
+
+			this._thread = new Thread(ExecuteOnce);
+			this._thread.Name = "ProgressForm ExecuteOnce Thread";
+
 			this.ShowDialog();
 			this.CloseThread();
 		}
 
+		public void ShowProgressBar()
+		{
+			this.btnCancel.Enabled = false;
+
+			this.ShowDialog();
+		}
+
 		public void StopProgressBar()
 		{
-			if (this.timer != null && this.timer.Enabled)
+			if (this._timer != null && this._timer.Enabled)
 			{
-				this.timer.Stop();
+				this._timer.Stop();
 			}
 		}
 
@@ -136,13 +179,12 @@ namespace Helper.ProgressBar
 		/// <param name="sender"></param>
 		private void Execute(object sender)
 		{
-			//Delegate _dell = this.iterationCallback.GetInvocationList()[0];
-			InteratorEventArgs _e;
-			for (int _i = 0; _i < this.count; _i++)
+			InteratorEventArgs e;
+			for (int i = 0; i < this._count; i++)
 			{
-				_e = new InteratorEventArgs(_i);
-				this.iterationCallback(_e);
-				if (_e.Cancel)
+				e = new InteratorEventArgs(i);
+				this._iterationCallback(e);
+				if (e.Cancel)
 					break;
 				this.IncProressBar();
 			}
@@ -155,25 +197,8 @@ namespace Helper.ProgressBar
 		/// <param name="sender"></param>
 		private void ExecuteOnce(object sender)
 		{
-			//Delegate _dell = this.executeCallback.GetInvocationList()[0];
-			//try
-			//{
-			//    _dell.Invoke(null);
-			//}
-
-			//catch (System.Reflection.TargetInvocationException ex)
-			//{
-			//    throw ex.InnerException;
-			//}
-			this.executeCallback();
+			this._executeCallback();
 			this.DialogResult = DialogResult.OK;
 		}
 	}
-
-	public delegate void ExecuteCallback();
-
-	public delegate void IterationCallback(InteratorEventArgs e);
-
-	//public delegate void InteratotDelegate(InteratorEventArgs e);	
-
 }

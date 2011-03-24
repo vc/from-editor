@@ -54,9 +54,6 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ionic.Zip.Reduced">
-      <HintPath>externals\Ionic.Zip.Reduced.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualC" />
     <Reference Include="SourceGrid, Version=4.21.3767.34200, Culture=neutral, PublicKeyToken=df6f5e538749e85d, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -184,7 +181,7 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
@@ -265,10 +262,6 @@
       <Project>{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}</Project>
       <Name>Helper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Logger\Logger.csproj">
-      <Project>{2FEED9BA-ABDA-420A-9624-A943E1068D02}</Project>
-      <Name>Logger</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OpenGLControl\OpenGLControl.csproj">
       <Project>{3A7BCDA8-1A82-45B9-90B5-98A837BC551F}</Project>
       <Name>OpenGLControl</Name>
@@ -292,7 +285,7 @@ if $(ConfigurationName) == Release (
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2005/10/21" />
+      <UserProperties BuildVersion_UseGlobalSettings="False" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_StartDate="2005/10/21" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

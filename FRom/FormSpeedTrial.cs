@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using FRom.ConsultNS;
 using FRom.ConsultNS.Data;
 using Helper;
+using FRom.Properties;
 
 namespace FRom.ConsultNS
 {
@@ -16,24 +17,94 @@ namespace FRom.ConsultNS
 		Consult _consult;
 		bool _started = false;
 		ConsultSensor _sensSpeed;
+		Settings cfg;
 
-		static KeyValuePair<int, int>[] _speedIntervals = new KeyValuePair<int, int>[] {			
-				new KeyValuePair<int,int>(0,60),
-				new KeyValuePair<int,int>(0,100),
-				new KeyValuePair<int,int>(50,100),
-				new KeyValuePair<int,int>(100,200),
+		static List<SpeedTrialRange> _speedIntervals = new List<SpeedTrialRange> {
+				new SpeedTrialRange(0,60),
+				new SpeedTrialRange(0,100),
+				new SpeedTrialRange(50,100),
+				new SpeedTrialRange(100,200),
 			};
 
-		List<KeyValuePair<int, int>> _currentSpeedIntervals;
+		List<SpeedTrialRange> _currentSpeedIntervals;
 
-		Dictionary<KeyValuePair<int, int>, SpeedTrial> _st;
+		//Dictionary<KeyValuePair<int, int>, SpeedTrial> _st;
 
 		public FormSpeedTrial(Consult consult)
 		{
 			_consult = consult;
 
+			cfg = new Settings();
+
 			InitializeConsult();
 			InitializeComponent();
+			InitializeMenu();
+		}
+
+
+		private void InitializeMenu()
+		{
+			base.Menu = new MainMenu(new MenuItem[]{
+				new MenuItem("Tyre Calc", MenuTyreCalculatorEventHandler),
+				new MenuItem("Add range", MenuAddRangeEventHandler)
+			});
+
+		}
+
+		private void MenuAddRangeEventHandler(object sender, EventArgs e)
+		{
+			string val = "0";
+			int begin, end;
+			while (true)
+			{
+				if (HelperClass.InputBox("Add speed range", "Enter _BEGIN_ speed interval", ref val)
+				== DialogResult.OK)
+				{
+					if (!Int32.TryParse(val, out begin))
+						continue;
+
+					if (HelperClass.InputBox("Add speed range", "Enter _END_ speed interval", ref val)
+				== DialogResult.OK)
+					{
+						if (!Int32.TryParse(val, out end))
+							continue;
+						if (end <= begin)
+						{
+							HelperClass.Message(this, "'end' must be > 'begin'", null, MessageBoxIcon.Error);
+							continue;
+						}
+						SpeedTrialRange tmp = new SpeedTrialRange(begin, end, "(Custom)");
+						if (_speedIntervals.BinarySearch(tmp, tmp) > 0)
+						{
+							HelperClass.Message(this, "This range is alrady exist!");
+							continue;
+						}
+						else
+						{
+							_speedIntervals.Add(tmp);
+							HelperClass.Message(this, "Range added: " + tmp.ToString());
+						}
+					}
+					else
+						break;
+				}
+				else
+					break;
+			}
+		}
+
+		private void MenuTyreCalculatorEventHandler(object sender, EventArgs e)
+		{
+			FormTyreCalc frmTyreCalc = new FormTyreCalc(cfg.cfgTyreOrigin, cfg.cfgTyreCurrent);
+			if (frmTyreCalc.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+			{
+				cfg.cfgTyreOrigin = frmTyreCalc._tOrigin;
+				cfg.cfgTyreCurrent = frmTyreCalc._tNew;
+
+				cfg.Save();
+
+				ConsultSensor._speedCorrect = TyreParams.CalcK(frmTyreCalc._tOrigin, frmTyreCalc._tNew);
+			}
 		}
 
 		private void InitializeConsult()
@@ -46,7 +117,14 @@ namespace FRom.ConsultNS
 			}
 			else
 			{
-				_sensSpeed = _consult.DataSource.ValidSensors["Vehicle speed"];
+				try
+				{
+					_sensSpeed = _consult.DataSource.ValidSensors["Vehicle speed"];
+				}
+				catch (KeyNotFoundException)
+				{
+					throw new ConsultException("No information about sensor 'Vehicle speed'");
+				}
 			}
 			_consult.MonitoringSensors.Add(_sensSpeed);
 		}
@@ -76,11 +154,11 @@ namespace FRom.ConsultNS
 		/// </summary>
 		private void Start()
 		{
-			_st = new Dictionary<KeyValuePair<int, int>, SpeedTrial>();
-			_currentSpeedIntervals = new List<KeyValuePair<int, int>>(_speedIntervals);
+			//_st = new Dictionary<KeyValuePair<int, int>, SpeedTrialRange>();
+			_currentSpeedIntervals = new List<SpeedTrialRange>(_speedIntervals);
 
-			foreach (KeyValuePair<int, int> i in _speedIntervals)
-				_st.Add(i, new SpeedTrial(i.Key, i.Value));
+			//foreach (KeyValuePair<int, int> i in _speedIntervals)
+			//	_st.Add(i, new SpeedTrialRange(i.Key, i.Value));
 
 			_sensSpeed.NewDataFloat += new ConsultSensor.SensorNewDataFloatEven(sens_NewDataFloat);
 
@@ -94,31 +172,33 @@ namespace FRom.ConsultNS
 		void sens_NewDataFloat(float data)
 		{
 			DateTime now = DateTime.Now;
-			List<KeyValuePair<int, int>> tmpRemoveList = new List<KeyValuePair<int, int>>();
+			List<SpeedTrialRange> tmpRemoveList = null;
 
-			foreach (KeyValuePair<int, int> i in _currentSpeedIntervals)
+			//correct speed koefficient
+			data = ConsultSensor.CorrectSpeed(data);
+
+			foreach (SpeedTrialRange i in _currentSpeedIntervals)
 			{
-				SpeedTrial stTmp = _st[i];
-				if (data > i.Key && data <= i.Value && !stTmp.IsStarted)
-					stTmp.Start();
-				else if (data >= i.Value && stTmp.IsStarted)
+				//SpeedTrialRange stTmp = _st[i];
+				if (data > i.IntervalBegin && data <= i.IntervalEnd && !i.IsStarted)
+					i.Start(now);
+				else if (data >= i.IntervalEnd && i.IsStarted)
 				{
-					//TODO: Show result
-					stTmp.Stop();
-					textBox1.Text += stTmp.GetDescription() + Environment.NewLine;
+					i.Stop(now);
+					txtResult.Text = i.GetDescriptionTimeAccounted() + Environment.NewLine + txtResult.Text;
+					if (tmpRemoveList == null)
+						tmpRemoveList = new List<SpeedTrialRange>();
 					tmpRemoveList.Add(i);
 				}
 			}
-			foreach (KeyValuePair<int, int> i in tmpRemoveList)
-			{
-				_st.Remove(i);
-				_currentSpeedIntervals.Remove(i);
-			}
+			if (tmpRemoveList != null)
+				foreach (SpeedTrialRange i in tmpRemoveList)
+					_currentSpeedIntervals.Remove(i);
 
 			//update Speed label
 			HelperClass.Invoke(this, delegate
 			{
-				lblCurrentSpeed.Text = data.ToString();
+				lblCurrentSpeed.Text = Math.Round(data).ToString();
 			});
 		}
 
@@ -147,7 +227,6 @@ namespace FRom.ConsultNS
 		{
 			Stop();
 			Dispose(true);
-
 		}
 	}
 }

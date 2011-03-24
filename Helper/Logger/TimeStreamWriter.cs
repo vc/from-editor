@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace FRom.Logger
+namespace Helper.Logger
 {
 	class TimeStreamWriter : IDisposable
 	{

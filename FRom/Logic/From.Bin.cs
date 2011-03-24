@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using FRom.Logger;
+using Helper.Logger;
 
 namespace FRom.Logic
 {
@@ -48,7 +48,7 @@ namespace FRom.Logic
 		/// </summary>
 		private void InitMembers()
 		{
-			_logger.WriteEntry(this, "Launch FRom Editor Main Module...", Logger.EventEntryType.Event);
+			_logger.WriteEntry(this, "Launch FRom Editor Main Module...", EventEntryType.Event);
 			//создается новый словарь
 			_stringToAdressMap = new Dictionary<string, AddressInstance>();
 		}

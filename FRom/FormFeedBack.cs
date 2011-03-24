@@ -6,9 +6,9 @@ using System.Net.Mail;
 using System.Net.Mime;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using FRom.Logger;
-using Ionic.Zip;
 using Helper;
+using Helper.Logger;
+using Helper.ProgressBar;
 
 namespace FRom
 {
@@ -42,8 +42,8 @@ namespace FRom
 
 		private void Init(string message, List<string> attachments, bool enableAttacheents)
 		{
-			txtName.Text = _frmParrent._settings.cfgUserName;
-			txtEmail.Text = _frmParrent._settings.cfgUserEmail;
+			txtName.Text = _frmParrent._cfg.cfgUserName;
+			txtEmail.Text = _frmParrent._cfg.cfgUserEmail;
 
 			txtBugInfo.Text = message;
 
@@ -71,6 +71,7 @@ namespace FRom
 
 		private void btnOK_Click(object sender, EventArgs e)
 		{
+			//check user name 
 			if (txtName.Text == "")
 			{
 				MessageBox.Show(this, "Укажите пожалуйста имя", "Неправильно заполненное поле", MessageBoxButtons.OK);
@@ -78,6 +79,7 @@ namespace FRom
 				return;
 			}
 
+			//check email address
 			if (txtEmail.Text == "" || !isValidEmail(txtEmail.Text))
 			{
 				MessageBox.Show(this, "Пустое или неверное поле 'eMail'", "Неправильно заполненное поле", MessageBoxButtons.OK);
@@ -101,9 +103,9 @@ namespace FRom
 				message,
 				_attachments);
 
-			_frmParrent._settings.cfgUserName = txtName.Text;
-			_frmParrent._settings.cfgUserEmail = txtEmail.Text;
-			_frmParrent._settings.Save();
+			_frmParrent._cfg.cfgUserName = txtName.Text;
+			_frmParrent._cfg.cfgUserEmail = txtEmail.Text;
+			_frmParrent._cfg.Save();
 
 			this.Dispose(true);
 		}
@@ -131,14 +133,7 @@ namespace FRom
 				//Добавляем аттачменты
 				if (attachments != null)
 				{
-					ZipFile zip = new ZipFile();
-					foreach (string file in attachments)
-						try { zip.AddFile(file, ""); }
-						catch { }
-
-					MemoryStream st = new MemoryStream();
-
-					zip.Save(st);
+					MemoryStream st = HelperClass.CreateZipAttachement(attachments);
 
 					ContentType ct = new ContentType();
 					ct.MediaType = MediaTypeNames.Application.Zip;
@@ -162,7 +157,15 @@ namespace FRom
 					FormAboutBox.AssemblyVersion,
 					"____________________________________________________________",
 					message);
-				try { smtp.Send(msg); }
+				try
+				{
+					IProgressBar progress = FormProgressBar.GetInstance("Sending eMail...");
+					progress.ShowProgressBar(delegate()
+					{
+						smtp.Send(msg);
+					});
+					HelperClass.Message(this, "Done!\nThank you for feedback!");
+				}
 				catch (Exception ex)
 				{
 					string errDelivery = String.Format("Ошибка при отправке:{0}{1}{0}{0}Повторить?", Environment.NewLine, HelperClass.GetExceptionInfo(ex));

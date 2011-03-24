@@ -26,7 +26,7 @@
       <Value Profile="(Default)">bin\</Value>
     </Setting>
     <Setting Name="cfgConsultPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">COM11</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="cfgEmulatorPort" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

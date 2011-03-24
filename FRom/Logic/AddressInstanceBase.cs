@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using Helper.Logger;
 
 namespace FRom.Logic
 {
@@ -71,7 +72,7 @@ namespace FRom.Logic
 		private bool _corrected = false;
 
 		//лог
-		private Logger.Log _log = Logger.Log.Instance;
+		private Log _log = Log.Instance;
 		#endregion
 
 		#region Constructors and Initialisation
@@ -374,7 +375,7 @@ namespace FRom.Logic
 			if (_corrected)
 			{
 				string m = String.Format("Ошибка в строке: '{1}'{2}{0}Новая строка: '{3}'", Environment.NewLine, line, errorMessage.ToString(), ToString());
-				_log.WriteEntry(this, m, Logger.EventEntryType.Warning);
+				_log.WriteEntry(this, m, EventEntryType.Warning);
 			}
 		}
 

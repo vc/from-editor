@@ -102,10 +102,6 @@
       <Project>{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}</Project>
       <Name>Helper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Logger\Logger.csproj">
-      <Project>{2FEED9BA-ABDA-420A-9624-A943E1068D02}</Project>
-      <Name>Logger</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OpenGLControl\OpenGLControl.csproj">
       <Project>{3A7BCDA8-1A82-45B9-90B5-98A837BC551F}</Project>
       <Name>OpenGLControl</Name>
@@ -140,6 +136,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

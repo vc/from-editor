@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Helper;
 
-namespace FRom.Logger
+namespace Helper.Logger
 {
 	public class Log : IDisposable
 	{

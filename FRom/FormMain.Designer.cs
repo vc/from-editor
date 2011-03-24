@@ -33,6 +33,7 @@ namespace FRom
 			System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 			System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
 			System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
 			this.contMain = new System.Windows.Forms.ToolStripContainer();
 			this.ssAddress = new System.Windows.Forms.StatusStrip();
 			this.lblAddressFile = new System.Windows.Forms.ToolStripStatusLabel();
@@ -56,7 +57,6 @@ namespace FRom
 			this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
 			this.mnuSettings = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuRecentFilesROM = new System.Windows.Forms.ToolStripMenuItem();
-			this.mnuRecentFilesEmpty = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuRecentFilesADR = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuExit = new System.Windows.Forms.ToolStripMenuItem();
 			this.mapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,6 +76,8 @@ namespace FRom
 			this.mnuConsultSelfDiagnostic = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuConsultActiveTests = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuConsultSensorsLive = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
+			this.mnuConsultSpeedTrial = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
 			this.mnuConsultMode = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuConsultConnect = new System.Windows.Forms.ToolStripMenuItem();
@@ -94,8 +96,6 @@ namespace FRom
 			this.btnEmulatorStreamMode = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.btnGraphShowSwitch = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
-			this.mnuConsultSpeedTrial = new System.Windows.Forms.ToolStripMenuItem();
 			toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -397,19 +397,10 @@ namespace FRom
 			// 
 			// mnuRecentFilesROM
 			// 
-			this.mnuRecentFilesROM.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuRecentFilesEmpty});
 			this.mnuRecentFilesROM.Name = "mnuRecentFilesROM";
 			this.mnuRecentFilesROM.Size = new System.Drawing.Size(168, 22);
 			this.mnuRecentFilesROM.Text = "Recent ROM Files";
 			this.mnuRecentFilesROM.DropDownOpening += new System.EventHandler(this.btnRecentFiles_DropDownOpening);
-			// 
-			// mnuRecentFilesEmpty
-			// 
-			this.mnuRecentFilesEmpty.Enabled = false;
-			this.mnuRecentFilesEmpty.Name = "mnuRecentFilesEmpty";
-			this.mnuRecentFilesEmpty.Size = new System.Drawing.Size(104, 22);
-			this.mnuRecentFilesEmpty.Text = "Empty";
 			// 
 			// mnuRecentFilesADR
 			// 
@@ -485,7 +476,7 @@ namespace FRom
 			// mnuEmulatorStreamMode
 			// 
 			this.mnuEmulatorStreamMode.CheckOnClick = true;
-			this.mnuEmulatorStreamMode.Image = global::Helper.Resources.pngEmulatorStreamMode;
+			this.mnuEmulatorStreamMode.Image = ((System.Drawing.Image)(resources.GetObject("mnuEmulatorStreamMode.Image")));
 			this.mnuEmulatorStreamMode.Name = "mnuEmulatorStreamMode";
 			this.mnuEmulatorStreamMode.Size = new System.Drawing.Size(137, 22);
 			this.mnuEmulatorStreamMode.Text = "Stream Mode";
@@ -515,7 +506,7 @@ namespace FRom
             this.toolStripSeparator9,
             this.mnuConsultMode,
             this.mnuConsultConnect});
-			this.mnuConsult.Image = global::Helper.Resources.pngStop;
+			this.mnuConsult.Image = ((System.Drawing.Image)(resources.GetObject("mnuConsult.Image")));
 			this.mnuConsult.Name = "mnuConsult";
 			this.mnuConsult.Size = new System.Drawing.Size(71, 21);
 			this.mnuConsult.Text = "&Consult";
@@ -552,6 +543,17 @@ namespace FRom
 			this.mnuConsultSensorsLive.ShortcutKeys = System.Windows.Forms.Keys.F5;
 			this.mnuConsultSensorsLive.Size = new System.Drawing.Size(187, 22);
 			this.mnuConsultSensorsLive.Text = "&Sensors Live...";
+			// 
+			// toolStripSeparator12
+			// 
+			this.toolStripSeparator12.Name = "toolStripSeparator12";
+			this.toolStripSeparator12.Size = new System.Drawing.Size(184, 6);
+			// 
+			// mnuConsultSpeedTrial
+			// 
+			this.mnuConsultSpeedTrial.Name = "mnuConsultSpeedTrial";
+			this.mnuConsultSpeedTrial.Size = new System.Drawing.Size(187, 22);
+			this.mnuConsultSpeedTrial.Text = "Speed &Trial";
 			// 
 			// toolStripSeparator9
 			// 
@@ -653,7 +655,7 @@ namespace FRom
 			// btnOpenADR
 			// 
 			this.btnOpenADR.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btnOpenADR.Image = global::Helper.Resources.pngOpenADR;
+			this.btnOpenADR.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenADR.Image")));
 			this.btnOpenADR.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnOpenADR.Name = "btnOpenADR";
 			this.btnOpenADR.Size = new System.Drawing.Size(23, 22);
@@ -663,7 +665,7 @@ namespace FRom
 			// btnOpenBIN
 			// 
 			this.btnOpenBIN.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btnOpenBIN.Image = global::Helper.Resources.pngOpenBIN;
+			this.btnOpenBIN.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenBIN.Image")));
 			this.btnOpenBIN.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnOpenBIN.Name = "btnOpenBIN";
 			this.btnOpenBIN.Size = new System.Drawing.Size(23, 22);
@@ -674,7 +676,7 @@ namespace FRom
 			// 
 			this.btnSaveBIN.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.btnSaveBIN.Enabled = false;
-			this.btnSaveBIN.Image = global::Helper.Resources.pngSaveBIN;
+			this.btnSaveBIN.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveBIN.Image")));
 			this.btnSaveBIN.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnSaveBIN.Name = "btnSaveBIN";
 			this.btnSaveBIN.Size = new System.Drawing.Size(23, 22);
@@ -686,7 +688,7 @@ namespace FRom
 			this.btnToggleProp.Checked = true;
 			this.btnToggleProp.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.btnToggleProp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btnToggleProp.Image = global::Helper.Resources.pngToggleProp;
+			this.btnToggleProp.Image = ((System.Drawing.Image)(resources.GetObject("btnToggleProp.Image")));
 			this.btnToggleProp.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnToggleProp.Name = "btnToggleProp";
 			this.btnToggleProp.Size = new System.Drawing.Size(23, 22);
@@ -700,7 +702,7 @@ namespace FRom
 			// btnEmulatorStreamMode
 			// 
 			this.btnEmulatorStreamMode.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btnEmulatorStreamMode.Image = global::Helper.Resources.pngEmulatorStreamMode;
+			this.btnEmulatorStreamMode.Image = ((System.Drawing.Image)(resources.GetObject("btnEmulatorStreamMode.Image")));
 			this.btnEmulatorStreamMode.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnEmulatorStreamMode.Name = "btnEmulatorStreamMode";
 			this.btnEmulatorStreamMode.Size = new System.Drawing.Size(23, 22);
@@ -715,22 +717,11 @@ namespace FRom
 			// btnGraphShowSwitch
 			// 
 			this.btnGraphShowSwitch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.btnGraphShowSwitch.Image = global::Helper.Resources.pngGraphShowSwitch;
+			this.btnGraphShowSwitch.Image = ((System.Drawing.Image)(resources.GetObject("btnGraphShowSwitch.Image")));
 			this.btnGraphShowSwitch.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.btnGraphShowSwitch.Name = "btnGraphShowSwitch";
 			this.btnGraphShowSwitch.Size = new System.Drawing.Size(23, 22);
 			this.btnGraphShowSwitch.Text = "Graph Show Switch";
-			// 
-			// toolStripSeparator12
-			// 
-			this.toolStripSeparator12.Name = "toolStripSeparator12";
-			this.toolStripSeparator12.Size = new System.Drawing.Size(184, 6);
-			// 
-			// mnuConsultSpeedTrial
-			// 
-			this.mnuConsultSpeedTrial.Name = "mnuConsultSpeedTrial";
-			this.mnuConsultSpeedTrial.Size = new System.Drawing.Size(187, 22);
-			this.mnuConsultSpeedTrial.Text = "Speed &Trial";
 			// 
 			// FormMain
 			// 
@@ -827,7 +818,6 @@ namespace FRom
 		private System.Windows.Forms.ToolStripComboBox cbMaps;
 		private System.Windows.Forms.ToolStripMenuItem mnuConsultSensorsLive;
 		private System.Windows.Forms.ToolStripMenuItem mnuRecentFilesROM;
-		private System.Windows.Forms.ToolStripMenuItem mnuRecentFilesEmpty;
 		private System.Windows.Forms.ToolStripMenuItem mnuRecentFilesADR;
 		private System.Windows.Forms.ToolStripTextBox txtConsultECUInfo;
 		private System.Windows.Forms.ToolStripSeparator mnuConsultECUInfoSeparator;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FRom.Logger
+namespace Helper.Logger
 {
 	public class NewMessageEventArgs : EventArgs
 	{

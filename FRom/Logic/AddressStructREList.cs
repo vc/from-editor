@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using FRom.Logic;
 using Helper;
+using Helper.Logger;
 
 namespace FRom
 {
@@ -25,7 +26,7 @@ namespace FRom
 		/// <summary>
 		/// Лог
 		/// </summary>
-		private Logger.Log _log = Logger.Log.Instance;
+		private Log _log = Log.Instance;
 
 		const int _defaultCountOfMaps = 32;
 		public AddressStructREList(string fileName)
@@ -91,7 +92,7 @@ namespace FRom
 							catch (FromException ex)
 							{
 								string m = string.Format("Строка проигнорирована: '{1}'{2}{0}", Environment.NewLine, line, ex.Message);
-								_log.WriteEntry(this, m, Logger.EventEntryType.Error);
+								_log.WriteEntry(this, m, EventEntryType.Error);
 							}
 						}
 					}

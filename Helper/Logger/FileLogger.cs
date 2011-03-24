@@ -3,7 +3,7 @@ using System.Text;
 using System.IO;
 using System.Collections.Generic;
 
-namespace FRom.Logger
+namespace Helper.Logger
 {
 	internal class FileLogger : IDisposable
 	{
@@ -13,14 +13,16 @@ namespace FRom.Logger
 		private Encoding _encoding;
 		private string _logDirectory;
 		private string _postfix;
-		private bool _disposed = false;
 		private DateTime _lastClearTime;
 		private Dictionary<string, TimeStreamWriter> _openFiles;
 #if DEBUG
 		internal string _dateTimeFormatLogRecord = "yyyy.MM.dd HH:mm:ss.fff";
+		private int _maxFileSizeInMb = 10;
 #else
 		internal string _dateTimeFormatLogRecord = "yyyy.MM.dd HH:mm:ss";
+		private int _maxFileSizeInMb = 8;
 #endif
+
 
 		// Methods
 		public FileLogger()
@@ -38,9 +40,26 @@ namespace FRom.Logger
 
 		private void Init()
 		{
-			//string str = Path.Combine(Path.GetDirectoryName(base.GetType().Assembly.Location), "logs");
-			//LogDirectory = str;
 			LogDirectory = Path.GetDirectoryName(base.GetType().Assembly.Location);
+
+			//check max log file size
+			FileInfo fiCurrentLog = new FileInfo(this.LogFileNamePath);
+
+			//move file to archive
+			if (fiCurrentLog.Length > (long)_maxFileSizeInMb * 1024 * 1024)
+			{
+				DirectoryInfo dir = new DirectoryInfo(Path.Combine(this.LogDirectory, "LogArchive"));
+				if (!dir.Exists)
+					Directory.CreateDirectory(dir.Name);
+				//Move file to archive
+
+				FileInfo destArchiveFile = new FileInfo(
+					Path.Combine(dir.FullName, fiCurrentLog.Name)
+				);
+
+				destArchiveFile = HelperClass.GetFirstFreeFileName(destArchiveFile);
+				File.Move(this.LogFileNamePath, destArchiveFile.FullName);
+			}
 		}
 
 		public void Append(LogEvent message)
