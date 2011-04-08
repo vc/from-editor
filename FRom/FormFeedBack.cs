@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Helper;
 using Helper.Logger;
 using Helper.ProgressBar;
+using System.Security;
 
 namespace FRom
 {
@@ -125,8 +126,11 @@ namespace FRom
 			do
 			{
 				string emailTo = "from_logger@mail.ru";
-				SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.mail.ru");
+				SmtpClient smtp = new System.Net.Mail.SmtpClient();
+				smtp.Host = "smtp.mail.ru";
 				smtp.Port = 2525;
+				smtp.EnableSsl = true;
+				smtp.Timeout = 10;
 				smtp.Credentials = new NetworkCredential(emailTo, "simple");
 				MailMessage msg = new MailMessage(emailTo, emailTo);
 

@@ -100,7 +100,7 @@ namespace Helper
 				ex.GetType().ToString(),
 				ex.Message,
 				ex.StackTrace,
-				ex.InnerException == null ? "" : GetExceptionInfo(ex.InnerException) + "\t--\nInner"
+				ex.InnerException == null ? "" : GetExceptionInfo(ex.InnerException) + "  --\nInner"
 				);
 
 			return message;
@@ -287,7 +287,7 @@ namespace Helper
 		/// </summary>
 		/// <param name="caption">Заголовок (если пустой - имя и версия продукта)</param>
 		/// <param name="controls">Массив контролов для добавления на форму</param>
-		public static void GetDefaultDialogForm(string caption = null, Control[] controls = null)
+		public static Form GetDefaultDialogForm(string caption = null, Control[] controls = null)
 		{
 			Form frm = new Form();
 			frm.SuspendLayout();
@@ -306,6 +306,7 @@ namespace Helper
 			frm.ShowInTaskbar = false;
 			frm.Text = caption == null ? GetProductInfo(frm) : caption;
 			frm.ResumeLayout(false);
+			return frm;
 		}
 
 		public static string GetProductInfo(Control ctrl)

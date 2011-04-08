@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}</ProjectGuid>
+    <ProjectGuid>{000C0EDE-C724-43A6-9106-177C88B0DB88}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Helper</RootNamespace>
-    <AssemblyName>Helper</AssemblyName>
+    <RootNamespace>InfoLibrary</RootNamespace>
+    <AssemblyName>InfoLibrary</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -46,45 +46,49 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ionic.Zip.Reduced">
-      <HintPath>externals\Ionic.Zip.Reduced.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data.SqlServerCe, Version=3.5.1.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Microsoft SQL Server Compact Edition\v3.5\Devices\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseSortedCollection.cs" />
-    <Compile Include="COMPortName.cs" />
-    <Compile Include="DataSetNS\DataSetHelper.cs" />
-    <Compile Include="Debug.cs" />
-    <Compile Include="HelperClass.cs" />
-    <Compile Include="ListIndexString.cs" />
-    <Compile Include="Logger\Event.cs" />
-    <Compile Include="Logger\FileLogger.cs" />
-    <Compile Include="Logger\Logger.cs" />
-    <Compile Include="Logger\NewMessageEventArgs.cs" />
-    <Compile Include="Logger\TimeStreamWriter.cs" />
-    <Compile Include="ProgressBar\InteratorEventArgs.cs" />
-    <Compile Include="ProgressBar\IProgressBar.cs" />
-    <Compile Include="ProgressBar\FormProgressBar.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProgressBar\FormProgressBar.Designer.cs">
-      <DependentUpon>FormProgressBar.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UInt32BinTypeConverter.cs" />
-    <Compile Include="UInt32HexTypeConverter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AFMInfo.cs" />
+    <Compile Include="BoreStroke.cs" />
+    <Compile Include="ChamberVol.cs" />
+    <Compile Include="ECUInfo.cs" />
+    <Compile Include="EngineInfo.cs" />
+    <Compile Include="EngineInfoCollection.cs" />
+    <Compile Include="Info.cs" />
+    <Compile Include="InjectorInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
-      <DependentUpon>Resources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ResourceDisposer.cs" />
-    <Compile Include="Timer.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Library.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="data\ecu.gt28.ru.xls" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -97,6 +101,11 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.3.5">
+      <Visible>False</Visible>
+      <ProductName>SQL Server Compact 3.5 SP2</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
       <Visible>False</Visible>
       <ProductName>Windows Installer 3.1</ProductName>
@@ -104,40 +113,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ProgressBar\FormProgressBar.resx">
-      <DependentUpon>FormProgressBar.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
+      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Properties\DataSources\icons\pngEmulatorStreamMode.png" />
-    <Content Include="Properties\DataSources\icons\pngGraphShowSwitch.png" />
-    <Content Include="Properties\DataSources\icons\pngOpenADR.png" />
-    <Content Include="Properties\DataSources\icons\pngOpenBIN.png" />
-    <Content Include="Properties\DataSources\icons\pngSaveBIN.png" />
-    <Content Include="Properties\DataSources\icons\pngToggleProp.png" />
-    <Content Include="Properties\DataSources\icons\silk\accept.png" />
-    <Content Include="Properties\DataSources\icons\silk\add.png" />
-    <Content Include="Properties\DataSources\icons\silk\database_save.png" />
-    <Content Include="Properties\DataSources\icons\silk\delete.png" />
-    <Content Include="Properties\DataSources\icons\silk\exclamation.png" />
-    <Content Include="Properties\DataSources\icons\silk\stop.png" />
-    <Content Include="Properties\DataSources\icons\silk\table_save.png" />
-    <Content Include="Properties\DataSources\tyre_params.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\DataSources\icons\silk\page_white_add.png" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_UseGlobalSettings="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" />
-    </VisualStudio>
-  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("FRom Editor")]
-[assembly: AssemblyDescription("Универсальный редактор прошивок")]
+[assembly: AssemblyTitle("InfoLibrary")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("RN")]
-[assembly: AssemblyProduct("FRom Editor")]
-[assembly: AssemblyCopyright("Copyright © RN 2010")]
+[assembly: AssemblyCompany("~~")]
+[assembly: AssemblyProduct("InfoLibrary")]
+[assembly: AssemblyCopyright("Copyright © ~~ 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("b36a735a-61a2-4523-903c-3e29110766d4")]
+[assembly: Guid("1230d801-7d91-4c6b-b295-bad4587184af")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -29,7 +29,8 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.3.9.1083")]
-[assembly: AssemblyFileVersion("1.3.9.1083")]
-
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("FRomTest")]
+// You can specify all the values or you can default the Build and Revision Numbers 
+// by using the '*' as shown below:
+// [assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.0.0.99")]
+[assembly: AssemblyFileVersion("1.0.0.99")]

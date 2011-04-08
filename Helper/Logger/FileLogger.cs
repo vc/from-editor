@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Text;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace Helper.Logger
 {
@@ -46,7 +46,7 @@ namespace Helper.Logger
 			FileInfo fiCurrentLog = new FileInfo(this.LogFileNamePath);
 
 			//move file to archive
-			if (fiCurrentLog.Length > (long)_maxFileSizeInMb * 1024 * 1024)
+			if (fiCurrentLog.Exists && fiCurrentLog.Length > (long)_maxFileSizeInMb * 1024 * 1024)
 			{
 				DirectoryInfo dir = new DirectoryInfo(Path.Combine(this.LogDirectory, "LogArchive"));
 				if (!dir.Exists)

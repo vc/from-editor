@@ -74,6 +74,12 @@
     <Compile Include="FormAboutBox.Designer.cs">
       <DependentUpon>FormAboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormConsultActiveTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormConsultActiveTest.Designer.cs">
+      <DependentUpon>FormConsultActiveTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormFeedBack.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,8 +131,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Logic\FromExceptionErrorNumber.cs" />
-    <Compile Include="Logic\UInt32BinTypeConverter.cs" />
-    <Compile Include="Logic\UInt32HexTypeConverter.cs" />
     <Compile Include="Logic\FromException.cs" />
     <Compile Include="Logic\FormGraph3D.cs">
       <SubType>Form</SubType>
@@ -140,7 +144,6 @@
     <Compile Include="Logic\AddressStructREList.cs" />
     <Compile Include="Logic\From.Bin.cs" />
     <Compile Include="Emulator\FRomulator.cs" />
-    <Compile Include="Logic\From.cs" />
     <Compile Include="Logic\From.ValueModel.cs" />
     <Compile Include="Logic\FromEventArgs.cs" />
     <Compile Include="FormMain.cs">
@@ -155,6 +158,9 @@
     <EmbeddedResource Include="FormAboutBox.resx">
       <DependentUpon>FormAboutBox.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormConsultActiveTest.resx">
+      <DependentUpon>FormConsultActiveTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormFeedBack.resx">
       <DependentUpon>FormFeedBack.cs</DependentUpon>
@@ -262,6 +268,10 @@
       <Project>{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}</Project>
       <Name>Helper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\InfoLibrary\InfoLibrary.csproj">
+      <Project>{000C0EDE-C724-43A6-9106-177C88B0DB88}</Project>
+      <Name>InfoLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OpenGLControl\OpenGLControl.csproj">
       <Project>{3A7BCDA8-1A82-45B9-90B5-98A837BC551F}</Project>
       <Name>OpenGLControl</Name>
@@ -272,20 +282,25 @@
     <PostBuildEvent>set DEPLOY_PATH=$(ProjectDir)Deploy\
 set BIN_PATH=$(ProjectDir)$(OutDir)
 if $(ConfigurationName) == Release (
+	echo [%25DATE%25 %25TIME%25 : PostBuildEvent VS] Creating NSIS package
 	%25DEPLOY_PATH%25\CreateInstall.cmd
 	cd %25DEPLOY_PATH%25
+	echo [%25DATE%25 %25TIME%25 : PostBuildEvent VS] FTP uploading
 	ftp.exe -s:ftp.txt
+	echo [%25DATE%25 %25TIME%25 : PostBuildEvent VS] Done!
 )
 </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>if $(ConfigurationName) == Release (
+	echo [%25DATE%25 %25TIME%25 : PreBuildEvent VS] Erasing all data in $(OutDir)
 	erase /f /s /q $(ProjectDir)$(OutDir)*.*
+	echo [%25DATE%25 %25TIME%25 : PreBuildEvent VS] Done erasing.
 )</PreBuildEvent>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="False" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_StartDate="2005/10/21" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.None.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.None.Increment" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2005/10/21" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_UseGlobalSettings="False" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -6,7 +6,7 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
-namespace FRom.Logic
+namespace Helper
 {
 	// [1] define UInt32HexTypeConverter is-a TypeConverter
 	public class UInt32BinTypeConverter : TypeConverter

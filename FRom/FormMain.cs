@@ -12,6 +12,7 @@ using FRom.Properties;
 using Helper;
 using Helper.Logger;
 using Helper.ProgressBar;
+using InfoLibrary;
 
 namespace FRom
 {
@@ -67,12 +68,18 @@ namespace FRom
 
 		public FormMain()
 		{
+#if DEBUG
+			Library lib = new Library();
+#endif
+
 			InitializeComponent();				//Инициализация компонентов формы
 			InitializeSettings();				//Инициализация настроек программы			
 			InitializeEmulatorMenu();
 			InitializeConsultMenu();
 			InitializeMenu(mstrpMain);			//Инициализация обработчиков основного меню
 			InitializeTabControl();				//Инициализация вкладок с картами
+
+			this.Text = HelperClass.GetProductInfo(this);
 
 			Components.Add(this, 1000);
 			Components.Add(_frmSpeedTrial);
@@ -83,7 +90,7 @@ namespace FRom
 			get
 			{
 				if (components == null)
-					components = new Helper.ResourceDisposer();
+					components = new ResourceDisposer();
 				return (ResourceDisposer)components;
 			}
 			set
@@ -144,11 +151,11 @@ namespace FRom
 			if (flag)
 			{
 				txtConsultECUInfo.Text = _consult.GetECUInfo().ToString();
-				mnuConsult.Image = Helper.Resources.pngAccept;
+				mnuConsult.Image = Resources.pngAccept;
 			}
 			else
 			{
-				mnuConsult.Image = Helper.Resources.pngStop;
+				mnuConsult.Image = Resources.pngStop;
 			}
 		}
 
@@ -590,6 +597,8 @@ namespace FRom
 				//=================== CONSULT =====================//
 				else if (menu == mnuConsultSelfDiagnostic)
 					UIConsultSelfDiagnostic();
+				else if (menu == mnuConsultActiveTests)
+					UIConsultActiveTest();
 				else if (menu == mnuConsultSensorsLive)
 					UIConsultSensorsLive();
 				else if (menu == mnuConsultSpeedTrial)
@@ -626,6 +635,12 @@ namespace FRom
 			{
 				Error(ex, "Error operation '" + selectedItem + "'\n", "Error !");
 			}
+		}
+
+		private void UIConsultActiveTest()
+		{
+			FormConsultActiveTest frm = new FormConsultActiveTest(_consult);
+			frm.ShowDialog();
 		}
 
 		#region UserInterface functions

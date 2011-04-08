@@ -43,8 +43,12 @@ namespace FRom
 			cbEmulatorPort.SelectedIndexChanged += new EventHandler(cbPorts_SelectedIndexChanged);
 
 			InitializeMenu();
+
 			InitializeConsult();
+			UpdateConsultInterface();
+
 			InitializeEmulator();
+
 			LoadSettings();
 			UpdateButtons();
 		}
@@ -78,6 +82,11 @@ namespace FRom
 			cbConsultPort.Items.Clear();
 			cbConsultPort.Items.AddRange(_portsList.ToArray());
 			ComboBoxSelectedIndexUpdate(new COMPortName(cfg.cfgConsultPort), cbConsultPort);
+		}
+
+		private void UpdateConsultInterface()
+		{
+			btnConsultTest.Enabled = cbConsultPort.SelectedIndex != null;
 		}
 
 		private void UpdateButtons()
@@ -179,8 +188,11 @@ namespace FRom
 			}
 		}
 
-		private void ConnectConsult(COMPortName comPort = null)
+		private void ConsultConnect(COMPortName comPort = null)
 		{
+			StatusLabel(StatusCommunications.Search, lblStatusConsult);
+			StatusLabel(StatusCommunications.Search, cbConsultPort);
+
 			string port = comPort == null ? "" : comPort.PortName;
 
 			_consultECUInfo = null;
@@ -203,7 +215,7 @@ namespace FRom
 								progressCOMSearch.SetCurrentState(i.PortName);
 								try
 								{
-									_consult.Initialise(i.PortName);
+									_consult.Initialise(i.PortName, true);
 									_consultECUInfo = _consult.GetECUInfo();
 									break;
 								}
@@ -402,10 +414,7 @@ namespace FRom
 		{
 			COMPortName port = cbConsultPort.SelectedItem as COMPortName;
 
-			StatusLabel(StatusCommunications.Search, lblStatusConsult);
-			StatusLabel(StatusCommunications.Search, cbConsultPort);
-
-			ConnectConsult(port);
+			ConsultConnect(port);
 		}
 
 		enum StatusCommunications
@@ -425,6 +434,16 @@ namespace FRom
 				return components;
 			}
 			set { components = value; }
+		}
+
+		private void btnConsultScan_Click(object sender, EventArgs e)
+		{
+			ConsultConnect();
+		}
+
+		private void cbConsultPort_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			UpdateConsultInterface();
 		}
 	}
 

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using Helper;
 using Helper.Logger;
 
 namespace FRom.Logic

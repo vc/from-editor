@@ -55,6 +55,7 @@
 			this.lblPathBIN = new System.Windows.Forms.Label();
 			this.lblPathADR = new System.Windows.Forms.Label();
 			this.grpLogs = new System.Windows.Forms.GroupBox();
+			this.btnConsultScan = new System.Windows.Forms.Button();
 			this.grpEmulator.SuspendLayout();
 			this.grpConsult.SuspendLayout();
 			this.grpPathes.SuspendLayout();
@@ -70,7 +71,7 @@
 			this.grpEmulator.Controls.Add(this.lblPortEmulator);
 			this.grpEmulator.Location = new System.Drawing.Point(12, 12);
 			this.grpEmulator.Name = "grpEmulator";
-			this.grpEmulator.Size = new System.Drawing.Size(308, 99);
+			this.grpEmulator.Size = new System.Drawing.Size(333, 99);
 			this.grpEmulator.TabIndex = 5;
 			this.grpEmulator.TabStop = false;
 			this.grpEmulator.Text = "ROM Emulator Settings";
@@ -137,7 +138,7 @@
 			// btnCancel
 			// 
 			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btnCancel.Location = new System.Drawing.Point(418, 400);
+			this.btnCancel.Location = new System.Drawing.Point(182, 342);
 			this.btnCancel.Name = "btnCancel";
 			this.btnCancel.Size = new System.Drawing.Size(75, 23);
 			this.btnCancel.TabIndex = 8;
@@ -147,7 +148,7 @@
 			// btnOk
 			// 
 			this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.btnOk.Location = new System.Drawing.Point(337, 400);
+			this.btnOk.Location = new System.Drawing.Point(101, 342);
 			this.btnOk.Name = "btnOk";
 			this.btnOk.Size = new System.Drawing.Size(75, 23);
 			this.btnOk.TabIndex = 9;
@@ -160,12 +161,13 @@
 			this.grpConsult.Controls.Add(this.chkConsultKeepALive);
 			this.grpConsult.Controls.Add(this.chkConsultAutoConnect);
 			this.grpConsult.Controls.Add(this.lblStatusConsult);
+			this.grpConsult.Controls.Add(this.btnConsultScan);
 			this.grpConsult.Controls.Add(this.btnConsultTest);
 			this.grpConsult.Controls.Add(this.cbConsultPort);
 			this.grpConsult.Controls.Add(this.lblPortConsult);
-			this.grpConsult.Location = new System.Drawing.Point(12, 159);
+			this.grpConsult.Location = new System.Drawing.Point(12, 117);
 			this.grpConsult.Name = "grpConsult";
-			this.grpConsult.Size = new System.Drawing.Size(308, 74);
+			this.grpConsult.Size = new System.Drawing.Size(333, 74);
 			this.grpConsult.TabIndex = 10;
 			this.grpConsult.TabStop = false;
 			this.grpConsult.Text = "Nissan Consult Settings";
@@ -203,7 +205,7 @@
 			// 
 			// btnConsultTest
 			// 
-			this.btnConsultTest.Location = new System.Drawing.Point(227, 11);
+			this.btnConsultTest.Location = new System.Drawing.Point(171, 11);
 			this.btnConsultTest.Name = "btnConsultTest";
 			this.btnConsultTest.Size = new System.Drawing.Size(75, 23);
 			this.btnConsultTest.TabIndex = 10;
@@ -217,19 +219,20 @@
 			this.cbConsultPort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbConsultPort.ForeColor = System.Drawing.SystemColors.WindowText;
 			this.cbConsultPort.FormattingEnabled = true;
-			this.cbConsultPort.Location = new System.Drawing.Point(121, 13);
+			this.cbConsultPort.Location = new System.Drawing.Point(65, 13);
 			this.cbConsultPort.Name = "cbConsultPort";
 			this.cbConsultPort.Size = new System.Drawing.Size(100, 21);
 			this.cbConsultPort.TabIndex = 9;
+			this.cbConsultPort.SelectedIndexChanged += new System.EventHandler(this.cbConsultPort_SelectedIndexChanged);
 			// 
 			// lblPortConsult
 			// 
 			this.lblPortConsult.AutoSize = true;
 			this.lblPortConsult.Location = new System.Drawing.Point(6, 16);
 			this.lblPortConsult.Name = "lblPortConsult";
-			this.lblPortConsult.Size = new System.Drawing.Size(50, 13);
+			this.lblPortConsult.Size = new System.Drawing.Size(53, 13);
 			this.lblPortConsult.TabIndex = 5;
-			this.lblPortConsult.Text = "Com Port";
+			this.lblPortConsult.Text = "COM Port";
 			// 
 			// grpPathes
 			// 
@@ -242,9 +245,9 @@
 			this.grpPathes.Controls.Add(this.txtADRFilesPath);
 			this.grpPathes.Controls.Add(this.lblPathBIN);
 			this.grpPathes.Controls.Add(this.lblPathADR);
-			this.grpPathes.Location = new System.Drawing.Point(12, 239);
+			this.grpPathes.Location = new System.Drawing.Point(12, 197);
 			this.grpPathes.Name = "grpPathes";
-			this.grpPathes.Size = new System.Drawing.Size(308, 118);
+			this.grpPathes.Size = new System.Drawing.Size(333, 118);
 			this.grpPathes.TabIndex = 11;
 			this.grpPathes.TabStop = false;
 			this.grpPathes.Text = "Default Directories";
@@ -281,6 +284,7 @@
 			// 
 			// btnPathDialogBIN
 			// 
+			this.btnPathDialogBIN.Enabled = false;
 			this.btnPathDialogBIN.Location = new System.Drawing.Point(272, 71);
 			this.btnPathDialogBIN.Name = "btnPathDialogBIN";
 			this.btnPathDialogBIN.Size = new System.Drawing.Size(30, 20);
@@ -290,6 +294,7 @@
 			// 
 			// btnPathDialogADR
 			// 
+			this.btnPathDialogADR.Enabled = false;
 			this.btnPathDialogADR.Location = new System.Drawing.Point(272, 32);
 			this.btnPathDialogADR.Name = "btnPathDialogADR";
 			this.btnPathDialogADR.Size = new System.Drawing.Size(30, 20);
@@ -331,12 +336,23 @@
 			// 
 			// grpLogs
 			// 
-			this.grpLogs.Location = new System.Drawing.Point(327, 13);
+			this.grpLogs.Location = new System.Drawing.Point(351, 12);
 			this.grpLogs.Name = "grpLogs";
-			this.grpLogs.Size = new System.Drawing.Size(317, 98);
+			this.grpLogs.Size = new System.Drawing.Size(293, 99);
 			this.grpLogs.TabIndex = 12;
 			this.grpLogs.TabStop = false;
 			this.grpLogs.Text = "Log";
+			this.grpLogs.Visible = false;
+			// 
+			// btnConsultScan
+			// 
+			this.btnConsultScan.Location = new System.Drawing.Point(252, 11);
+			this.btnConsultScan.Name = "btnConsultScan";
+			this.btnConsultScan.Size = new System.Drawing.Size(75, 23);
+			this.btnConsultScan.TabIndex = 10;
+			this.btnConsultScan.Text = "Detect";
+			this.btnConsultScan.UseVisualStyleBackColor = true;
+			this.btnConsultScan.Click += new System.EventHandler(this.btnConsultScan_Click);
 			// 
 			// FormSettings
 			// 
@@ -344,7 +360,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.btnCancel;
-			this.ClientSize = new System.Drawing.Size(681, 441);
+			this.ClientSize = new System.Drawing.Size(359, 389);
 			this.Controls.Add(this.grpLogs);
 			this.Controls.Add(this.grpPathes);
 			this.Controls.Add(this.grpConsult);
@@ -400,6 +416,7 @@
 		private System.Windows.Forms.CheckBox chkEmulatorSaveROMToFileAfterDownload;
 		private System.Windows.Forms.CheckBox chkConsultKeepALive;
 		private System.Windows.Forms.GroupBox grpLogs;
+		private System.Windows.Forms.Button btnConsultScan;
 
 	}
 }

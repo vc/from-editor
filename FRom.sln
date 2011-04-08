@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consult", "Consult\Consult.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helper", "Helper\Helper.csproj", "{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfoLibrary", "InfoLibrary\InfoLibrary.csproj", "{000C0EDE-C724-43A6-9106-177C88B0DB88}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = FRom.vsmdi
@@ -110,14 +112,24 @@ Global
 		{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}.Release|x86.ActiveCfg = Release|Any CPU
+		{000C0EDE-C724-43A6-9106-177C88B0DB88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{000C0EDE-C724-43A6-9106-177C88B0DB88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{000C0EDE-C724-43A6-9106-177C88B0DB88}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{000C0EDE-C724-43A6-9106-177C88B0DB88}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{000C0EDE-C724-43A6-9106-177C88B0DB88}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{000C0EDE-C724-43A6-9106-177C88B0DB88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{000C0EDE-C724-43A6-9106-177C88B0DB88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{000C0EDE-C724-43A6-9106-177C88B0DB88}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{000C0EDE-C724-43A6-9106-177C88B0DB88}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{000C0EDE-C724-43A6-9106-177C88B0DB88}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		BuildVersion_UseGlobalSettings = True
-		BuildVersion_BuildVersioningStyle = None.None.None.Increment
-		BuildVersion_UpdateFileVersion = False
 		BuildVersion_UpdateAssemblyVersion = False
+		BuildVersion_UpdateFileVersion = False
+		BuildVersion_BuildVersioningStyle = None.None.None.Increment
+		BuildVersion_UseGlobalSettings = True
 	EndGlobalSection
 EndGlobal

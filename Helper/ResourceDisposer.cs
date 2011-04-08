@@ -7,12 +7,41 @@ namespace Helper
 {
 	public class ResourceDisposer : IContainer
 	{
+		class ComponentWithPrio : IComparable<ComponentWithPrio>
+		{
+			public int Prio;
+			public IComponent Component;
+			public ComponentWithPrio(IComponent component, int prio = 500)
+			{
+				Prio = prio;
+				Component = component;
+			}
+
+			public override bool Equals(object obj)
+			{
+				ComponentWithPrio other = obj as ComponentWithPrio;
+				if (other == null)
+					return false;
+
+				return this.Component == other.Component;
+			}
+
+			#region IComparable<ComponentWithPrio> Members
+
+			public int CompareTo(ComponentWithPrio other)
+			{
+				return this.Prio - other.Prio;
+			}
+
+			#endregion
+		}
+
 		private int _currentPrio = 500;
-		private SortedList<int, IComponent> _components;
+		private BaseSortedCollection<ComponentWithPrio> _components;
 
 		public ResourceDisposer()
 		{
-			_components = new SortedList<int, IComponent>();
+			_components = new BaseSortedCollection<ComponentWithPrio>();
 		}
 
 		#region IContainer Members
@@ -29,7 +58,7 @@ namespace Helper
 		public void Add(IComponent component)
 		{
 			if (component != null)
-				_components.Add(_currentPrio, component);
+				_components.Add(new ComponentWithPrio(component, _currentPrio));
 		}
 		/// <summary>
 		/// Add component with priority
@@ -39,7 +68,7 @@ namespace Helper
 		public void Add(IComponent component, int priority)
 		{
 			if (component != null)
-				_components.Add(priority, component);
+				_components.Add(new ComponentWithPrio(component, priority));
 		}
 
 
@@ -47,13 +76,19 @@ namespace Helper
 		{
 			get
 			{
-				return new ComponentCollection(new List<IComponent>(_components.Values).ToArray());
+				List<IComponent> lst = new List<IComponent>();
+				foreach (ComponentWithPrio i in _components)
+				{
+					lst.Add(i.Component);
+				}
+
+				return new ComponentCollection(lst.ToArray());
 			}
 		}
 
 		public void Remove(IComponent component)
 		{
-			_components.Values.Remove(component);
+			_components.Remove(new ComponentWithPrio(component));
 		}
 
 		#endregion
@@ -62,8 +97,8 @@ namespace Helper
 
 		public void Dispose()
 		{
-			foreach (KeyValuePair<int, IComponent> i in _components)
-				i.Value.Dispose();
+			foreach (ComponentWithPrio i in _components)
+				i.Component.Dispose();
 		}
 
 		#endregion

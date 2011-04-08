@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
+using Helper;
 
 namespace FRom.Logic
 {

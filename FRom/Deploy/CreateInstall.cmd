@@ -1,5 +1,6 @@
 @echo on
 set FILE_VERSION=%BIN_PATH%FRom.exe
+set NSIS="c:\Program Files\NSIS\makensis.exe"
 
 echo * BIN_PATH: %BIN_PATH%
 echo * DEPLOY_PATH: %DEPLOY_PATH%
@@ -7,7 +8,7 @@ echo * FILE_VERSION: %FILE_VERSION%
  
 IF NOT EXIST "%FILE_VERSION%" (
 echo * version file not found
-GOTO end
+GOTO :EOF
 )
 
 cscript %DEPLOY_PATH%get_version.js ^
@@ -24,7 +25,5 @@ set temp_var=^
 	/DPRODUCT_VERSION="%VERSION%" ^
 	/DSOURCE_DIR="%BIN_PATH%\" ^
 	%DEPLOY_PATH%FRomEditor.nsi
-echo %temp_var%
-"c:\Program Files\NSIS\makensis.exe" %temp_var%
-:end
-pause
+echo * Running: %NSIS% %temp_var%
+%NSIS% %temp_var%

@@ -25,6 +25,7 @@ SetCompressor /FINAL /SOLID lzma
 ; MUI 1.67 compatible ------
 !include "MUI.nsh"
 !include "DotNET.nsh"
+!include "SqlCe.nsh"
 
 ; MUI Settings
 !define MUI_ABORTWARNING
