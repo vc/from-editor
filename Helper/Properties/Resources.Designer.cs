@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Helper {
+namespace Helper.Properties {
     using System;
     
     

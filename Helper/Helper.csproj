@@ -58,7 +58,7 @@
   <ItemGroup>
     <Compile Include="BaseSortedCollection.cs" />
     <Compile Include="COMPortName.cs" />
-    <Compile Include="DataSetNS\DataSetHelper.cs" />
+    <Compile Include="DataSetHelper.cs" />
     <Compile Include="Debug.cs" />
     <Compile Include="HelperClass.cs" />
     <Compile Include="ListIndexString.cs" />

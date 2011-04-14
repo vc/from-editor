@@ -27,13 +27,9 @@ namespace InfoLibrary
 			{
 				EngineInfo e;
 				try
-				{
-					e = _engines[eng];
-				}
+				{ e = _engines[eng]; }
 				catch (KeyNotFoundException)
-				{
-					e = new EngineInfo(eng);
-				}
+				{ e = new EngineInfo(eng); }
 				return e;
 			}
 		}

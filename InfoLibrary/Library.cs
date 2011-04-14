@@ -102,7 +102,6 @@ namespace InfoLibrary
 		{
 			return null;
 		}
-		//public string Get
 
 		public DataTable GetDataSource(Tables t)
 		{

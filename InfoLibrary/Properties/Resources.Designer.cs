@@ -59,37 +59,5 @@ namespace InfoLibrary.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to -- [FRAME]
-        ///CREATE TABLE [frame] (
-        ///	[id] [int] IDENTITY(1,1) NOT NULL CONSTRAINT PK_frame PRIMARY KEY,
-        ///	[name] [nchar](100) NOT NULL UNIQUE
-        ///)
-        ///GO
-        ///
-        ///-- [MODEL]
-        ///CREATE TABLE [model] (
-        ///	[id] [int] IDENTITY(1,1) NOT NULL CONSTRAINT PK_model PRIMARY KEY,
-        ///	[name] [nchar](100) NOT NULL UNIQUE
-        ///)
-        ///GO
-        ///
-        ///-- [INJ TYPE]
-        ///CREATE TABLE [inj_type] (
-        ///	[id] [int] IDENTITY(1,1) NOT NULL CONSTRAINT PK_inh_type PRIMARY KEY,
-        ///	[name] [nchar](100) NOT NULL UNIQUE
-        ///)
-        ///GO
-        ///
-        ///-- [ENGINE]
-        ///CREATE TABLE [engine](
-        ///	[id] [int [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string db {
-            get {
-                return ResourceManager.GetString("db", resourceCulture);
-            }
-        }
     }
 }

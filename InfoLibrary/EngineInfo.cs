@@ -7,6 +7,9 @@ namespace InfoLibrary
 {
 	public class EngineInfo
 	{
+		const int _cCountOfParams = 8;
+		const string _cCountOfParamsErrorString = "Invalid lenth of array. Expected - ";
+
 		string _name;
 		string _frame;
 		int _displacement;
@@ -19,7 +22,7 @@ namespace InfoLibrary
 		public EngineInfo(object[] values)
 		{
 			if (values.Length != 8)
-				throw new ArgumentException("Invalid lenth of array. Expected - 8");
+				throw new ArgumentException(_cCountOfParamsErrorString + _cCountOfParams);
 			string[] arr = new string[values.Length];
 			for (int i = 0; i < values.Length; i++)
 				arr[i] = values[i].ToString();

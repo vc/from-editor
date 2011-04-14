@@ -13,6 +13,7 @@ using Helper;
 using Helper.Logger;
 using Helper.ProgressBar;
 using InfoLibrary;
+using Helper.Properties;
 
 namespace FRom
 {

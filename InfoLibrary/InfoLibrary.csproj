@@ -59,6 +59,7 @@
     <Compile Include="BoreStroke.cs" />
     <Compile Include="ChamberVol.cs" />
     <Compile Include="ECUInfo.cs" />
+    <Compile Include="ECUInfoCollection.cs" />
     <Compile Include="EngineInfo.cs" />
     <Compile Include="EngineInfoCollection.cs" />
     <Compile Include="Info.cs" />
@@ -116,10 +117,16 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties BuildVersion_UseGlobalSettings="True" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
