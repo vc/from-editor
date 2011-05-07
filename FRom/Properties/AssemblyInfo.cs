@@ -29,7 +29,7 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.3.9.1085")]
-[assembly: AssemblyFileVersion("1.3.9.1085")]
+[assembly: AssemblyVersion("1.3.9.1087")]
+[assembly: AssemblyFileVersion("1.3.9.1087")]
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("FRomTest")]

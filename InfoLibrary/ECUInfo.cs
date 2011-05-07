@@ -6,7 +6,6 @@ namespace InfoLibrary
 {
 	public class ECUInfo : Info
 	{
-
 		const int _cCountOfParams = 10;
 		const string _cCountOfParamsErrorString = "Invalid lenth of array. Expected - ";
 		string _model;
@@ -16,8 +15,8 @@ namespace InfoLibrary
 		string _boxNumber;
 		string _date;
 		EngineInfo _engine;
-		int _engineValCC;
-		int _injCC;
+		int _engineValCC = 0;
+		int _injCC = 0;
 		string _comment;
 
 		public ECUInfo(string[] val)
@@ -45,7 +44,10 @@ namespace InfoLibrary
 			_romId = val[3];
 			_boxNumber = val[4];
 			_date = val[5];
-			//_engine = _sEngineCollection[val[6]];
+			_engine = base.EngineCollection[val[6]];
+			Int32.TryParse(val[7], out _engineValCC);
+			Int32.TryParse(val[8], out _injCC);
+			_comment = val[9];
 		}
 	}
 }

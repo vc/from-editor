@@ -4,15 +4,28 @@ using System.Text;
 
 namespace InfoLibrary
 {
-	public class AFMInfo
+	public class AFMInfo : Info
 	{
-		string _engine;
+		EngineInfo _engine;
 		string _frame;
 		string _partNumber;
 		string _power;
 		string _color;
 		string _pin;
 		string _size;
+
+		const int _cCountOfParams = 7;
+		const string _cCountOfParamsErrorString = "Invalid lenth of array. Expected - ";
+
+		public AFMInfo(object[] values)
+		{
+			if (values.Length != _cCountOfParams)
+				throw new ArgumentException(_cCountOfParamsErrorString + _cCountOfParams);
+			string[] arr = new string[values.Length];
+			for (int i = 0; i < values.Length; i++)
+				arr[i] = values[i].ToString();
+			Init(arr);
+		}
 
 		public AFMInfo(string[] values)
 		{
@@ -21,9 +34,9 @@ namespace InfoLibrary
 
 		private void Init(string[] values)
 		{
-			if (values.Length != 7)
-				throw new ArgumentException("Invalid count of params");
-			_engine = values[0];
+			if (values.Length != _cCountOfParams)
+				throw new ArgumentException(_cCountOfParamsErrorString + _cCountOfParams);
+			_engine = base.EngineCollection[values[0]];
 			_frame = values[1];
 			_partNumber = values[2];
 			_power = values[3];
@@ -32,7 +45,7 @@ namespace InfoLibrary
 			_size = values[6];
 		}
 
-		public string Engine { get { return _engine; } }
+		public EngineInfo Engine { get { return _engine; } }
 		public string Frame { get { return _frame; } }
 		public string PartNumber { get { return _partNumber; } }
 		public string Power { get { return _power; } }

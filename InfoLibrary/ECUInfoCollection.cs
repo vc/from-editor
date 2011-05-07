@@ -6,14 +6,12 @@ using System.Data;
 
 namespace InfoLibrary
 {
-	public class ECUInfoCollection
+	public class ECUInfoCollection:Info
 	{
-		ListIndexString<ECUInfo> _ecu;
-		Library _datasource;
+		ListIndexString<ECUInfo> _ecu;		
 
-		public ECUInfoCollection(Library lib)
-		{
-			_datasource = lib;
+		public ECUInfoCollection()
+		{			
 			_ecu = new ListIndexString<ECUInfo>();
 
 			foreach (DataRow dr in DataSource.Rows)
@@ -35,7 +33,7 @@ namespace InfoLibrary
 
 		internal DataTable DataSource
 		{
-			get { return _datasource.GetDataSource(Library.Tables.ECU); }
+			get { return base.Library.GetDataSource(Library.Tables.ECU); }
 		}
 	}
 }

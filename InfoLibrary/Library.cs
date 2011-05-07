@@ -72,6 +72,9 @@ namespace InfoLibrary
 			Injector
 		}
 		EngineInfoCollection _engine;
+		ECUInfoCollection _ecu;
+		AFMInfoCollection _afm;
+		InjectorInfoCollection _inj;
 
 		const string _cECUTable = "ECU$";
 		const string _cEngineTable = "Engine$";
@@ -80,22 +83,24 @@ namespace InfoLibrary
 		string[] _excelSheets = { _cECUTable, _cEngineTable, _cAFMTable, _cInjectorTable };
 		DataSet _dsExcel;
 
-		public Library()
+		public Library(string dataSourceFile)
 		{
-			//LibraryDataBase db = new LibraryDataBase();
+			// * Create TEMP tables [ECU$, Engine$, AFM$, Injector$]			
+			_dsExcel = DataSetHelper.GetDataSetFromExcel(dataSourceFile, _excelSheets);
 
-			// * Create TEMP tables [ECU$, Engine$, AFM$, Injector$]
-			string file = @"D:\MyDocs\_Source\_FRom\from-editor\InfoLibrary\data\ecu.gt28.ru.xls";
-			_dsExcel = DataSetHelper.GetDataSetFromExcel(file, _excelSheets);
+			Info._library = this;
 
-			_engine = new EngineInfoCollection(this);
+			_engine = new EngineInfoCollection();
+			_ecu = new ECUInfoCollection();
+			_afm = new AFMInfoCollection();
+			_inj = new InjectorInfoCollection();
 
-			//string q = GetCylNumbers("CA18DET");
+			int q = Engines["CA18DET"].CylindersCount;
 		}
 
-		public EngineInfoCollection GetEngineCollection()
+		public EngineInfoCollection EngineCollection
 		{
-			return _engine;
+			get { return _engine; }
 		}
 
 		public ECUInfo GetECUInfo(string ecu)
@@ -118,6 +123,16 @@ namespace InfoLibrary
 				default:
 					throw new NotImplementedException();
 			}
+		}
+
+		public EngineInfoCollection Engines
+		{
+			get { return _engine; }
+		}
+
+		public ECUInfoCollection ECU
+		{
+			get { return _ecu; }
 		}
 	}
 }

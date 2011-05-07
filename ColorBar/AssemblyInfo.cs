@@ -5,11 +5,11 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyVersion("1.0.0.7")]
+[assembly: AssemblyVersion("1.0.0.8")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("")]
 [assembly: RuntimeCompatibility(WrapNonExceptionThrows=true)]
-[assembly: AssemblyFileVersion("1.0.0.7")]
+[assembly: AssemblyFileVersion("1.0.0.8")]
 [assembly: AssemblyProduct("ColorBar")]
 [assembly: Debuggable(DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints | DebuggableAttribute.DebuggingModes.Default)]
 [assembly: CompilationRelaxations(8)]

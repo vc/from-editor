@@ -7,14 +7,12 @@ using System.Data;
 namespace InfoLibrary
 {
 
-	public class EngineInfoCollection
+	public class EngineInfoCollection:Info
 	{
 		ListIndexString<EngineInfo> _engines;
-		Library _datasource;
 
-		public EngineInfoCollection(Library lib)
+		public EngineInfoCollection()
 		{
-			_datasource = lib;
 			_engines = new ListIndexString<EngineInfo>();
 
 			foreach (DataRow dr in DataSource.Rows)
@@ -29,14 +27,17 @@ namespace InfoLibrary
 				try
 				{ e = _engines[eng]; }
 				catch (KeyNotFoundException)
-				{ e = new EngineInfo(eng); }
+				{
+					e = new EngineInfo(eng);
+					_engines.Add(e);
+				}
 				return e;
 			}
 		}
 
 		internal DataTable DataSource
 		{
-			get { return _datasource.GetDataSource(Library.Tables.Engine); }
+			get { return base.Library.GetDataSource(Library.Tables.Engine); }
 		}
 	}
 }

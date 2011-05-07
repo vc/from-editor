@@ -21,7 +21,7 @@ namespace InfoLibrary
 
 		public EngineInfo(object[] values)
 		{
-			if (values.Length != 8)
+			if (values.Length != _cCountOfParams)
 				throw new ArgumentException(_cCountOfParamsErrorString + _cCountOfParams);
 			string[] arr = new string[values.Length];
 			for (int i = 0; i < values.Length; i++)
@@ -148,6 +148,11 @@ namespace InfoLibrary
 				return true;
 
 			return false;
+		}
+
+		public override string ToString()
+		{
+			return _name;
 		}
 
 		public string Name { get { return _name; } }

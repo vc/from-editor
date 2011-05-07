@@ -6,11 +6,16 @@ namespace InfoLibrary
 {
 	public class Info
 	{
-		static Library _sDataSource;
-		
-		public static EngineInfoCollection EngineCollection
+		internal static Library _library;
+
+		public Library Library
 		{
-			get { return _sDataSource.GetEngineCollection(); }
+			get { return _library; }
+		}
+
+		public EngineInfoCollection EngineCollection
+		{
+			get { return _library.EngineCollection; }
 		}
 	}
 }

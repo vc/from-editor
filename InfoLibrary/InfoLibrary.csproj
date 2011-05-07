@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AFMInfo.cs" />
+    <Compile Include="AFMInfoCollection.cs" />
     <Compile Include="BoreStroke.cs" />
     <Compile Include="ChamberVol.cs" />
     <Compile Include="ECUInfo.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="EngineInfoCollection.cs" />
     <Compile Include="Info.cs" />
     <Compile Include="InjectorInfo.cs" />
+    <Compile Include="InjectorInfoCollection.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -79,7 +81,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="data\ecu.gt28.ru.xls" />
+    <None Include="data\library.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

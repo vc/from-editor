@@ -33,6 +33,8 @@ namespace FRom
 
 		internal Log _log;
 
+		internal Library _lib;
+
 		/// <summary>
 		/// Список интерфейсов для диагностики
 		/// </summary>
@@ -69,14 +71,12 @@ namespace FRom
 
 		public FormMain()
 		{
-#if DEBUG
-			Library lib = new Library();
-#endif
 
 			InitializeComponent();				//Инициализация компонентов формы
-			InitializeSettings();				//Инициализация настроек программы			
-			InitializeEmulatorMenu();
-			InitializeConsultMenu();
+			InitializeSettings();				//Инициализация настроек программы
+			InitializeLibrary();
+			InitializeEmulatorMenu();			//Инициализация эмулятора ROM
+			InitializeConsultMenu();			//Инициализация consult
 			InitializeMenu(mstrpMain);			//Инициализация обработчиков основного меню
 			InitializeTabControl();				//Инициализация вкладок с картами
 
@@ -84,6 +84,18 @@ namespace FRom
 
 			Components.Add(this, 1000);
 			Components.Add(_frmSpeedTrial);
+		}
+
+		private void InitializeLibrary()
+		{
+			try
+			{
+				Library lib = new Library(HelperClass.FindFolder("library.xls"));
+			}
+			catch
+			{
+				string a = "q";
+			}
 		}
 
 		ResourceDisposer Components

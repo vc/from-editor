@@ -17,13 +17,10 @@ namespace Helper
 			get
 			{
 				Enumerator e = GetEnumerator();
-				e.MoveNext();
-				while (e.Current != null)
-				{
+				
+				while (e.MoveNext())					
 					if (index.Equals(e.Current.ToString()))
-						return e.Current;
-					e.MoveNext();
-				}
+						return e.Current;					
 
 				throw new KeyNotFoundException();
 			}
