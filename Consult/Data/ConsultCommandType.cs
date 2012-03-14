@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FRom.ConsultNS.Data
+namespace FRom.Consult.Data
 {
 	/// <summary>
 	/// Тип комманды consult и соответствующий байт команды ( 0xff-0xff-? )

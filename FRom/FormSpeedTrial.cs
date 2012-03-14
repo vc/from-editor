@@ -5,16 +5,16 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using FRom.ConsultNS;
-using FRom.ConsultNS.Data;
+using FRom.Consult;
+using FRom.Consult.Data;
 using Helper;
 using FRom.Properties;
 
-namespace FRom.ConsultNS
+namespace FRom.Consult
 {
 	public partial class FormSpeedTrial : Form, IDisposable
 	{
-		Consult _consult;
+		ConsultProvider _consult;
 		bool _started = false;
 		ConsultSensor _sensSpeed;
 		Settings cfg;
@@ -30,7 +30,7 @@ namespace FRom.ConsultNS
 
 		//Dictionary<KeyValuePair<int, int>, SpeedTrial> _st;
 
-		public FormSpeedTrial(Consult consult)
+		public FormSpeedTrial(ConsultProvider consult)
 		{
 			_consult = consult;
 
@@ -103,7 +103,8 @@ namespace FRom.ConsultNS
 
 				cfg.Save();
 
-				ConsultSensor._speedCorrect = TyreParams.CalcK(frmTyreCalc._tOrigin, frmTyreCalc._tNew);
+
+				ConversionFunctions.SpeedCorrectCoefficient = TyreParams.CalcK(frmTyreCalc._tOrigin, frmTyreCalc._tNew);
 			}
 		}
 
@@ -175,7 +176,7 @@ namespace FRom.ConsultNS
 			List<SpeedTrialRange> tmpRemoveList = null;
 
 			//correct speed koefficient
-			data = ConsultSensor.CorrectSpeed(data);
+			//data = ConsultSensor.CorrectSpeed(data);
 
 			foreach (SpeedTrialRange i in _currentSpeedIntervals)
 			{

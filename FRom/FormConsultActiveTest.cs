@@ -5,15 +5,15 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using FRom.ConsultNS.Data;
-using FRom.ConsultNS;
+using FRom.Consult.Data;
+using FRom.Consult;
 
 namespace FRom
 {
 	public partial class FormConsultActiveTest : Form
 	{
-		Consult _consult;
-		public FormConsultActiveTest(Consult consult)
+		ConsultProvider _consult;
+		public FormConsultActiveTest(ConsultProvider consult)
 		{
 			_consult = consult;
 

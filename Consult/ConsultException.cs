@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FRom.ConsultNS
+namespace FRom.Consult
 {
 
 	/// <summary>

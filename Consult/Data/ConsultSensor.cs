@@ -1,7 +1,6 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System;
-namespace FRom.ConsultNS.Data
+namespace FRom.Consult.Data
 {
 
 	/// <summary>
@@ -31,10 +30,6 @@ namespace FRom.ConsultNS.Data
 	/// </summary>
 	public class ConsultSensor
 	{
-		/// <summary>
-		/// Коэффициент корректировки расчета скорости
-		/// </summary>
-		public static float _speedCorrect = 1;
 
 		#region Members
 		/// <summary>
@@ -45,30 +40,6 @@ namespace FRom.ConsultNS.Data
 		/// Регистры
 		/// </summary>
 		public readonly byte[] _registers;
-		/// <summary>
-		/// Еденица измерения
-		/// </summary>
-		public readonly string _scaling;
-		/// <summary>
-		/// Смещение значения
-		/// </summary>
-		public readonly float _offset = 0;
-		/// <summary>
-		/// Множитель значения
-		/// </summary>
-		public readonly float _multiply = 1;
-		/// <summary>
-		/// Индикатор положительного или отрицательного значения
-		/// </summary>
-		public readonly bool _positive = true;
-		/// <summary>
-		/// Описание истинного значения
-		/// </summary>
-		public readonly string _deskTrue = "";
-		/// <summary>
-		/// Описание ложного значения
-		/// </summary>
-		public readonly string _deskFalse = "";
 		/// <summary>
 		/// Маска регистров
 		/// </summary>
@@ -87,75 +58,34 @@ namespace FRom.ConsultNS.Data
 		ConsultSensor[] _bitSensors;
 		#endregion
 
-		#region Constructors
-		/// <summary>
-		/// Регистр[, со смещенным значением [,множителем [и знаком минуса]]]
-		/// </summary>
-		/// <param name="name">Имя</param>
-		/// <param name="reg">Регистр</param>
-		/// <param name="scale">Еденица измерения</param>
-		/// <param name="mul">Множитель значения [default=]</param>
-		/// <param name="offset">Смещение относительно нуля [default=]</param>
-		/// <param name="positive">Индикатор value (pos=true/neg=false)  [default=true]</param>
-		public ConsultSensor(string name, byte[] reg, string scale, float mul = 1, float offset = 0, bool positive = true)
+		#region Properties
+		private SensorConvertFunc _convertFunc;
+		public SensorConvertFunc ConvFunc
 		{
-			_type = ConsultTypeOfSensors.Scallable;
-			switch (scale.ToLower())
+			get { return this._convertFunc; }
+			private set
 			{
-				case "rpm":
-					MinimumScallable = 0; MaximumScallable = 10000;
-					break;
-				case "mv":
-					MinimumScallable = 0; MaximumScallable = 15000;
-					break;
-				case "deg c":
-					MinimumScallable = -50; MaximumScallable = 100;
-					break;
-				case "kph":
-					MinimumScallable = 0; MaximumScallable = 300;
-					break;
-				case "ms":
-					MinimumScallable = 0; MaximumScallable = 20;
-					break;
-				case "deg btdc":
-					MinimumScallable = -30; MaximumScallable = 30;
-					break;
-				case "%":
-					MinimumScallable = 0; MaximumScallable = 100;
-					break;
-				case "v":
-					MinimumScallable = 0; MaximumScallable = 15;
-					break;
-				default:
-					break;
+				this._convertFunc = value;
+				if (value != null)
+					this.ScaleDescription = value(1).Scale;
 			}
-
-			_name = name;
-			_registers = reg;
-			_scaling = scale;
-			_multiply = mul;
-			_offset = offset;
-			_positive = positive;
 		}
 
-		/// <summary>
-		/// Регистр True/False
-		/// </summary>
-		/// <param name="name">Имя</param>
-		/// <param name="reg">Регистр</param>
-		/// <param name="mask">Маска регистра</param>
-		/// <param name="T">Описание истинного значения (1)</param>
-		/// <param name="F">Описание ложного значения (0)</param>
-		public ConsultSensor(string name, byte[] reg, string T, string F, byte mask = 0x01)
-		{
-			_type = ConsultTypeOfSensors.OnOff;
+		public ScaleDescription ScaleDescription { get; private set; }
+		#endregion
 
-			_name = name;
-			_registers = reg;
-			_scaling = "";
-			_mask = mask;
-			_deskTrue = T;
-			_deskFalse = F;
+		#region Constructors
+		public ConsultSensor(string name, byte[] reg)
+			: this(name, reg, ConversionFunctions.convertAsIs) { }
+
+		public ConsultSensor(string name, byte[] reg, SensorConvertFunc func)
+		{
+			if (func == null)
+				throw new NullReferenceException("func");
+
+			this._name = name;
+			this._registers = reg;
+			this.ConvFunc = func;
 		}
 
 		/// <summary>
@@ -178,7 +108,8 @@ namespace FRom.ConsultNS.Data
 			{
 				if (bitMap[i] == "")
 					continue;
-				_bitSensors[i] = new ConsultSensor(name + "_" + bitMap[i], reg, "ON", "OFF", GetMask(i));
+				string nameReg = String.Format("{0}_{1}", name, bitMap[i]);
+				_bitSensors[i] = new ConsultSensor(nameReg, reg, ConversionFunctions.BitConverters[i]);
 			}
 
 			_name = name;
@@ -204,78 +135,12 @@ namespace FRom.ConsultNS.Data
 		#endregion
 
 		#region Calc region
-		/// <summary>
-		/// Основная функция преобразования данных из массива в конечное значение датчика.
-		/// Учитывает типа сенсора _typeSensor
-		/// </summary>
-		/// <param name="data">Байтовый массив входных данных</param>
-		/// <returns>Конечное значение датчика</returns>
-		public float GetValue(byte[] data)
+		public int BytesToInt(byte[] data)
 		{
-			//Переворачиваем массив, т.к. первый байт всегда MSB, второй LSB
-			int len = data.Length;
-			byte[] dataConv = new byte[len];
-			for (int i = 0; i < data.Length; i++)
-				dataConv[i] = data[len - i - 1];
-
-			int val = 0;
-			switch (len)
-			{
-				case 1:
-					val = dataConv[0];
-					break;
-				case 2:
-					val = BitConverter.ToInt16(dataConv, 0);
-					break;
-				case 4:
-					val = BitConverter.ToInt32(dataConv, 0);
-					break;
-				default:
-					return 0;
-			}
-			return ConvertData(val);
-		}
-
-		/// <summary>
-		/// Откорректировать показания скорости с учетом коэффициента SpeedCorrect
-		/// </summary>
-		/// <param name="v"></param>
-		/// <returns></returns>
-		public static float CorrectSpeed(float v)
-		{
-			return v * _speedCorrect;
-		}
-
-		/// <summary>
-		/// Преобразовать цифровые данные в реальные, согласно заданным в классе настройкам
-		/// </summary>
-		/// <param name="val">Цифровое значение</param>
-		/// <returns>Реальное значение</returns>
-		private float ConvertData(int val)
-		{
-			float valRet = 0;
-			switch (_type)
-			{
-				case ConsultTypeOfSensors.OnOff:
-					valRet = SetMask((byte)val, _mask);
-					break;
-				case ConsultTypeOfSensors.Scallable:
-					valRet = _positive
-						? val * _multiply + _offset
-						: -val * _multiply + _offset;
-					break;
-				case ConsultTypeOfSensors.Bit:
-
-					break;
-				case ConsultTypeOfSensors.Descrette:
-					break;
-				default:
-					break;
-			}
-
-			SetMinMax(valRet);
-
-			return valRet;
+			//Reverse array, but 1st MSB, 2nd LSB byte
+			//TEST: check this reverse
+			Array.Reverse(data);
+			return (int)BitConverter.ToUInt32(data, 0);
 		}
 
 		/// <summary>
@@ -312,39 +177,6 @@ namespace FRom.ConsultNS.Data
 			return (byte)ret;
 		}
 
-		/// <summary>
-		/// Возвращает значение датчика в процентах от 0 до 1.
-		/// При расчете значения, функция опирается на значения _min, _max
-		/// </summary>
-		/// <param name="data">Входные даннык</param>
-		/// <returns>Процентное значение от 0 до 1</returns>
-		public float GetPercantageFloatValue(byte[] data)
-		{
-			float fData = GetValue(data);
-			float min = MinimumScallable;
-			float max = MaximumScallable;
-
-			float ret = (fData - min) / (max - min);
-			return ret;
-		}
-
-		/// <summary>
-		/// Возвращает значение датчика в процентах от 0 до 100.
-		/// При расчете значения, функция опирается на значения _min, _max
-		/// </summary>
-		/// <param name="data">Входные данные</param>
-		/// <returns>Процентное значение от 0 до 100</returns>
-		public int GetPercantageIntValue(byte[] data)
-		{
-			float fData = GetValue(data);
-			float min = MinimumScallable;
-			float max = MaximumScallable;
-
-			int ret = (int)((100 * (fData - min)) / (max - min));
-			return ret;
-		}
-
-
 		#endregion
 
 		/// <summary>
@@ -352,10 +184,11 @@ namespace FRom.ConsultNS.Data
 		/// </summary>
 		/// <param name="data"></param>
 		/// <returns></returns>
-		public string ToString(byte[] data)
+		public string ValueOf(byte[] data)
 		{
-			return GetValue(data).ToString() + " " + _scaling;
+			return this.ConvFunc(this.BytesToInt(data)).ToString();
 		}
+
 		/// <summary>
 		/// Для выборки экземпляра класса из списка путем индексирования по строке.
 		/// </summary>
@@ -369,23 +202,31 @@ namespace FRom.ConsultNS.Data
 		/// Прототип функции, вызываемой при появлении новых данных сенсоров
 		/// </summary>
 		/// <param name="data">данные датчиков (bytes)</param>
+		[Obsolete()]
 		public delegate void SensorNewDataByteEvent(byte[] data);
 
 		/// <summary>
 		/// Прототип функции, вызываемой при появлении новых данных сенсоров
 		/// </summary>
-		/// <param name="data">данные по датчику (real)</param>
+		/// <param name="data">данные по датчику (real)</param>		
+		[Obsolete()]
 		public delegate void SensorNewDataFloatEven(float data);
+
+		public delegate void SensorNewData(SensorValue data);
 
 		/// <summary>
 		/// Событие появления новых данных датчика (byte)
 		/// </summary>
+		[Obsolete("Use 'NewData' event")]
 		public event SensorNewDataByteEvent NewDataByte;
 
 		/// <summary>
 		/// Событие появления новых данных датчика (real)
 		/// </summary>
+		[Obsolete("Use 'NewData' event")]
 		public event SensorNewDataFloatEven NewDataFloat;
+
+		public event SensorNewData NewData;
 
 		/// <summary>
 		/// Отправить новые данные пописанным получателям
@@ -394,84 +235,16 @@ namespace FRom.ConsultNS.Data
 		public void RaiseNewDataEvent(byte[] data)
 		{
 			if (NewDataByte != null)
-				NewDataByte(data);
+				this.NewDataByte(data);
 
 			if (NewDataFloat != null)
 			{
-				float tmp = GetValue(data);
-				NewDataFloat(tmp);
+				float tmp = (float)this.ConvFunc(this.BytesToInt(data)).Value;
+				this.NewDataFloat(tmp);
 			}
+
+			if (NewData != null)
+				this.NewData(this.ConvFunc(this.BytesToInt(data)));
 		}
-
-		#region Minimum / Maximum area
-		/// <summary>
-		/// Минимальное конечное значение датчика
-		/// </summary>
-		float _minScallable;
-		/// <summary>
-		/// Максимальное конечное значение датчика
-		/// </summary>
-		float _maxScallable;
-
-		/// <summary>
-		/// Подсчитать минимальное и максимальное значение
-		/// </summary>
-		/// <param name="val">Реальное значение датчика</param>
-		void SetMinMax(float val)
-		{
-			if (val < MinimumScallable) MinimumScallable = val;
-			if (val > MaximumScallable) MaximumScallable = val;
-		}
-
-		/// <summary>
-		/// Делегат функции, вызываемой при новом значении манимального или максимальног означения
-		/// </summary>
-		/// <param name="newValue"></param>
-		public delegate void SensorMaxMinChangedEventHandler(float newValue);
-
-		/// <summary>
-		/// Событие нового минимального значения
-		/// </summary>
-		public event SensorMaxMinChangedEventHandler MinScaleValueChanged;
-
-		/// <summary>
-		/// Событие нового максимального значения датчика
-		/// </summary>
-		public event SensorMaxMinChangedEventHandler MaxScaleValueChanged;
-
-		/// <summary>
-		/// Максимальное значение датчика (реальное)
-		/// </summary>
-		public float MaximumScallable
-		{
-			get
-			{
-				return _maxScallable;
-			}
-			set
-			{
-				if (MaxScaleValueChanged != null)
-					MaxScaleValueChanged(value);
-				_maxScallable = value;
-			}
-		}
-
-		/// <summary>
-		/// Минимальное значение датчика (реальное)
-		/// </summary>
-		public float MinimumScallable
-		{
-			get
-			{
-				return _minScallable;
-			}
-			set
-			{
-				if (MinScaleValueChanged != null)
-					MinScaleValueChanged(value);
-				_minScallable = value;
-			}
-		}
-		#endregion
 	}
 }

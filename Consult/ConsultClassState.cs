@@ -1,5 +1,5 @@
 ﻿
-namespace FRom.ConsultNS
+namespace FRom.Consult
 {
 	/// <summary>
 	/// Состояния класса Consult

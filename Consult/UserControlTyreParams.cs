@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace FRom.ConsultNS
+namespace FRom.Consult
 {
 	public partial class UserControlTyreParams : UserControl
 	{

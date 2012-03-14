@@ -1,6 +1,6 @@
 ﻿
 using System;
-namespace FRom.ConsultNS.Data
+namespace FRom.Consult.Data
 {
 	public class ConsultECUPartNumber
 	{

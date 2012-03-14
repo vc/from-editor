@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
-namespace FRom.ConsultNS
+namespace FRom.Consult
 {
 	#region Tyre Enums
 	public enum TyreWidth

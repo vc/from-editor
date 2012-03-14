@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FRom.ConsultNS
+namespace FRom.Consult
 {
-	internal interface ILiveScanForm
+	public interface ILiveScanForm
 	{
 		/// <summary>
 		/// размер панели приборов

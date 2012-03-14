@@ -17,6 +17,7 @@
     </UpgradeBackupLocation>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <StartupObject>FRom.Program</StartupObject>
+    <TargetFrameworkProfile />
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -43,6 +44,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -52,22 +54,49 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualC" />
-    <Reference Include="SourceGrid, Version=4.21.3767.34200, Culture=neutral, PublicKeyToken=df6f5e538749e85d, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>externals\SourceGrid\SourceGrid.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="SourceGrid">
+      <HintPath>externals\SourceGrid\SourceGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Consult\FormDiagnosticCodes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Consult\FormDiagnosticCodes.Designer.cs">
+      <DependentUpon>FormDiagnosticCodes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Consult\FormLiveScan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Consult\FormLiveScan.Designer.cs">
+      <DependentUpon>FormLiveScan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Consult\FormSensorsSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Consult\FormSensorsSelect.Designer.cs">
+      <DependentUpon>FormSensorsSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Consult\Gauges\ConsultAquaGauge.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Consult\Gauges\ConsultColorBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Consult\Gauges\IConsultGauge.cs" />
+    <Compile Include="Consult\Gauges\IConsultGaugePlacer.cs" />
     <Compile Include="FormAboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -155,6 +184,18 @@
     <Compile Include="Logic\Map.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Consult\FormDiagnosticCodes.resx">
+      <DependentUpon>FormDiagnosticCodes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Consult\FormLiveScan.resx">
+      <DependentUpon>FormLiveScan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Consult\FormSensorsSelect.resx">
+      <DependentUpon>FormSensorsSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Consult\Gauges\ConsultColorBar.resx">
+      <DependentUpon>ConsultColorBar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormAboutBox.resx">
       <DependentUpon>FormAboutBox.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -186,6 +227,9 @@
       <DependentUpon>FormOptions.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="data\BASE_RB20_VG30_256_E.adr" />
+    <None Include="data\HCR32_RB26_256_E_Z32_444cc.adr" />
+    <None Include="data\R32_rb26det.bin" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

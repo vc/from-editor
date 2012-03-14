@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using FRom.Properties;
-using FRom.ConsultNS;
+using FRom.Consult;
 
 namespace FRom
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FRom.ConsultNS
+namespace FRom.Consult
 {
 	public class SpeedTrialRange : IComparer<SpeedTrialRange>
 	{
@@ -13,14 +13,21 @@ namespace FRom.ConsultNS
 		DateTime _timeEndInterval;
 		bool _started;
 
-		public SpeedTrialRange(int BeginInterval, int EndInterval, string name = null)
+		public SpeedTrialRange(int BeginInterval, int EndInterval):this(BeginInterval, EndInterval, null)
+		{}
+		public SpeedTrialRange(int BeginInterval, int EndInterval, string name)
 		{
 			_name = name;
 			_beginInterval = BeginInterval;
 			_endInterval = EndInterval;
 		}
 
-		public void Start(DateTime? dtStart = null)
+		public void Start()
+		{
+			this.Start(null);
+		}
+		
+		public void Start(DateTime? dtStart)
 		{
 			if (!_started)
 			{
@@ -74,19 +81,19 @@ namespace FRom.ConsultNS
 			TimeSpan time = GetTime();
 
 			return String.Format("{0} = {1}sec.",
-				this.ToString(),
-				Math.Round(time.TotalSeconds, 3)
-			);
+			                     this.ToString(),
+			                     Math.Round(time.TotalSeconds, 3)
+			                    );
 		}
 
 		public override string ToString()
 		{
 			return
-			String.Format("{2} [{0} - {1}]",
-				this._beginInterval,
-				this._endInterval,
-				_name == null ? "" : _name
-				);
+				String.Format("{2} [{0} - {1}]",
+				              this._beginInterval,
+				              this._endInterval,
+				              _name == null ? "" : _name
+				             );
 		}
 
 		#region IComparer<SpeedTrialRange> Members

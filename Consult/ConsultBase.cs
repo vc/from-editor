@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO.Ports;
 using System.Threading;
-using FRom.ConsultNS.Data;
+using FRom.Consult.Data;
 
-namespace FRom.ConsultNS
+namespace FRom.Consult
 {
 	/// <summary>
 	/// Базовая функциональность протокола Consult
@@ -50,17 +50,22 @@ namespace FRom.ConsultNS
 		{
 			_consultData = data;
 		}
-		public ConsultBase(string port, IConsultData data)
+		public ConsultBase (string port, IConsultData data)
 		{
 			DataSource = data;
 			base.Port.PortName = port;
-			Initialise();
+			Initialise ();
 		}
 
+		public virtual void Initialise ()
+		{
+			this.Initialise (false);
+		}
+		
 		/// <summary>
 		/// Общая инициализация класса
 		/// </summary>
-		public virtual void Initialise(bool fast = false)
+		public virtual void Initialise(bool fast)
 		{
 			if (Port.IsOpen)
 				Port.Close();
@@ -179,25 +184,29 @@ namespace FRom.ConsultNS
 				}
 			}
 		}
-
+		
+		internal void SendCommand (byte[] send)
+		{
+			this.SendCommand (send, null);
+		}
+		
 		/// <summary>
 		/// Отправить массив в порт и проверить ответ на инверсность входным данным
 		/// </summary>
 		/// <param name="send">Массив для отсылки</param>
 		/// <param name="cmd">Тип комманды для выборочной проверки инверсии</param>
-		internal void SendCommand(byte[] send, ECUConst? cmd = null)
+		internal void SendCommand (byte[] send, ECUConst? cmd)
 		{
-			byte[] receive = base.Request(send, null);
+			byte[] receive = base.Request (send, null);
 			const string errMsg = "Неожиданный ответ от устройства";
 			//Проверка ответа различная, в зависимости от типа переданной команды.
-			switch (cmd)
-			{
-				//Проверка каждого байта кратного трем, начиная с первого на инверсию
-				//проверка остальных байт на равенство
-				case ECUConst.ECU_ACTIVE_TEST_CMD:
-				case ECUConst.ECU_ROM_READ_BYTE_CMD:
-					if (receive.Length != send.Length)
-						throw new ConsultException(errMsg);
+			switch (cmd) {
+			//Проверка каждого байта кратного трем, начиная с первого на инверсию
+			//проверка остальных байт на равенство
+			case ECUConst.ECU_ACTIVE_TEST_CMD:
+			case ECUConst.ECU_ROM_READ_BYTE_CMD:
+				if (receive.Length != send.Length)
+					throw new ConsultException (errMsg);
 
 					//проверяем на инверию каждый третий байт, начиная с нулевого
 					//остальные должны совпадать
@@ -205,21 +214,20 @@ namespace FRom.ConsultNS
 					//recv: 36 80 00 36 80 01 36 80 02
 					//       0  1  2  3  4  5  6  7  8
 					//       1  0  0  1  0  0  1  0  0
-					for (int i = 0; i < receive.Length; i += 3)
-					{
-						if (CheckInverseBytes(send[i], receive[i]))
-							throw new ConsultException(errMsg);
-						for (int j = i + 1; j < i + 3; j++)
-							if (send[j] != receive[j])
-								throw new ConsultException(errMsg);
-					}
-					break;
+				for (int i = 0; i < receive.Length; i += 3) {
+					if (CheckInverseBytes (send [i], receive [i]))
+						throw new ConsultException (errMsg);
+					for (int j = i + 1; j < i + 3; j++)
+						if (send [j] != receive [j])
+							throw new ConsultException (errMsg);
+				}
+				break;
 				
-				//Проверка каждого второго байта, начиная с певого, на инверсию
-				//проверка остальных на равенство
-				case ECUConst.ECU_REG_READ_CMD:
-					if (receive.Length != send.Length)
-						throw new ConsultException(errMsg);
+			//Проверка каждого второго байта, начиная с певого, на инверсию
+			//проверка остальных на равенство
+			case ECUConst.ECU_REG_READ_CMD:
+				if (receive.Length != send.Length)
+					throw new ConsultException (errMsg);
 					// Send:
 					//5A 00 5A 01 5A 04 5A 05 5A 08 5A 09 5A 0B 5A 0C 5A 0D 5A 10 
 					//5A 11 5A 13 5A 14 5A 15 5A 16 5A 1A 5A 1C 5A 1E 5A 1F 5A 21
@@ -227,56 +235,70 @@ namespace FRom.ConsultNS
 					// Recv:
 					//A5 00 A5 01 A5 04 A5 05 A5 08 A5 09 A5 0B A5 0C A5 0D A5 10
 					//A5 11 A5 13 A5 14 A5 15 A5 16 A5 1A A5 1C A5 1E A5 1F A5 21
-					for (int i = 0; i < receive.Length; i++)
-					{
-						if (CheckInverseBytes(send[i], receive[i]))
-							throw new ConsultException(errMsg);
-						i++;
-						if (receive[i] == (byte)ECUConst.ECU_REG_NOT_SUPPORTED)
-							throw new NotSupportedException();
-					}
-					break;
+				for (int i = 0; i < receive.Length; i++) {
+					if (CheckInverseBytes (send [i], receive [i]))
+						throw new ConsultException (errMsg);
+					i++;
+					if (receive [i] == (byte)ECUConst.ECU_REG_NOT_SUPPORTED)
+						throw new NotSupportedException ();
+				}
+				break;
 				
-				//Проверка всех байт на инверсию
-				case null:
-				default:
-					if (send.Length != receive.Length || CheckInverseBytes(receive, send))
-						throw new ConsultException(errMsg);
-					break;
+			//Проверка всех байт на инверсию
+			case null:
+			default:
+				if (send.Length != receive.Length || CheckInverseBytes (receive, send))
+					throw new ConsultException (errMsg);
+				break;
 			}
 		}
-
+		
+		internal byte[] RequestECUData (byte[] cmd_arr)
+		{
+			return this.RequestECUData (cmd_arr, null);
+		}
+		
 		/// <summary>
 		/// Запросить ответ от устройства с завершающим символом приема данных (ECUConst.ECU_END_RX)
 		/// </summary>
 		/// <param name="cmd">Массив для передачи</param>
 		/// <param name="cmd_arr">Тип команды</param>
 		/// <returns>ответ</returns>
-		internal byte[] RequestECUData(byte[] cmd_arr, ECUConst? cmd = null)
+		internal byte[] RequestECUData (byte[] cmd_arr, ECUConst? cmd)
 		{
 			//Отправка запроса и проверка корреткности ответа ECU
-			SendCommand(cmd_arr, cmd);
+			SendCommand (cmd_arr, cmd);
 
 			//Подаем сигнал о том, что ждем фрейм от ECU
-			ECUFrameStart();
+			ECUFrameStart ();
 
 			//принимаем фрейм
-			byte[] frame = ECUFrameGet();
+			byte[] frame = ECUFrameGet ();
 
 			//Останавливаем передачу данных
-			ECUFrameStop();
+			ECUFrameStop ();
 
 			return frame;
 		}
-		internal byte[] RequestECUData(ConsultCommand cons_cmd, ECUConst? cmd = null)
+		internal byte[] RequestECUData (ConsultCommand cons_cmd)
 		{
-			return RequestECUData(new byte[] { cons_cmd.Command }, cmd);
+			return this.RequestECUData (cons_cmd, null);
+		}
+		
+		internal byte[] RequestECUData (ConsultCommand cons_cmd, ECUConst? cmd)
+		{
+			return RequestECUData (new byte[] { cons_cmd.Command }, cmd);
 		}
 
+		internal void ECUFrameStop ()
+		{
+			this.ECUFrameStop (false);
+		}
+		
 		/// <summary>
 		/// Останов приема фрейма от ECU
 		/// </summary>
-		internal void ECUFrameStop(bool fast = false)
+		internal void ECUFrameStop(bool fast)
 		{
 			for (int i = 0; i < _cCountRetryReadByte; i++)
 			{

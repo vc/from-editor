@@ -1,4 +1,4 @@
-﻿namespace FRom.ConsultNS
+﻿namespace FRom.Consult
 {
 	partial class FormSpeedTrial
 	{

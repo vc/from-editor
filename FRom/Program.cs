@@ -1,8 +1,10 @@
+
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 
 namespace FRom
 {
@@ -12,15 +14,22 @@ namespace FRom
 		/// The main entry point for the application.
 		/// </summary>
 		[STAThread]
-		static void Main()
+		static void Main ()
 		{
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
+			Application.ThreadException += Program.ExceptionHandler;
+			
+			Application.EnableVisualStyles ();
+			Application.SetCompatibleTextRenderingDefault (false);
 
-			Form frm = new FormMain();
+			Form frm = new FormMain ();
 			frm.StartPosition = FormStartPosition.Manual;
 
-			Application.Run(frm);
+			Application.Run (frm);
+		}
+		
+		static void ExceptionHandler (object sender, ThreadExceptionEventArgs ex)
+		{
+			MessageBox.Show (ex.ToString());
 		}
 	}
 }

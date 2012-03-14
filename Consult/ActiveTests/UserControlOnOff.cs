@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
-using FRom.ConsultNS.Data;
+using FRom.Consult.Data;
 using System.ComponentModel;
 
-namespace FRom.ConsultNS.ActiveTests
+namespace FRom.Consult.ActiveTests
 {
 	public partial class UserControlOnOff : UserControl
 	{

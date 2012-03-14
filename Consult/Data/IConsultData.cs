@@ -1,6 +1,6 @@
-﻿using Helper;
+﻿using FRom.Consult.Helper;
 
-namespace FRom.ConsultNS.Data
+namespace FRom.Consult.Data
 {
 	public interface IConsultData
 	{

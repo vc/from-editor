@@ -1,5 +1,5 @@
 ﻿
-namespace FRom.ConsultNS.Data
+namespace FRom.Consult.Data
 {
 	/// <summary>
 	/// Константы ECU, протокола consult

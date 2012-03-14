@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Helper;
+﻿using FRom.Consult.Helper;
 
-namespace FRom.ConsultNS.Data
+namespace FRom.Consult.Data
 {
 	public interface IConsultDataSource
 	{
-		
+
 		string ToString();
 
 		byte[] InitBytes { get; }

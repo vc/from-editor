@@ -13,24 +13,23 @@ namespace Helper
 		///     Adds an item to the Collection<T> at the correct position.
 		/// </summary>
 		/// <param name="item">The object to add to </param>
-		public new void Add(T item)
+		public new void Add (T item)
 		{
-			int pos = GetInsertPositio(item);
-			base.InsertItem(pos, item);
+			int pos = GetInsertPositio (item);
+			base.InsertItem (pos, item);
 		}
 
-		public new void Remove(T item)
+		public new void Remove (T item)
 		{
-			List<T> lstToRemove = new List<T>();
+			List<T> lstToRemove = new List<T> ();
 			foreach (T i in Items)
-				if (i.Equals(item))
-					lstToRemove.Add(i);
+				if (i.Equals (item))
+					lstToRemove.Add (i);
 			foreach (T i in lstToRemove)
-				base.Remove(i);
+				base.Remove (i);
 		}
 
-		public IList<T> Itemss
-		{
+		public IList<T> Itemss {
 			get { return base.Items; }
 		}
 
@@ -39,10 +38,10 @@ namespace Helper
 		/// </summary>
 		/// <param name="itemsToBeAdded">The items to be added.</param>
 		/// <returns>this to allow fluent interface</returns>
-		public BaseSortedCollection<T> AddItems(params T[] itemsToBeAdded)
+		public BaseSortedCollection<T> AddItems (params T[] itemsToBeAdded)
 		{
-			foreach (var item in itemsToBeAdded)
-				Add(item);
+			foreach (T item in itemsToBeAdded)
+				Add (item);
 			return this;
 		}
 
@@ -51,14 +50,13 @@ namespace Helper
 		/// </summary>
 		/// <param name="item"></param>
 		/// <returns>Get position where item should be inserted.</returns>
-		private int GetInsertPositio(T item)
+		private int GetInsertPositio (T item)
 		{
 			if (item == null)
-				throw new ArgumentNullException();
+				throw new ArgumentNullException ();
 
-			for (int pos = this.Count - 1; pos >= 0; pos--)
-			{
-				if (item.CompareTo(this.Items[pos]) > 0)
+			for (int pos = this.Count - 1; pos >= 0; pos--) {
+				if (item.CompareTo (this.Items [pos]) > 0)
 					return pos + 1;
 			}
 

@@ -1,11 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FRom", "FRom\FRom.csproj", "{16CC93F2-2E3A-437F-9AA7-BC2BC128155F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{17C11826-AB02-4F0D-9113-9A8E93A5F30D} = {17C11826-AB02-4F0D-9113-9A8E93A5F30D}
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2963AAE0-DAFF-4568-B74F-A8A7B974AC29}"
 	ProjectSection(SolutionItems) = preProject
 		FRom.vsmdi = FRom.vsmdi
@@ -13,9 +8,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenGLControl", "OpenGLControl\OpenGLControl.csproj", "{3A7BCDA8-1A82-45B9-90B5-98A837BC551F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FRom", "FRom\FRom.csproj", "{16CC93F2-2E3A-437F-9AA7-BC2BC128155F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{17C11826-AB02-4F0D-9113-9A8E93A5F30D} = {17C11826-AB02-4F0D-9113-9A8E93A5F30D}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FRomTest", "FRomTest\FRomTest.csproj", "{653D6A69-0BF9-4957-A499-0B83DA4E935F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenGLControl", "OpenGLControl\OpenGLControl.csproj", "{3A7BCDA8-1A82-45B9-90B5-98A837BC551F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AquaGauge", "AquaGauge\AquaGauge.csproj", "{0E5542E0-FC5D-4F67-950D-9F28C5D1225A}"
 EndProject
@@ -62,16 +60,6 @@ Global
 		{3A7BCDA8-1A82-45B9-90B5-98A837BC551F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{3A7BCDA8-1A82-45B9-90B5-98A837BC551F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3A7BCDA8-1A82-45B9-90B5-98A837BC551F}.Release|x86.ActiveCfg = Release|Any CPU
-		{653D6A69-0BF9-4957-A499-0B83DA4E935F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{653D6A69-0BF9-4957-A499-0B83DA4E935F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{653D6A69-0BF9-4957-A499-0B83DA4E935F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{653D6A69-0BF9-4957-A499-0B83DA4E935F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{653D6A69-0BF9-4957-A499-0B83DA4E935F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{653D6A69-0BF9-4957-A499-0B83DA4E935F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{653D6A69-0BF9-4957-A499-0B83DA4E935F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{653D6A69-0BF9-4957-A499-0B83DA4E935F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{653D6A69-0BF9-4957-A499-0B83DA4E935F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{653D6A69-0BF9-4957-A499-0B83DA4E935F}.Release|x86.ActiveCfg = Release|Any CPU
 		{0E5542E0-FC5D-4F67-950D-9F28C5D1225A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0E5542E0-FC5D-4F67-950D-9F28C5D1225A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E5542E0-FC5D-4F67-950D-9F28C5D1225A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -127,9 +115,12 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		BuildVersion_UpdateAssemblyVersion = False
-		BuildVersion_UpdateFileVersion = False
-		BuildVersion_BuildVersioningStyle = None.None.None.Increment
 		BuildVersion_UseGlobalSettings = True
+		BuildVersion_BuildVersioningStyle = None.None.None.Increment
+		BuildVersion_UpdateFileVersion = False
+		BuildVersion_UpdateAssemblyVersion = False
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = FRom\FRom.csproj
 	EndGlobalSection
 EndGlobal

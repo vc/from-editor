@@ -264,14 +264,20 @@ namespace Helper
 			foreach (DataRow r in source.Rows)
 				dest.Rows.Add(r.ItemArray);
 		}
-
+		
+		public static DataSet GetDataSetFromExcel (string excelFile)
+		{
+			return DataSetHelper.GetDataSetFromExcel (excelFile, null);
+		}
+		
+		
 		/// <summary>
 		/// Взять список таблиц из excel файла
 		/// </summary>
 		/// <param name="excelFile">Excel файл</param>
 		/// <param name="sheets">список таблиц со знаком $ на конце</param>
 		/// <returns>список таблиц</returns>
-		public static DataSet GetDataSetFromExcel(string excelFile, string[] sheets = null)
+		public static DataSet GetDataSetFromExcel(string excelFile, string[] sheets)
 		{
 			//Запросом тяну данные из файла Excel 2003...
 			//List<DataTable> dataTablesRet = new List<DataTable>();

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using FRom.ConsultNS;
-using FRom.ConsultNS.Data;
+using FRom.Consult;
+using FRom.Consult.Data;
 using FRom.Emulator;
 using FRom.Properties;
 using Helper;
@@ -118,7 +118,7 @@ namespace FRom
 				cfg.cfgTyreOrigin = frmTyreCalc._tOrigin;
 				cfg.cfgTyreCurrent = frmTyreCalc._tNew;
 
-				ConsultSensor._speedCorrect = TyreParams.CalcK(frmTyreCalc._tOrigin, frmTyreCalc._tNew);
+				ConversionFunctions.SpeedCorrectCoefficient = TyreParams.CalcK(frmTyreCalc._tOrigin, frmTyreCalc._tNew);
 			}
 		}
 
@@ -351,7 +351,7 @@ namespace FRom
 			set { _frmParrent._emulator = value; }
 		}
 
-		protected Consult _consult
+		protected ConsultProvider _consult
 		{
 			get { return _frmParrent._consult; }
 			set { _frmParrent._consult = value; }

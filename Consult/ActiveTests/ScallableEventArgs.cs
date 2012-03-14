@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FRom.ConsultNS.ActiveTests
+namespace FRom.Consult.ActiveTests
 {
 	public class ScallableEventArgs : EventArgs
 	{

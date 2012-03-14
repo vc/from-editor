@@ -8,11 +8,12 @@
     <ProjectGuid>{17C11826-AB02-4F0D-9113-9A8E93A5F30D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FRom.ConsultNS</RootNamespace>
+    <RootNamespace>FRom.Consult</RootNamespace>
     <AssemblyName>Consult</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -37,7 +38,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <NoStdLib>false</NoStdLib>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -46,6 +47,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -76,15 +78,17 @@
     <Compile Include="ActiveTests\UserControlDescrette.Designer.cs">
       <DependentUpon>UserControlDescrette.cs</DependentUpon>
     </Compile>
-    <Compile Include="Consult.cs" />
+    <Compile Include="ConsultProvider.cs" />
     <Compile Include="ConsultBase.cs" />
     <Compile Include="ConsultClassState.cs" />
     <Compile Include="ConsultException.cs" />
+    <Compile Include="Data\BooleanFormatProvider.cs" />
     <Compile Include="Data\ConsultActiveTest.cs" />
     <Compile Include="Data\ConsultCommand.cs" />
     <Compile Include="Data\ConsultCommandType.cs" />
     <Compile Include="Data\ConsultData.cs" />
     <Compile Include="Data\ConsultSensor.cs" />
+    <Compile Include="Data\ConversionFunctions.cs" />
     <Compile Include="Data\DataAirCon.cs" />
     <Compile Include="Data\DataAT.cs" />
     <Compile Include="Data\DataEngine.cs" />
@@ -94,34 +98,26 @@
     <Compile Include="Data\ECUPartNumber.cs" />
     <Compile Include="Data\IConsultData.cs" />
     <Compile Include="Data\IConsultDataSource.cs" />
-    <Compile Include="FormDiagnosticCodes.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormDiagnosticCodes.Designer.cs">
-      <DependentUpon>FormDiagnosticCodes.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormLiveScan.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormLiveScan.Designer.cs">
-      <DependentUpon>FormLiveScan.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormSensorsSelect.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormSensorsSelect.Designer.cs">
-      <DependentUpon>FormSensorsSelect.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gauges\ConsultAquaGauge.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gauges\ConsultColorBar.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Gauges\IConsultGauge.cs" />
-    <Compile Include="Gauges\IConsultGaugePlacer.cs" />
+    <Compile Include="Data\SensorValue.cs" />
+    <Compile Include="Helper\COMPortName.cs" />
+    <Compile Include="Helper\ListIndexString.cs" />
     <Compile Include="ILiveScanForm.cs" />
+    <Compile Include="Logger\Event.cs" />
+    <Compile Include="Logger\FileLogger.cs" />
+    <Compile Include="Logger\Logger.cs" />
+    <Compile Include="Logger\NewMessageEventArgs.cs" />
+    <Compile Include="Logger\TimeStreamWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\EngineSensors.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EngineSensors.txt</DependentUpon>
+    </Compile>
     <Compile Include="SensorMonitoringParams.cs" />
     <Compile Include="SerialPortIO.cs" />
     <Compile Include="SpeedTrialRange.cs" />
@@ -143,17 +139,9 @@
     <EmbeddedResource Include="ActiveTests\UserControlDescrette.resx">
       <DependentUpon>UserControlDescrette.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormDiagnosticCodes.resx">
-      <DependentUpon>FormDiagnosticCodes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormLiveScan.resx">
-      <DependentUpon>FormLiveScan.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormSensorsSelect.resx">
-      <DependentUpon>FormSensorsSelect.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gauges\ConsultColorBar.resx">
-      <DependentUpon>ConsultColorBar.cs</DependentUpon>
+    <EmbeddedResource Include="Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControlTyreParams.resx">
       <DependentUpon>UserControlTyreParams.cs</DependentUpon>
@@ -177,20 +165,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AquaGauge\AquaGauge.csproj">
-      <Project>{0E5542E0-FC5D-4F67-950D-9F28C5D1225A}</Project>
-      <Name>AquaGauge</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ColorBar\ColorBar.csproj">
-      <Project>{C3E9C71D-47C7-469E-81EE-A9D39025EB71}</Project>
-      <Name>ColorBar</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Helper\Helper.csproj">
-      <Project>{20E3BECC-03F3-4BDC-8870-2BB0C47D9DA5}</Project>
-      <Name>Helper</Name>
-    </ProjectReference>
+    <Content Include="Resources\EngineSensors.txt">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EngineSensors.Designer.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

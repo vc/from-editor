@@ -1,6 +1,6 @@
 ﻿
-using Helper;
-namespace FRom.ConsultNS.Data
+using FRom.Consult.Helper;
+namespace FRom.Consult.Data
 {
 	/// <summary>
 	/// S-HICAS ECU Register Table. (hydraulic)
@@ -32,11 +32,11 @@ namespace FRom.ConsultNS.Data
 		/// </summary>
 		static internal ListIndexString<ConsultSensor> _lstSensors
 			= new ListIndexString<ConsultSensor> {
-				new ConsultSensor("VHCL SPEED SENSOR", new byte[] { 0x01 }, "KM/H"),
-				new ConsultSensor("STEERING ANGLE", new byte[] { 0x02, 0x03 }, "Degrees", 1/2f),
+				new ConsultSensor("VHCL SPEED SENSOR", new byte[] { 0x01 }, ConversionFunctions.convertAsIsSpeed),
+				new ConsultSensor("STEERING ANGLE", new byte[] { 0x02, 0x03 }, ConversionFunctions.convertHICASSteeringAngle),
 				new ConsultSensor("MULTI 1", new byte[] { 0x04 }, new string[] { "Steering Direction (0=L/1=R)","Neutral Signal", "StopLamp SW", "PKB/Clutch SW", "WOT/P-SW", "Engine Speed 0:<1500RPM, 1:>1500RPM","","" }),
-				new ConsultSensor("HICAS SOL", new byte[] { 0x05 }, "Ampere", 1/200f),
-				new ConsultSensor("POWER STR SOL", new byte[] { 0x06 }, "Ampere", 1/200f),				
+				new ConsultSensor("HICAS SOL", new byte[] { 0x05 }, ConversionFunctions.convertHICASSolenoid),
+				new ConsultSensor("POWER STR SOL", new byte[] { 0x06 }, ConversionFunctions.convertHICASSolenoid),
 			};
 
 		/// <summary>

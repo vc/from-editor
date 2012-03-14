@@ -1,4 +1,4 @@
-﻿namespace FRom.ConsultNS.ActiveTests
+﻿namespace FRom.Consult.ActiveTests
 {
 	partial class UserControlDescrette
 	{

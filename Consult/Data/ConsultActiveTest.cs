@@ -1,6 +1,6 @@
 ﻿
 using System.Collections.Generic;
-namespace FRom.ConsultNS.Data
+namespace FRom.Consult.Data
 {
 	/// <summary>
 	/// Типы активных тестов
@@ -119,6 +119,15 @@ namespace FRom.ConsultNS.Data
 			_bitDefaultValue = pDefaultValue;
 		}
 
+		
+		public ConsultActiveTest(string pName, byte pReg, string pScale, float pMinScale, float pMaxScale)
+			:this(pName, pReg,pScale, pMinScale, pMaxScale,0x00)
+		{}
+		public ConsultActiveTest(string pName, byte pReg, string pScale, float pMinScale, float pMaxScale, byte pDefault)
+			:this(pName, pReg,pScale, pMinScale, pMaxScale,pDefault,0)
+		{}
+		public ConsultActiveTest(string pName, byte pReg, string pScale, float pMinScale, float pMaxScale, byte pDefault, int pRegOffset):this(pName, pReg,pScale, pMinScale, pMaxScale,pDefault,pRegOffset, 1)
+		{}
 		/// <summary>
 		/// Scallable Type
 		/// </summary>
@@ -128,7 +137,7 @@ namespace FRom.ConsultNS.Data
 		/// <param name="pScaleMultiply">Множитель регистра для получения шкалы</param>
 		/// <param name="pMinScale">Минимальное значение шкалы</param>
 		/// <param name="pMaxScale">Максимальное значение шкалы</param>
-		public ConsultActiveTest(string pName, byte pReg, string pScale, float pMinScale, float pMaxScale, byte pDefault = 0x00, int pRegOffset = 0, float pScaleMultiply = 1)
+		public ConsultActiveTest(string pName, byte pReg, string pScale, float pMinScale, float pMaxScale, byte pDefault, int pRegOffset, float pScaleMultiply)
 		{
 			_type = ConsultTypeOfActiveTest.Scallable;
 
@@ -142,6 +151,9 @@ namespace FRom.ConsultNS.Data
 			_scallableDefault = pDefault;
 		}
 
+		public ConsultActiveTest(string pName, byte pReg, byte pOff, byte pOn):this(pName,pReg,pOff,pOn,false)
+		{}
+			
 		/// <summary>
 		/// OnOff Type
 		/// </summary>
@@ -149,7 +161,7 @@ namespace FRom.ConsultNS.Data
 		/// <param name="pReg">Адрес регистра для активации теста</param>
 		/// <param name="pOff">Значение регистра для выключения</param>
 		/// <param name="pOn">Значение регистра для включения</param>
-		public ConsultActiveTest(string pName, byte pReg, byte pOff, byte pOn, bool pDefaultValue = false)
+		public ConsultActiveTest(string pName, byte pReg, byte pOff, byte pOn, bool pDefaultValue)
 		{
 			_type = ConsultTypeOfActiveTest.OnOff;
 

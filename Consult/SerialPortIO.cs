@@ -1,9 +1,8 @@
 ﻿using System.IO.Ports;
 using System.Threading;
-using System;
-using Helper.Logger;
+using FRom.Consult.Helper.Logger;
 
-namespace FRom.ConsultNS
+namespace FRom.Consult
 {
 	/// <summary>
 	/// Базовая функциональность последовательного интерфейса
@@ -68,12 +67,17 @@ namespace FRom.ConsultNS
 			return recv;
 		}
 
+		protected byte[] Receive()
+		{
+			return this.Receive(null);
+		}
+		
 		/// <summary>
 		/// Прочитать блок данных из порта
 		/// </summary>
 		/// <param name="n">Количествой байт для считывания, если null то прочитать все что есть в порту</param>
 		/// <returns>Массив байт</returns>
-		protected byte[] Receive(int? n = null)
+		protected byte[] Receive(int? n)
 		{
 			if (n == null)
 				n = _port.BytesToRead;

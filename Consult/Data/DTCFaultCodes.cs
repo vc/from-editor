@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FRom.ConsultNS.Data
+namespace FRom.Consult.Data
 {
 	public class ConsultDTCFaultCodes
 	{
@@ -126,7 +126,5 @@ namespace FRom.ConsultNS.Data
 
 			return str;
 		}
-
-
 	}
 }

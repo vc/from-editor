@@ -17,10 +17,10 @@ namespace Helper
 			get
 			{
 				Enumerator e = GetEnumerator();
-				
-				while (e.MoveNext())					
+
+				while (e.MoveNext())
 					if (index.Equals(e.Current.ToString()))
-						return e.Current;					
+						return e.Current;
 
 				throw new KeyNotFoundException();
 			}
@@ -42,5 +42,12 @@ namespace Helper
 
 		public ListIndexString()
 			: base() { }
+
+		public ListIndexString(IEnumerable<T> list)
+			: base()
+		{
+			foreach (var item in list)
+				base.Add(item);
+		}
 	}
 }

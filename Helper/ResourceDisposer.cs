@@ -11,13 +11,18 @@ namespace Helper
 		{
 			public int Prio;
 			public IComponent Component;
-			public ComponentWithPrio(IComponent component, int prio = 500)
+			
+			public ComponentWithPrio (IComponent component):this(component,500)
+			{
+			}
+				
+			public ComponentWithPrio (IComponent component, int prio)
 			{
 				Prio = prio;
 				Component = component;
 			}
 
-			public override bool Equals(object obj)
+			public override bool Equals (object obj)
 			{
 				ComponentWithPrio other = obj as ComponentWithPrio;
 				if (other == null)
@@ -28,7 +33,7 @@ namespace Helper
 
 			#region IComparable<ComponentWithPrio> Members
 
-			public int CompareTo(ComponentWithPrio other)
+			public int CompareTo (ComponentWithPrio other)
 			{
 				return this.Prio - other.Prio;
 			}
@@ -39,66 +44,62 @@ namespace Helper
 		private int _currentPrio = 500;
 		private BaseSortedCollection<ComponentWithPrio> _components;
 
-		public ResourceDisposer()
+		public ResourceDisposer ()
 		{
-			_components = new BaseSortedCollection<ComponentWithPrio>();
+			_components = new BaseSortedCollection<ComponentWithPrio> ();
 		}
 
 		#region IContainer Members
 
-		public void Add(IComponent component, string name)
+		public void Add (IComponent component, string name)
 		{
-			Add(component);
+			Add (component);
 		}
 
 		/// <summary>
 		/// Add component with default priority (500)
 		/// </summary>
 		/// <param name="component">IComponent</param>
-		public void Add(IComponent component)
+		public void Add (IComponent component)
 		{
 			if (component != null)
-				_components.Add(new ComponentWithPrio(component, _currentPrio));
+				_components.Add (new ComponentWithPrio (component, _currentPrio));
 		}
 		/// <summary>
 		/// Add component with priority
 		/// </summary>
 		/// <param name="component">IComponent</param>
 		/// <param name="priority">Priority (1-first, 500-default 1000-lastest)</param>
-		public void Add(IComponent component, int priority)
+		public void Add (IComponent component, int priority)
 		{
 			if (component != null)
-				_components.Add(new ComponentWithPrio(component, priority));
+				_components.Add (new ComponentWithPrio (component, priority));
 		}
 
-
-		public ComponentCollection Components
-		{
-			get
-			{
-				List<IComponent> lst = new List<IComponent>();
-				foreach (ComponentWithPrio i in _components)
-				{
-					lst.Add(i.Component);
+		public ComponentCollection Components {
+			get {
+				List<IComponent> lst = new List<IComponent> ();
+				foreach (ComponentWithPrio i in _components) {
+					lst.Add (i.Component);
 				}
 
-				return new ComponentCollection(lst.ToArray());
+				return new ComponentCollection (lst.ToArray ());
 			}
 		}
 
-		public void Remove(IComponent component)
+		public void Remove (IComponent component)
 		{
-			_components.Remove(new ComponentWithPrio(component));
+			_components.Remove (new ComponentWithPrio (component));
 		}
 
 		#endregion
 
 		#region IDisposable Members
 
-		public void Dispose()
+		public void Dispose ()
 		{
 			foreach (ComponentWithPrio i in _components)
-				i.Component.Dispose();
+				i.Component.Dispose ();
 		}
 
 		#endregion

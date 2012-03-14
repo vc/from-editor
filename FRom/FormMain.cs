@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Windows.Forms;
-using FRom.ConsultNS;
-using FRom.ConsultNS.Data;
+using FRom.Consult;
+using FRom.Consult.Data;
 using FRom.Emulator;
 using FRom.Grid;
 using FRom.Logic;
@@ -12,8 +12,8 @@ using FRom.Properties;
 using Helper;
 using Helper.Logger;
 using Helper.ProgressBar;
-using InfoLibrary;
 using Helper.Properties;
+using InfoLibrary;
 
 namespace FRom
 {
@@ -29,7 +29,7 @@ namespace FRom
 
 		internal Romulator _emulator;
 
-		internal Consult _consult;
+		internal ConsultProvider _consult;
 
 		internal Log _log;
 
@@ -232,10 +232,10 @@ namespace FRom
 				mnuConsultMode.DropDownItems[_consltDataList[0].ToString()],
 				new EventArgs());
 			//класс работы через интерфейс consult
-			_consult = new Consult(_consltDataList[0]);
+			_consult = new ConsultProvider(_consltDataList[0]);
 			//Расчитаем коэффициент скорости если размеры шин заданы
 			if (_cfg.cfgTyreOrigin != null && _cfg.cfgTyreCurrent != null)
-				ConsultSensor._speedCorrect = TyreParams.CalcK(_cfg.cfgTyreOrigin, _cfg.cfgTyreCurrent);
+				ConversionFunctions.SpeedCorrectCoefficient = TyreParams.CalcK(_cfg.cfgTyreOrigin, _cfg.cfgTyreCurrent);
 			//Если стоит настройка на автоподключение - подключимся к консульту
 			if (_cfg.cfgConsultConnectAtStartup)
 				menu_Click(mnuConsultConnect);

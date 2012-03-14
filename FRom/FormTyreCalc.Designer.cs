@@ -31,9 +31,9 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTyreCalc));
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.ctlTyresOriginal = new FRom.ConsultNS.UserControlTyreParams();
+			this.ctlTyresOriginal = new FRom.Consult.UserControlTyreParams();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.ctlTyresNew = new FRom.ConsultNS.UserControlTyreParams();
+			this.ctlTyresNew = new FRom.Consult.UserControlTyreParams();
 			this.label1 = new System.Windows.Forms.Label();
 			this.txtAccurancy = new System.Windows.Forms.TextBox();
 			this.btnOK = new System.Windows.Forms.Button();
@@ -70,7 +70,7 @@
 			this.ctlTyresOriginal.Name = "ctlTyresOriginal";
 			this.ctlTyresOriginal.Size = new System.Drawing.Size(268, 40);
 			this.ctlTyresOriginal.TabIndex = 0;
-			this.ctlTyresOriginal.SizesChanged += new FRom.ConsultNS.UserControlTyreParams.SizeChangedEventHandler(this.ctlTyresOriginal_SizesChanged);
+			this.ctlTyresOriginal.SizesChanged += new FRom.Consult.UserControlTyreParams.SizeChangedEventHandler(this.ctlTyresOriginal_SizesChanged);
 			// 
 			// groupBox2
 			// 
@@ -90,7 +90,7 @@
 			this.ctlTyresNew.ShowRecomendedParams = true;
 			this.ctlTyresNew.Size = new System.Drawing.Size(268, 61);
 			this.ctlTyresNew.TabIndex = 0;
-			this.ctlTyresNew.SizesChanged += new FRom.ConsultNS.UserControlTyreParams.SizeChangedEventHandler(this.ctlTyresNew_SizesChanged);
+			this.ctlTyresNew.SizesChanged += new FRom.Consult.UserControlTyreParams.SizeChangedEventHandler(this.ctlTyresNew_SizesChanged);
 			// 
 			// label1
 			// 
@@ -172,7 +172,7 @@
 		private System.Windows.Forms.TextBox txtAccurancy;
 		private System.Windows.Forms.Button btnOK;
 		private System.Windows.Forms.Button btnCancel;
-		private FRom.ConsultNS.UserControlTyreParams ctlTyresOriginal;
-		private FRom.ConsultNS.UserControlTyreParams ctlTyresNew;
+		private FRom.Consult.UserControlTyreParams ctlTyresOriginal;
+		private FRom.Consult.UserControlTyreParams ctlTyresNew;
 	}
 }

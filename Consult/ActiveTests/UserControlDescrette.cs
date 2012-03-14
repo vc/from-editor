@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
-using FRom.ConsultNS.Data;
-using Helper;
+using FRom.Consult.Data;
 
-namespace FRom.ConsultNS.ActiveTests
+namespace FRom.Consult.ActiveTests
 {
 	public partial class UserControlDescrette : UserControl
 	{

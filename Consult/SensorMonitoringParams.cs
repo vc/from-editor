@@ -2,12 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Threading;
-using FRom.ConsultNS.Data;
-using Helper;
-using Helper.Logger;
+using FRom.Consult.Data;
+using FRom.Consult.Helper;
+using FRom.Consult.Helper.Logger;
 
-namespace FRom.ConsultNS
+namespace FRom.Consult
 {
 	public class SensorMonitoringParams : IEnumerable, IComponent
 	{
@@ -18,14 +17,14 @@ namespace FRom.ConsultNS
 		/// </summary>
 		ListIndexString<ConsultSensor> _sensors;
 
-		Consult _consult;
+		ConsultProvider _consult;
 
 		/// <summary>
 		/// флаг работы live приема данных от ECU по сенсорам.
 		/// </summary>
 		private bool _flagIsScanning = false;
 
-		public SensorMonitoringParams(Consult consult)
+		public SensorMonitoringParams(ConsultProvider consult)
 		{
 			_consult = consult;
 			_sensors = new ListIndexString<ConsultSensor>((int)ECUConst.ECU_REG_MAX_READS);
